@@ -205,3 +205,35 @@ function pintarCats(){ document.getElementById('cats').innerHTML = categorias.ma
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
 function descargarFotoGrande(foto
+async function publicar(){
+  if(estaBloqueado){ alert("🔒 Se terminaron tus 30 días gratis."); return; }
+  let n = document.getElementById('nombreProd').value.trim();
+  let pr = document.getElementById('precioProd').value;
+  let c = document.getElementById('catProd').value;
+  let v = document.getElementById('vendedorProd').value.trim() || "Vendedor";
+  let w = document.getElementById('wpProd').value.trim();
+  let linkPago = document.getElementById('pagoProd').value.trim();
+  let fLink = document.getElementById('fotoProd').value.trim();
+  if(!n || !pr){ alert("Poné nombre y precio"); return; }
+  if(!w){ alert("Poné tu WhatsApp"); return; }
+  if(!fotoFile && !fLink){ alert("Elegí una foto de tu galería"); return; }
+
+  let f = fLink || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200";
+  
+  // SI HAY FOTO DE GALERÍA, LA SUBE A SUPABASE STORAGE
+  if(fotoFile){
+    alert("Subiendo foto... esperá un poquito ⏳");
+    let nombreArchivo = Date.now() + "-" + fotoFile.name.replace(/\s+/g,'-');
+    let {error: errorSubida} = await supabaseClient.storage.from('fotos').upload(nombreArchivo, fotoFile);
+    if(errorSubida){ alert("Error al subir foto: "+errorSubida.message+"\n¿Creaste el bucket 'fotos' en Supabase y lo pusiste en Público?"); return; }
+    let {data: urlData} = supabaseClient.storage.from('fotos').getPublicUrl(nombreArchivo);
+    f = urlData.publicUrl;
+  }
+
+  let {error} = await supabaseClient.from('productos').insert([{nombre:n, precio:Number(pr), categoria:c, vendedor:v, whatsapp:w, foto:f, link_pago:linkPago}]);
+  if(error){ alert("Error: "+error.message); return; }
+  alert("¡Publicado! 🎉 Ahora sí se ve tu foto");
+  document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value=""; document.getElementById('pagoProd').value="";
+  document.getElementById('fotoArchivo').value=""; document.getElementById('fotoCamara').value=""; document.getElementById('previewFoto').style.display='none'; document.getElementById('textoFoto').style.display='none'; document.getElementById('textoSinFoto').style.display='block'; document.getElementById('btnQuitarFoto').style.display='none'; fotoBase64=""; fotoFile=null;
+  cargar(); window.scrollTo({top:0, behavior:'smooth'});
+  }
