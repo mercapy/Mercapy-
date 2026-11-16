@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MERCAPY - Registrate</title>
+<title>MERCAPY - Registro</title>
 <style>
 body{font-family:Arial;background:#111;color:white;padding:15px;text-align:center}
 .caja{background:white;color:black;border-radius:15px;padding:20px;max-width:400px;margin:auto}
@@ -11,131 +11,39 @@ input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px 
 button{padding:15px;width:100%;border:none;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:5px}
 .amarillo{background:#FFE600}
 .verde{background:#25D366;color:white}
-.rojo{background:#ff3b30;color:white;padding:8px;font-size:14px;margin-top:5px}
+.rojo{background:#ff3b30;color:white;padding:8px;font-size:14px}
 .producto{background:#f2f2f2;padding:12px;border-radius:10px;margin:10px 0;text-align:left}
-.producto img{width:100%;border-radius:10px}
 .oculto{display:none}
 .bloqueado{background:#ff3b30;color:white;padding:20px;border-radius:15px;max-width:400px;margin:auto}
 .soporte{background:#222;color:white;padding:15px;border-radius:15px;max-width:400px;margin:20px auto}
-.soporte a{color:#25D366;font-weight:bold;font-size:18px;text-decoration:none}
+.soporte a{color:#25D366;font-weight:bold;font-size:18px}
 </style>
 </head>
 <body>
-<h1>🛒 MERCAPY</h1>
-<p>Publicá gratis 30 días. Después 20.000 Gs por mes.</p>
-
-<!-- SI ESTA BLOQUEADO -->
-<div id="bloqueo" class="bloqueado oculto">
-<h2>⛔ CUENTA BLOQUEADA</h2>
-<p>Se terminaron tus 30 días gratis.<br>Pagá 20.000 Gs para seguir vendiendo.</p>
-<button class="verde" onclick="pagar()">PAGAR POR WHATSAPP</button>
-</div>
-
-<!-- PASO 1 -->
-<div class="caja" id="paso1">
-<h2>1. Registrate</h2>
-<input id="nombre" placeholder="Tu nombre">
-<input id="whatsapp" placeholder="Tu WhatsApp Ej: 0981123456">
-<input id="ciudad" placeholder="Tu ciudad Ej: Areguá">
-<select id="rubro"><option value="">¿Qué vas a vender?</option><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzados</option><option>Hogar</option><option>Belleza</option><option>Otro</option></select>
-<button class="amarillo" onclick="registrar()">REGISTRARME GRATIS</button>
-<br><br><a href="https://mercapy.github.io">⬅ Volver a MERCAPY</a>
-</div>
-
-<!-- PASO 2 -->
-<div class="caja oculto" id="paso2">
-<h2 id="bienvenida"></h2>
-<p id="diasRestantes"></p>
-<p>Subí tu producto:</p>
-<input id="prodNombre" placeholder="Nombre Ej: Remera Nike">
-<input id="prodPrecio" placeholder="Precio Ej: 50000" type="number">
-<input id="prodFoto" placeholder="Link de foto (opcional)">
-<select id="prodCat"><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzados</option><option>Hogar</option><option>Belleza</option><option>Otro</option></select>
-<button class="amarillo" onclick="agregarProducto()">PUBLICAR PRODUCTO</button>
-<div id="misProductos"></div>
-<button class="verde" onclick="terminar()">TERMINAR</button>
-</div>
-
-<!-- SOPORTE ABAJO -->
-<div class="soporte">
-<p>🆘 ¿Necesitás ayuda?</p>
-<a href="https://wa.me/595981123456?text=Hola%20MERCAPY%20necesito%20ayuda">📱 SOPORTE MERCAPY - Escribinos por WhatsApp</a>
-<p style="font-size:13px;color:#aaa">Respondemos de 8:00 a 20:00</p>
-</div>
-
+<h1>MERCAPY</h1>
+<p>Publica gratis 30 dias. Despues 20.000 Gs por mes.</p>
+<div id="bloqueo" class="bloqueado oculto"><h2>CUENTA BLOQUEADA</h2><p>Se terminaron tus 30 dias gratis.</p><button class="verde" onclick="pagar()">PAGAR POR WHATSAPP</button></div>
+<div class="caja" id="paso1"><h2>1. Registrate</h2><input id="nombre" placeholder="Tu nombre"><input id="whatsapp" placeholder="Tu WhatsApp"><input id="ciudad" placeholder="Tu ciudad"><select id="rubro"><option value="">Que vas a vender?</option><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzados</option><option>Hogar</option><option>Belleza</option><option>Otro</option></select><button class="amarillo" onclick="registrar()">REGISTRARME GRATIS</button><br><br><a href="https://mercapy.github.io">Volver a MERCAPY</a></div>
+<div class="caja oculto" id="paso2"><h2 id="bienvenida"></h2><p id="diasRestantes"></p><input id="prodNombre" placeholder="Nombre del producto"><input id="prodPrecio" placeholder="Precio" type="number"><input id="prodFoto" placeholder="Link de foto (opcional)"><select id="prodCat"><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzados</option><option>Hogar</option><option>Belleza</option><option>Otro</option></select><button class="amarillo" onclick="agregarProducto()">PUBLICAR PRODUCTO</button><div id="misProductos"></div><button class="verde" onclick="terminar()">TERMINAR</button></div>
+<div class="soporte"><p>AYUDA?</p><a href="https://wa.me/595981123456?text=Hola%20MERCAPY%20necesito%20ayuda">SOPORTE MERCAPY - Escribinos por WhatsApp</a></div>
 <script>
-// ⚠️ CAMBIÁ ESTE NÚMERO POR TU WHATSAPP REAL, CON 595 ADELANTE
-let TU_WHATSAPP = "595981123456";
-
-let vendedor = JSON.parse(localStorage.getItem('mercapy_vendedor') || 'null');
-let productos = JSON.parse(localStorage.getItem('mercapy_productos') || '[]');
-
-// REVISAR SI YA PASARON 30 DIAS - BLOQUEO AUTOMATICO
+let TU_WHATSAPP="595981123456";
+let vendedor=JSON.parse(localStorage.getItem('mercapy_vendedor')||'null');
+let productos=JSON.parse(localStorage.getItem('mercapy_productos')||'[]');
 function revisarBloqueo(){
-  if(!vendedor) return false;
-  let hoy = new Date().getTime();
-  let inicio = vendedor.fechaRegistro;
-  let dias = Math.floor((hoy - inicio) / (1000*60*60*24));
-  let quedan = 30 - dias;
-  if(quedan <= 0 && !vendedor.pagado){
-    document.getElementById('paso1').classList.add('oculto');
-    document.getElementById('paso2').classList.add('oculto');
-    document.getElementById('bloqueo').classList.remove('oculto');
-    return true;
-  }
-  if(vendedor){
-    document.getElementById('paso1').classList.add('oculto');
-    document.getElementById('paso2').classList.remove('oculto');
-    document.getElementById('bienvenida').innerText = '¡Hola '+vendedor.nombre+'!';
-    document.getElementById('diasRestantes').innerText = '✅ Te quedan '+quedan+' días gratis';
-    mostrarProductos();
-  }
-  return false;
+if(!vendedor) return false;
+let hoy=new Date().getTime();
+let dias=Math.floor((hoy-vendedor.fechaRegistro)/(1000*60*60*24));
+let quedan=30-dias;
+if(quedan<=0 && !vendedor.pagado){document.getElementById('paso1').classList.add('oculto');document.getElementById('paso2').classList.add('oculto');document.getElementById('bloqueo').classList.remove('oculto');return true;}
+document.getElementById('paso1').classList.add('oculto');document.getElementById('paso2').classList.remove('oculto');document.getElementById('bienvenida').innerText='Hola '+vendedor.nombre+'!';document.getElementById('diasRestantes').innerText='Te quedan '+quedan+' dias gratis';mostrarProductos();return false;
 }
-
-function registrar(){
-  let nombre=document.getElementById('nombre').value;
-  let whatsapp=document.getElementById('whatsapp').value;
-  let ciudad=document.getElementById('ciudad').value;
-  let rubro=document.getElementById('rubro').value;
-  if(!nombre||!whatsapp||!rubro){alert('Falta nombre, WhatsApp y qué vendes');return;}
-  vendedor={nombre,whatsapp,ciudad,rubro,fechaRegistro:new Date().getTime(),pagado:false};
-  localStorage.setItem('mercapy_vendedor',JSON.stringify(vendedor));
-  // NOTIFICACION POR WHATSAPP PARA VOS
-  let mensaje="Hola REINERIO! Nuevo vendedor en MERCAPY:%0A Nombre: "+nombre+"%0A WhatsApp: "+whatsapp+"%0A Ciudad: "+ciudad+"%0A Vende: "+rubro;
-  window.open("https://wa.me/"+TU_WHATSAPP+"?text="+mensaje,"_blank");
-  alert('¡Registrado! Te quedan 30 días gratis.');
-  revisarBloqueo();
-}
-
-function agregarProducto(){
-  let p={nombre:document.getElementById('prodNombre').value,precio:document.getElementById('prodPrecio').value,cat:document.getElementById('prodCat').value,foto:document.getElementById('prodFoto').value};
-  if(!p.nombre||!p.precio){alert('Falta nombre y precio');return;}
-  productos.push(p); localStorage.setItem('mercapy_productos',JSON.stringify(productos));
-  mostrarProductos();
-  document.getElementById('prodNombre').value=''; document.getElementById('prodPrecio').value=''; document.getElementById('prodFoto').value='';
-}
-
-function mostrarProductos(){
-  let html='';
-  productos.forEach((prod,i)=>{
-    let foto = prod.foto ? '<img src="'+prod.foto+'">' : '<div style="background:#ddd;padding:30px;text-align:center">📦 Sin foto</div>';
-    html+='<div class="producto">'+foto+'<br><b>'+prod.nombre+'</b><br>Precio: '+prod.precio+' Gs<br>Categoría: '+prod.cat+'<br><button class="rojo" onclick="borrarProducto('+i+')">🗑 BORRAR PRODUCTO</button></div>';
-  });
-  document.getElementById('misProductos').innerHTML=html;
-}
-
-function borrarProducto(i){
-  if(confirm('¿Seguro querés borrar este producto?')){
-    productos.splice(i,1);
-    localStorage.setItem('mercapy_productos',JSON.stringify(productos));
-    mostrarProductos();
-  }
-}
-function pagar(){
-  window.open("https://wa.me/"+TU_WHATSAPP+"?text=Hola%20quiero%20pagar%20mis%2020.000%20Gs%20de%20MERCAPY","_blank");
-}
-function terminar(){alert('¡Listo! Tu tienda está activa.');}
+function registrar(){let nombre=document.getElementById('nombre').value;let whatsapp=document.getElementById('whatsapp').value;let ciudad=document.getElementById('ciudad').value;let rubro=document.getElementById('rubro').value;if(!nombre||!whatsapp||!rubro){alert('Falta nombre, WhatsApp y que vendes');return;}vendedor={nombre,whatsapp,ciudad,rubro,fechaRegistro:new Date().getTime(),pagado:false};localStorage.setItem('mercapy_vendedor',JSON.stringify(vendedor));let mensaje="Hola REINERIO! Nuevo vendedor en MERCAPY: "+nombre+" - "+whatsapp+" - "+ciudad+" - Vende: "+rubro;window.open("https://wa.me/"+TU_WHATSAPP+"?text="+encodeURIComponent(mensaje),"_blank");alert('Registrado! Te quedan 30 dias gratis.');revisarBloqueo();}
+function agregarProducto(){let p={nombre:document.getElementById('prodNombre').value,precio:document.getElementById('prodPrecio').value,cat:document.getElementById('prodCat').value,foto:document.getElementById('prodFoto').value};if(!p.nombre||!p.precio){alert('Falta nombre y precio');return;}productos.push(p);localStorage.setItem('mercapy_productos',JSON.stringify(productos));mostrarProductos();document.getElementById('prodNombre').value='';document.getElementById('prodPrecio').value='';document.getElementById('prodFoto').value='';}
+function mostrarProductos(){let html='';productos.forEach((prod,i)=>{let foto=prod.foto?'<img src="'+prod.foto+'" style="width:100%;border-radius:10px">':'<div style="background:#ddd;padding:30px;text-align:center">Sin foto</div>';html+='<div class="producto">'+foto+'<br><b>'+prod.nombre+'</b><br>Precio: '+prod.precio+' Gs<br>Categoria: '+prod.cat+'<br><button class="rojo" onclick="borrarProducto('+i+')">BORRAR PRODUCTO</button></div>';});document.getElementById('misProductos').innerHTML=html;}
+function borrarProducto(i){if(confirm('Seguro queres borrar?')){productos.splice(i,1);localStorage.setItem('mercapy_productos',JSON.stringify(productos));mostrarProductos();}}
+function pagar(){window.open("https://wa.me/"+TU_WHATSAPP+"?text=Hola quiero pagar mis 20.000 Gs de MERCAPY","_blank");}
+function terminar(){alert('Listo! Tu tienda esta activa.');}
 revisarBloqueo();
 </script>
 </body>
