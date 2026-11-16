@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MERCA PY - Comprá y Vendé</title>
+<title>MERCA PY - Comprá y Vendé Todo en Paraguay</title>
+<meta id="ogTitle" property="og:title" content="MERCA PY - Comprá y Vendé Todo en Paraguay">
+<meta id="ogDesc" property="og:description" content="Celulares, ropa, comida y más. Mirá foto grande, video y pagá seguro en MERCA PY 🇵🇾">
+<meta property="og:type" content="website">
+<meta id="ogUrl" property="og:url" content="https://mercapy.github.io/Mercapy-/">
+<meta id="ogImage" property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta id="twImage" name="twitter:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f4f4f4}
@@ -18,31 +27,47 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(min-width:700px){.grid{grid-template-columns:1fr 1fr 1fr}}
 .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #0001}
-.card img{width:100%;height:160px;object-fit:cover}
+.card img{width:100%;height:220px;object-fit:cover;cursor:zoom-in}
+.card video{width:100%;height:220px;object-fit:cover;background:#000}
 .card .b{padding:10px}
 .card h3{margin:0;font-size:16px}
 .card .pr{color:#e11;font-weight:900;font-size:18px;margin:6px 0}
 .card .vn{color:#555;font-size:13px}
+.zoomHint{background:#111;color:#fff;font-size:12px;text-align:center;padding:6px}
+.verFotoBtn{display:block;width:100%;background:#111;color:#fff;border:0;padding:10px;border-radius:10px;font-weight:bold;margin-top:6px;cursor:pointer}
 .wa{display:block;text-align:center;background:#25D366;color:#fff;padding:11px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
+.pagarAhora{display:block;text-align:center;background:#009ee3;color:#fff;padding:11px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
 .del{display:block;width:100%;background:#fff;color:#ff3b30;border:1px solid #ff3b30;padding:10px;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer}
 .form{background:#fff;padding:16px;border-radius:14px;margin-top:18px}
 .form input,.form select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
 .form button{width:100%;padding:14px;background:#ff3b30;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold}
 .plan{background:#e8ffe8;border:1px solid #25D366;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px}
 .foto-btn{display:block;text-align:center;background:#1877F2;color:#fff;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0}
-.foto-preview{width:100%;max-height:200px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}
+.video-btn{display:block;text-align:center;background:#000;color:#fff;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0}
+.foto-preview{width:100%;max-height:220px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}
+.video-preview{width:100%;max-height:220px;border-radius:10px;display:none;margin-top:6px;background:#000}
 .share-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .share-row a,.share-row button{flex:1;min-width:42px;text-align:center;padding:9px 4px;border-radius:8px;font-size:12px;font-weight:bold;text-decoration:none;color:#fff;border:0;cursor:pointer}
 .fb{background:#1877F2} .ig{background:#E1306C} .tk{background:#000} .yt{background:#FF0000} .wp{background:#25D366} .cp{background:#333}
+.descargarFoto{display:block;width:100%;background:#ff3b30;color:#fff;border:0;padding:12px;border-radius:10px;font-weight:900;margin-top:8px;cursor:pointer;font-size:14px}
 .bloqueo{background:#ff3b30;color:#fff;padding:16px;border-radius:12px;text-align:center;margin-top:12px}
 .bloqueo button{background:#ffe600;border:0;padding:13px 18px;border-radius:10px;font-weight:900;font-size:16px;margin-top:10px;width:100%}
 footer{text-align:center;color:#888;padding:20px;font-size:13px}
+.verProducto{background:#ffe600;padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin-bottom:12px}
+.verProducto button{background:#111;color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:bold;margin-top:6px}
+#zoomModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:999;flex-direction:column;align-items:center;justify-content:center}
+#zoomModal img{max-width:95%;max-height:75vh;object-fit:contain;touch-action:pinch-zoom}
+#zoomModal video{max-width:95%;max-height:75vh}
+#zoomModal .cerrar{position:absolute;top:12px;right:16px;background:#fff;border:0;font-size:22px;padding:8px 14px;border-radius:50%;font-weight:bold;cursor:pointer}
+#zoomModal .txt{color:#fff;text-align:center;padding:10px;font-size:14px}
+#zoomModal .btnZoom{background:#ffe600;border:0;padding:10px 16px;border-radius:10px;font-weight:bold;margin:4px}
 </style>
 </head>
 <body>
 <header><h1>🛍️ MERCA PY</h1><p>Comprá y Vendé Todo en Paraguay 🇵🇾</p></header>
 <div class="oferta" id="ofertaTop">🎉 30 DÍAS GRATIS para publicar<br><span style="font-size:14px">Después solo 20.000 Gs por mes • Sin permanencia</span></div>
 <div class="wrap">
+<div id="vistaProducto"></div>
 <input id="buscador" class="search" placeholder="🔍 Buscar: celular, ropa, comida..." oninput="filtrar()">
 <div class="cats" id="cats"></div>
 <div id="avisoBloqueo"></div>
@@ -55,31 +80,50 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <select id="catProd"><option>Todo</option><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzado</option><option>Hogar</option><option>Otros</option></select>
 <input id="vendedorProd" placeholder="Tu nombre">
 <input id="wpProd" placeholder="Tu WhatsApp Ej: 0984522026">
+<input id="pagoProd" placeholder="Link para cobrar automático (Mercado Pago / Tigo Money) - Opcional">
 <label for="fotoArchivo" class="foto-btn">📸 ELEGIR FOTO DE TU PRODUCTO</label>
 <input type="file" id="fotoArchivo" accept="image/*" style="display:none" onchange="previsualizarFoto(event)">
 <img id="previewFoto" class="foto-preview">
 <input id="fotoProd" placeholder="Link de foto (opcional)">
+<label for="videoArchivo" class="video-btn">🎥 SUBIR VIDEO CORTITO (15-30 seg)</label>
+<input type="file" id="videoArchivo" accept="video/*" style="display:none" onchange="previsualizarVideo(event)">
+<video id="previewVideo" class="video-preview" controls></video>
+<input id="videoLinkProd" placeholder="O pegá link de TikTok / YouTube del video (opcional)">
 <button onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
+<p style="font-size:12px;color:#888;text-align:center">Tip: Video cortito vende 3 veces más. Mostrá el producto de cerca.</p>
 </div>
 <div id="pagarBox" style="display:none" class="bloqueo">
 <h2 style="margin:0">🔒 SE TERMINARON TUS 30 DÍAS GRATIS</h2>
 <p>Tus productos están pausados. Pagá 20.000 Gs para volver a vender.</p>
 <button onclick="pagar()">💳 PAGAR 20.000 Gs POR WHATSAPP</button>
-<p style="font-size:12px">Al pagar, yo (Reinerio) te activo de nuevo por 30 días más.</p>
 </div>
 </div>
 <footer>MERCA PY © 2026 - Hecho en Paraguay - Admin 0984522026</footer>
+<div id="zoomModal">
+<button class="cerrar" onclick="cerrarZoom()">✕</button>
+<img id="zoomImg" src="">
+<video id="zoomVideo" controls style="display:none"></video>
+<div class="txt" id="zoomTxt"></div>
+<div>
+<button class="btnZoom" onclick="zoomMas()">🔍 + ACERCAR</button>
+<button class="btnZoom" onclick="zoomMenos()">🔍 - ALEJAR</button>
+<button class="btnZoom" onclick="cerrarZoom()">Cerrar</button>
+</div>
+<p style="color:#aaa;font-size:12px">Tip: Con 2 dedos podés hacer zoom también</p>
+</div>
 <script>
 const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const MI_LINK = "https://mercapy.github.io/Mercapy-/";
 let ADMIN_WA = "595984522026";
-let PRECIO_MES = 20000;
 let DIAS_GRATIS = 30;
 let todos = [];
 let catActual = "Todo";
 let categorias = ["Todo","Ropa","Comida","Celulares","Calzado","Hogar","Otros"];
 let fotoBase64 = "";
+let videoBase64 = "";
+let zoomNivel = 1;
 if(!localStorage.getItem('mercapy_inicio')){ localStorage.setItem('mercapy_inicio', Date.now()); }
 let inicio = parseInt(localStorage.getItem('mercapy_inicio'));
 let pagadoHasta = parseInt(localStorage.getItem('mercapy_pagado_hasta') || '0');
@@ -120,20 +164,77 @@ function previsualizarFoto(event){
     let img = new Image();
     img.onload = function(){
       let canvas = document.createElement('canvas');
-      let max = 800; let w = img.width, h = img.height;
+      let max = 1200; let w = img.width, h = img.height;
       if(w > h){ if(w > max){ h = h * max / w; w = max; } } else { if(h > max){ w = w * max / h; h = max; } }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      fotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      fotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
       let prev = document.getElementById('previewFoto'); prev.src = fotoBase64; prev.style.display = 'block';
     }; img.src = e.target.result;
   }; reader.readAsDataURL(file);
 }
+function previsualizarVideo(event){
+  let file = event.target.files[0]; if(!file) return;
+  if(file.size > 8*1024*1024){ alert("Video muy pesado. Grabá uno de 15-30 segundos, que pese menos de 8 MB"); document.getElementById('videoArchivo').value=""; return; }
+  let reader = new FileReader();
+  reader.onload = function(e){
+    videoBase64 = e.target.result;
+    let prev = document.getElementById('previewVideo'); prev.src = videoBase64; prev.style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function abrirZoom(foto, nombre, precio){
+  zoomNivel = 1;
+  let img = document.getElementById('zoomImg'); img.style.display='block'; img.style.transform='scale(1)';
+  document.getElementById('zoomVideo').style.display='none'; document.getElementById('zoomVideo').pause();
+  img.src = foto;
+  document.getElementById('zoomTxt').innerHTML = nombre + " - Gs " + Number(precio).toLocaleString('es-PY');
+  document.getElementById('zoomModal').style.display='flex';
+}
+function abrirZoomVideo(videoSrc, nombre, precio){
+  let v = document.getElementById('zoomVideo'); v.style.display='block';
+  document.getElementById('zoomImg').style.display='none';
+  v.src = videoSrc; v.play();
+  document.getElementById('zoomTxt').innerHTML = "🎥 " + nombre + " - Gs " + Number(precio).toLocaleString('es-PY');
+  document.getElementById('zoomModal').style.display='flex';
+}
+function zoomMas(){ zoomNivel += 0.5; document.getElementById('zoomImg').style.transform='scale('+zoomNivel+')'; }
+function zoomMenos(){ if(zoomNivel>1) zoomNivel-=0.5; document.getElementById('zoomImg').style.transform='scale('+zoomNivel+')'; }
+function cerrarZoom(){ document.getElementById('zoomModal').style.display='none'; document.getElementById('zoomVideo').pause(); }
 function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
+
+// --- NUEVO: FOTO GRANDE PARA COMPARTIR ---
+function actualizarMetaProducto(p){
+  if(!p) return;
+  let fotoGrande = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop";
+  document.title = p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + " | MERCA PY";
+  let ogT = document.getElementById('ogTitle'); if(ogT) ogT.content = p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + " | MERCA PY";
+  let ogD = document.getElementById('ogDesc'); if(ogD) ogD.content = "🔥 Mirá esto en MERCA PY 🇵🇾 " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY');
+  let ogI = document.getElementById('ogImage'); if(ogI) ogI.content = fotoGrande;
+  let twI = document.getElementById('twImage'); if(twI) twI.content = fotoGrande;
+  let ogU = document.getElementById('ogUrl'); if(ogU) ogU.content = MI_LINK + "?producto=" + p.id;
+}
+function descargarFotoGrande(foto, nombre){
+  if(!foto || foto.startsWith('data:')){
+    let a = document.createElement('a');
+    a.href = foto; a.download = "MERCA-PY-" + (nombre||'producto').replace(/\s+/g,'-') + ".jpg";
+    a.click();
+    alert("✅ Foto descargada en GRANDE. Ahora subila a Instagram / TikTok / YouTube y va a salir gigante 📸");
+    return;
+  }
+  fetch(foto).then(r=>r.blob()).then(b=>{
+    let url = URL.createObjectURL(b);
+    let a = document.createElement('a'); a.href = url; a.download = "MERCA-PY-" + (nombre||'producto').replace(/\s+/g,'-') + ".jpg"; a.click();
+    alert("✅ Foto descargada en GRANDE. Ahora subila a Instagram / TikTok / YouTube y va a salir gigante 📸");
+  }).catch(()=>{
+    window.open(foto, "_blank");
+    alert("Mantené apretada la foto y guardala, después subila a Instagram / TikTok / YouTube");
+  });
+}
 function linksCompartir(p){
-  let url = "https://mercapy.github.io/";
+  let url = MI_LINK + "?producto=" + p.id;
   let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n🛍️ " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + "\n📲 " + url;
   let encTexto = encodeURIComponent(texto);
   let encUrl = encodeURIComponent(url);
@@ -144,7 +245,9 @@ function linksCompartir(p){
     <button class="tk" onclick="copiarYAvistar('${encTexto}','TikTok')">TikTok</button>
     <button class="yt" onclick="copiarYAvistar('${encTexto}','YouTube')">YouTube</button>
     <button class="cp" onclick="copiarTexto('${encTexto}')">🔗 Copiar</button>
-  </div><p style="font-size:11px;color:#888;margin:4px 0 0">Para Instagram / TikTok / YouTube: se copia el texto y lo pegás en tu historia o video.</p>`;
+  </div>
+  <button class="descargarFoto" onclick="descargarFotoGrande('${p.foto || ''}', '${String(p.nombre||'').replace(/'/g,'')}')">📸 DESCARGAR FOTO GRANDE PARA TIKTOK / IG / YOUTUBE</button>
+  <p style="font-size:11px;color:#888;margin:4px 0 0">Facebook y WhatsApp: foto sale GRANDE sola. Instagram / TikTok / YouTube: apretá el botón rojo, se descarga la foto grande y la subís.</p>`;
 }
 function copiarTexto(enc){
   let t = decodeURIComponent(enc);
@@ -164,54 +267,19 @@ function mostrar(lista){
   if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return; }
   el.innerHTML = lista.map((p,i)=>{
     let wa = limpiarWP(p.whatsapp||"");
-    let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
-    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}<button class="del" onclick="eliminarProducto(${p.id}, '${String(p.whatsapp||'').replace(/'/g,'')}')">🗑️ Eliminar mi producto</button></div></div>`;
-  }).join('');
-}
-async function eliminarProducto(id, whatsappOriginal){
-  let confirmar = confirm("¿Seguro querés eliminar este producto?");
-  if(!confirmar) return;
-  let wp = prompt("Para confirmar que es tuyo, escribí tu WhatsApp con el que publicaste (Ej: 0984522026):");
-  if(!wp){ return; }
-  if(limpiarWP(wp) !== limpiarWP(whatsappOriginal)){
-    alert("❌ Ese WhatsApp no coincide con el del producto. No se puede borrar.");
-    return;
-  }
-  let {error} = await supabaseClient.from('productos').delete().eq('id', id);
-  if(error){ alert("Error al borrar: "+error.message); return; }
-  alert("✅ Producto eliminado");
-  cargar();
-}
-function filtrar(){
-  let q = document.getElementById('buscador').value.toLowerCase();
-  let f = todos.filter(p => (catActual==="Todo" || p.categoria===catActual) && (p.nombre||"").toLowerCase().includes(q));
-  mostrar(f);
-}
-async function cargar(){
-  let {data, error} = await supabaseClient.from('productos').select('*').order('id',{ascending:false});
-  if(error){ console.log(error); document.getElementById('lista').innerHTML = "<p>Error: "+error.message+"<br>Revisá tu ANON KEY en el código</p>"; return; }
-  todos = data || [];
-  filtrar();
-}
-async function publicar(){
-  if(estaBloqueado){ alert("🔒 Se terminaron tus 30 días gratis. Pagá 20.000 Gs para publicar de nuevo."); document.getElementById('pagarBox').scrollIntoView({behavior:'smooth'}); return; }
-  let n = document.getElementById('nombreProd').value.trim();
-  let pr = document.getElementById('precioProd').value;
-  let c = document.getElementById('catProd').value;
-  let v = document.getElementById('vendedorProd').value.trim() || "Vendedor";
-  let w = document.getElementById('wpProd').value.trim();
-  let fLink = document.getElementById('fotoProd').value.trim();
-  let f = fotoBase64 || fLink || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
-  if(!n || !pr){ alert("Poné nombre y precio"); return; }
-  if(!w){ alert("Poné tu WhatsApp"); return; }
-  let {error} = await supabaseClient.from('productos').insert([{nombre:n, precio:Number(pr), categoria:c, vendedor:v, whatsapp:w, foto:f}]);
-  if(error){ alert("Error: "+error.message); return; }
-  alert("¡Publicado! 🎉 Ahora todos lo ven. Te quedan " + diasRestantes + " días gratis");
-  document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value="";
-  document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
-  cargar(); window.scrollTo({top:0, behavior:'smooth'});
-}
-pintarCats(); actualizarPlan(); cargar();
-</script>
-</body>
-</html>
+    let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200";
+    let btnPagar = "";
+    if(p.link_pago){
+      let linkPago = p.link_pago.startsWith('http') ? p.link_pago : 'https://' + p.link_pago;
+      btnPagar = `<a class="pagarAhora" target="_blank" href="${linkPago}">💳 PAGAR AHORA - Cobro automático</a>`;
+    }
+    let media = "";
+    if(p.video){
+      media = `<video src="${p.video}" controls playsinline></video><div class="zoomHint">🎥 VIDEO - Tocá play para ver</div><button class="verFotoBtn" onclick="abrirZoomVideo('${p.video}', '${String(p.nombre||'').replace(/'/g,'')}', ${p.precio||0})">🔍 VER VIDEO EN GRANDE</button>`;
+    } else if(p.video_link){
+      media = `<a href="${p.video_link}" target="_blank" style="display:block;background:#000;color:#fff;text-align:center;padding:20px;text-decoration:none">🎥 VER VIDEO EN TIKTOK / YOUTUBE ▶️</a>`;
+    } else {
+      media = `<img src="${foto}" onclick="abrirZoom('${foto}', '${String(p.nombre||'').replace(/'/g,'')}', ${p.precio||0})"><div class="zoomHint">👆 Tocá la foto para ver en GRANDE / ACERCAR</div>`;
+    }
+    if(p.video && p.foto){ media = `<video src="${p.video}" controls playsinline></video><img src="${foto}" style="margin-top:6px" onclick="abrirZoom('${foto}', '${String(p.nombre||'').replace(/'/g,'')}', ${p.precio||0})"><div class="zoomHint">👆 Foto + Video - Tocá para ver grande</div>`; }
+    return `<div class="card">${media}<div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Ven
