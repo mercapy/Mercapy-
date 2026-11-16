@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MERCA PY - Comprá y Vendé Todo en Paraguay</title>
-<meta id="ogTitle" property="og:title" content="MERCA PY - Comprá y Vendé Todo en Paraguay">
-<meta id="ogDesc" property="og:description" content="Celulares, ropa, comida y más. Mirá foto grande, video y pagá seguro en MERCA PY 🇵🇾">
+<meta property="og:title" content="MERCA PY - Comprá y Vendé Todo en Paraguay">
+<meta property="og:description" content="Celulares, ropa, comida y más. Mirá foto grande y pagá seguro en MERCA PY 🇵🇾">
 <meta property="og:type" content="website">
-<meta id="ogUrl" property="og:url" content="https://mercapy.github.io/Mercapy-/">
-<meta id="ogImage" property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop">
+<meta property="og:url" content="https://mercapy.github.io/Mercapy-/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta id="twImage" name="twitter:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f4f4f4}
@@ -28,13 +28,11 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 @media(min-width:700px){.grid{grid-template-columns:1fr 1fr 1fr}}
 .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #0001}
 .card img{width:100%;height:220px;object-fit:cover;cursor:zoom-in}
-.card video{width:100%;height:220px;object-fit:cover;background:#000}
 .card .b{padding:10px}
 .card h3{margin:0;font-size:16px}
 .card .pr{color:#e11;font-weight:900;font-size:18px;margin:6px 0}
 .card .vn{color:#555;font-size:13px}
 .zoomHint{background:#111;color:#fff;font-size:12px;text-align:center;padding:6px}
-.verFotoBtn{display:block;width:100%;background:#111;color:#fff;border:0;padding:10px;border-radius:10px;font-weight:bold;margin-top:6px;cursor:pointer}
 .wa{display:block;text-align:center;background:#25D366;color:#fff;padding:11px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
 .pagarAhora{display:block;text-align:center;background:#009ee3;color:#fff;padding:11px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
 .del{display:block;width:100%;background:#fff;color:#ff3b30;border:1px solid #ff3b30;padding:10px;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer}
@@ -43,9 +41,6 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .form button{width:100%;padding:14px;background:#ff3b30;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold}
 .plan{background:#e8ffe8;border:1px solid #25D366;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px}
 .foto-btn{display:block;text-align:center;background:#1877F2;color:#fff;padding:14px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0;border:0;width:100%;font-size:16px}
-.video-btn{display:block;text-align:center;background:#000;color:#fff;padding:14px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0;border:0;width:100%;font-size:16px}
-.foto-preview{width:100%;max-height:220px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}
-.video-preview{width:100%;max-height:220px;border-radius:10px;display:none;margin-top:6px;background:#000}
 .share-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .share-row a,.share-row button{flex:1;min-width:42px;text-align:center;padding:9px 4px;border-radius:8px;font-size:12px;font-weight:bold;text-decoration:none;color:#fff;border:0;cursor:pointer}
 .fb{background:#1877F2} .ig{background:#E1306C} .tk{background:#000} .yt{background:#FF0000} .wp{background:#25D366} .cp{background:#333}
@@ -57,7 +52,6 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 .verProducto button{background:#111;color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:bold;margin-top:6px}
 #zoomModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:999;flex-direction:column;align-items:center;justify-content:center}
 #zoomModal img{max-width:95%;max-height:75vh;object-fit:contain;touch-action:pinch-zoom}
-#zoomModal video{max-width:95%;max-height:75vh}
 #zoomModal .cerrar{position:absolute;top:12px;right:16px;background:#fff;border:0;font-size:22px;padding:8px 14px;border-radius:50%;font-weight:bold;cursor:pointer}
 #zoomModal .txt{color:#fff;text-align:center;padding:10px;font-size:14px}
 #zoomModal .btnZoom{background:#ffe600;border:0;padding:10px 16px;border-radius:10px;font-weight:bold;margin:4px}
@@ -81,23 +75,22 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <input id="vendedorProd" placeholder="Tu nombre">
 <input id="wpProd" placeholder="Tu WhatsApp Ej: 0984522026">
 <input id="pagoProd" placeholder="Link para cobrar automático (Mercado Pago / Tigo Money) - Opcional">
+
+<!-- SOLO FOTOS - SIN VIDEO -->
+<p style="text-align:center;font-weight:bold;color:#ff3b30;margin:10px 0 4px">📸 Subí una foto de tu producto</p>
 <button type="button" class="foto-btn" onclick="document.getElementById('fotoArchivo').click()">🖼️ ELEGIR DE GALERÍA</button>
 <button type="button" class="foto-btn" style="background:#ff3b30" onclick="document.getElementById('fotoCamara').click()">📸 SACAR FOTO AHORA</button>
 <input type="file" id="fotoArchivo" accept="image/*" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarFoto(event)">
 <input type="file" id="fotoCamara" accept="image/*" capture="environment" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarFoto(event)">
 <div style="border:2px dashed #ff3b30;border-radius:12px;padding:10px;text-align:center;background:#fff5f5;margin:8px 0">
-  <p id="textoSinFoto" style="color:#888;font-size:14px;margin:4px">📸 Acá va a aparecer tu foto cuando la elijas de la galería</p>
+  <p id="textoSinFoto" style="color:#888;font-size:14px;margin:4px">📸 Acá va a aparecer tu foto cuando la elijas</p>
   <img id="previewFoto" style="width:100%;max-height:300px;object-fit:cover;border-radius:10px;display:none">
   <p id="textoFoto" style="font-size:14px;color:#25D366;text-align:center;display:none;font-weight:bold">✅ Foto lista! Así se va a ver tu producto 👆</p>
   <button type="button" id="btnQuitarFoto" onclick="quitarFoto()" style="display:none;background:#111;color:#fff;border:0;padding:8px 14px;border-radius:8px;margin-top:6px">❌ Quitar esta foto y elegir otra</button>
 </div>
 <input id="fotoProd" placeholder="O pegá link de foto (opcional)">
-<button type="button" class="video-btn" onclick="document.getElementById('videoArchivo').click()">🎥 SUBIR VIDEO CORTITO (15-30 seg)</button>
-<input type="file" id="videoArchivo" accept="video/*" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarVideo(event)">
-<video id="previewVideo" class="video-preview" controls></video>
-<input id="videoLinkProd" placeholder="O pegá link de TikTok / YouTube del video (opcional)">
 <button onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
-<p style="font-size:12px;color:#888;text-align:center">Tip: Video cortito vende 3 veces más. Mostrá el producto de cerca.</p>
+<p style="font-size:12px;color:#888;text-align:center">Tip: Sacá la foto con buena luz, se vende más rápido.</p>
 </div>
 <div id="pagarBox" style="display:none" class="bloqueo">
 <h2 style="margin:0">🔒 SE TERMINARON TUS 30 DÍAS GRATIS</h2>
@@ -109,7 +102,6 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <div id="zoomModal">
 <button class="cerrar" onclick="cerrarZoom()">✕</button>
 <img id="zoomImg" src="">
-<video id="zoomVideo" controls style="display:none"></video>
 <div class="txt" id="zoomTxt"></div>
 <div>
 <button class="btnZoom" onclick="zoomMas()">🔍 + ACERCAR</button>
@@ -129,7 +121,6 @@ let todos = [];
 let catActual = "Todo";
 let categorias = ["Todo","Ropa","Comida","Celulares","Calzado","Hogar","Otros"];
 let fotoBase64 = "";
-let videoBase64 = "";
 let zoomNivel = 1;
 if(!localStorage.getItem('mercapy_inicio')){ localStorage.setItem('mercapy_inicio', Date.now()); }
 let inicio = parseInt(localStorage.getItem('mercapy_inicio'));
@@ -187,105 +178,30 @@ function previsualizarFoto(event){
     let img = new Image();
     img.onload = function(){
       let canvas = document.createElement('canvas');
-      let max = 1000; let w = img.width, h = img.height;
+      let max = 800; let w = img.width, h = img.height;
       if(w > max || h > max){
         if(w > h){ h = h * max / w; w = max; } else { w = w * max / h; h = max; }
       }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      fotoBase64 = canvas.toDataURL('image/jpeg', 0.80);
+      fotoBase64 = canvas.toDataURL('image/jpeg', 0.70);
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
   event.target.value = "";
 }
-function previsualizarVideo(event){
-  let file = event.target.files[0]; if(!file) return;
-  if(file.size > 8*1024*1024){ alert("Video muy pesado. Grabá uno de 15-30 segundos, que pese menos de 8 MB"); document.getElementById('videoArchivo').value=""; return; }
-  let reader = new FileReader();
-  reader.onload = function(e){
-    videoBase64 = e.target.result;
-    let prev = document.getElementById('previewVideo'); prev.src = videoBase64; prev.style.display='block';
-  };
-  reader.readAsDataURL(file);
-}
 function abrirZoom(foto, nombre, precio){
   zoomNivel = 1;
   let img = document.getElementById('zoomImg'); img.style.display='block'; img.style.transform='scale(1)';
-  document.getElementById('zoomVideo').style.display='none'; document.getElementById('zoomVideo').pause();
   img.src = foto;
   document.getElementById('zoomTxt').innerHTML = nombre + " - Gs " + Number(precio).toLocaleString('es-PY');
   document.getElementById('zoomModal').style.display='flex';
 }
-function abrirZoomVideo(videoSrc, nombre, precio){
-  let v = document.getElementById('zoomVideo'); v.style.display='block';
-  document.getElementById('zoomImg').style.display='none';
-  v.src = videoSrc; v.play();
-  document.getElementById('zoomTxt').innerHTML = "🎥 " + nombre + " - Gs " + Number(precio).toLocaleString('es-PY');
-  document.getElementById('zoomModal').style.display='flex';
-}
 function zoomMas(){ zoomNivel += 0.5; document.getElementById('zoomImg').style.transform='scale('+zoomNivel+')'; }
 function zoomMenos(){ if(zoomNivel>1) zoomNivel-=0.5; document.getElementById('zoomImg').style.transform='scale('+zoomNivel+')'; }
-function cerrarZoom(){ document.getElementById('zoomModal').style.display='none'; document.getElementById('zoomVideo').pause(); }
+function cerrarZoom(){ document.getElementById('zoomModal').style.display='none'; }
 function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
-function actualizarMetaProducto(p){
-  if(!p) return;
-  let fotoGrande = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop";
-  document.title = p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + " | MERCA PY";
-  let ogT = document.getElementById('ogTitle'); if(ogT) ogT.content = p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + " | MERCA PY";
-  let ogD = document.getElementById('ogDesc'); if(ogD) ogD.content = "🔥 Mirá esto en MERCA PY 🇵🇾 " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY');
-  let ogI = document.getElementById('ogImage'); if(ogI) ogI.content = fotoGrande;
-  let twI = document.getElementById('twImage'); if(twI) twI.content = fotoGrande;
-  let ogU = document.getElementById('ogUrl'); if(ogU) ogU.content = MI_LINK + "?producto=" + p.id;
-}
-function descargarFotoGrande(foto, nombre){
-  if(!foto || foto.startsWith('data:')){
-    let a = document.createElement('a');
-    a.href = foto; a.download = "MERCA-PY-" + (nombre||'producto').replace(/\s+/g,'-') + ".jpg";
-    a.click();
-    alert("✅ Foto descargada en GRANDE. Ahora subila a Instagram / TikTok / YouTube y va a salir gigante 📸");
-    return;
-  }
-  fetch(foto).then(r=>r.blob()).then(b=>{
-    let url = URL.createObjectURL(b);
-    let a = document.createElement('a'); a.href = url; a.download = "MERCA-PY-" + (nombre||'producto').replace(/\s+/g,'-') + ".jpg"; a.click();
-    alert("✅ Foto descargada en GRANDE. Ahora subila a Instagram / TikTok / YouTube y va a salir gigante 📸");
-  }).catch(()=>{
-    window.open(foto, "_blank");
-    alert("Mantené apretada la foto y guardala, después subila a Instagram / TikTok / YouTube");
-  });
-}
-function linksCompartir(p){
-  let url = MI_LINK + "?producto=" + p.id;
-  let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n🛍️ " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + "\n📲 " + url;
-  let encTexto = encodeURIComponent(texto);
-  let encUrl = encodeURIComponent(url);
-  return `<div class="share-row">
-    <a class="fb" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${encUrl}&quote=${encTexto}">Facebook</a>
-    <a class="wp" target="_blank" href="https://wa.me/?text=${encTexto}">WhatsApp</a>
-    <button class="ig" onclick="copiarYAvistar('${encTexto}','Instagram')">Instagram</button>
-    <button class="tk" onclick="copiarYAvistar('${encTexto}','TikTok')">TikTok</button>
-    <button class="yt" onclick="copiarYAvistar('${encTexto}','YouTube')">YouTube</button>
-    <button class="cp" onclick="copiarTexto('${encTexto}')">🔗 Copiar</button>
-  </div>
-  <button class="descargarFoto" onclick="descargarFotoGrande('${p.foto || ''}', '${String(p.nombre||'').replace(/'/g,'')}')">📸 DESCARGAR FOTO GRANDE PARA TIKTOK / IG / YOUTUBE</button>
-  <p style="font-size:11px;color:#888;margin:4px 0 0">Facebook y WhatsApp: foto sale GRANDE sola. Instagram / TikTok / YouTube: apretá el botón rojo, se descarga la foto grande y la subís.</p>`;
-}
-function copiarTexto(enc){
-  let t = decodeURIComponent(enc);
-  navigator.clipboard.writeText(t).then(()=>alert("¡Copiado! Pegalo donde quieras 🎉"));
-}
-function copiarYAvistar(enc, red){
-  copiarTexto(enc);
-  setTimeout(()=>{
-    if(red==='Instagram') window.open("https://www.instagram.com/","_blank");
-    if(red==='TikTok') window.open("https://www.tiktok.com/","_blank");
-    if(red==='YouTube') window.open("https://www.youtube.com/","_blank");
-  }, 500);
-}
-function mostrar(lista){
-  let el = document.getElementById('lista');
-  if(estaBloqueado){ el.innerHTML = "<p
+function descargarFotoGrande(foto
