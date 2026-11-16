@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MERCA PY - Comprá y Vendé</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f4f4f4}
 header{background:#ff3b30;color:#fff;padding:18px;text-align:center;position:sticky;top:0;z-index:10}
@@ -23,6 +24,7 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .card .pr{color:#e11;font-weight:900;font-size:18px;margin:6px 0}
 .card .vn{color:#555;font-size:13px}
 .wa{display:block;text-align:center;background:#25D366;color:#fff;padding:11px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
+.del{display:block;width:100%;background:#fff;color:#ff3b30;border:1px solid #ff3b30;padding:10px;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer}
 .form{background:#fff;padding:16px;border-radius:14px;margin-top:18px}
 .form input,.form select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
 .form button{width:100%;padding:14px;background:#ff3b30;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold}
@@ -68,32 +70,25 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 </div>
 <footer>MERCA PY © 2026 - Hecho en Paraguay - Admin 0984522026</footer>
 <script>
-// ===== CONFIGURACIÓN DUEÑO =====
-let ADMIN_WA = "595984522026"; // Tu WhatsApp para cobrar
+const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let ADMIN_WA = "595984522026";
 let PRECIO_MES = 20000;
 let DIAS_GRATIS = 30;
-// ===============================
-
-let todos = JSON.parse(localStorage.getItem('mercapy_productos') || '[]');
+let todos = [];
 let catActual = "Todo";
 let categorias = ["Todo","Ropa","Comida","Celulares","Calzado","Hogar","Otros"];
 let fotoBase64 = "";
-
-// Guardar fecha de inicio la primera vez
-if(!localStorage.getItem('mercapy_inicio')){
-  localStorage.setItem('mercapy_inicio', Date.now());
-}
+if(!localStorage.getItem('mercapy_inicio')){ localStorage.setItem('mercapy_inicio', Date.now()); }
 let inicio = parseInt(localStorage.getItem('mercapy_inicio'));
 let pagadoHasta = parseInt(localStorage.getItem('mercapy_pagado_hasta') || '0');
 let ahora = Date.now();
 let diasPasados = Math.floor((ahora - inicio) / (1000*60*60*24));
 let diasRestantes = DIAS_GRATIS - diasPasados;
 let estaBloqueado = false;
-
-// Si pagó, no se bloquea hasta que venza el pago
 if(pagadoHasta > ahora){ estaBloqueado = false; diasRestantes = Math.ceil((pagadoHasta - ahora)/(1000*60*60*24)); }
 else if(diasPasados >= DIAS_GRATIS){ estaBloqueado = true; }
-
 function actualizarPlan(){
   let top = document.getElementById('ofertaTop');
   let txt = document.getElementById('planTexto');
@@ -137,7 +132,6 @@ function previsualizarFoto(event){
 function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
-
 function linksCompartir(p){
   let url = "https://mercapy.github.io/";
   let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n🛍️ " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + "\n📲 " + url;
@@ -164,7 +158,6 @@ function copiarYAvistar(enc, red){
     if(red==='YouTube') window.open("https://www.youtube.com/","_blank");
   }, 500);
 }
-
 function mostrar(lista){
   let el = document.getElementById('lista');
   if(estaBloqueado){ el.innerHTML = "<p style='text-align:center'>🔒 Productos pausados. Pagá 20.000 Gs para verlos de nuevo.</p>"; return; }
@@ -172,15 +165,35 @@ function mostrar(lista){
   el.innerHTML = lista.map((p,i)=>{
     let wa = limpiarWP(p.whatsapp||"");
     let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
-    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}</div></div>`;
+    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}<button class="del" onclick="eliminarProducto(${p.id}, '${String(p.whatsapp||'').replace(/'/g,'')}')">🗑️ Eliminar mi producto</button></div></div>`;
   }).join('');
+}
+async function eliminarProducto(id, whatsappOriginal){
+  let confirmar = confirm("¿Seguro querés eliminar este producto?");
+  if(!confirmar) return;
+  let wp = prompt("Para confirmar que es tuyo, escribí tu WhatsApp con el que publicaste (Ej: 0984522026):");
+  if(!wp){ return; }
+  if(limpiarWP(wp) !== limpiarWP(whatsappOriginal)){
+    alert("❌ Ese WhatsApp no coincide con el del producto. No se puede borrar.");
+    return;
+  }
+  let {error} = await supabaseClient.from('productos').delete().eq('id', id);
+  if(error){ alert("Error al borrar: "+error.message); return; }
+  alert("✅ Producto eliminado");
+  cargar();
 }
 function filtrar(){
   let q = document.getElementById('buscador').value.toLowerCase();
   let f = todos.filter(p => (catActual==="Todo" || p.categoria===catActual) && (p.nombre||"").toLowerCase().includes(q));
   mostrar(f);
 }
-function publicar(){
+async function cargar(){
+  let {data, error} = await supabaseClient.from('productos').select('*').order('id',{ascending:false});
+  if(error){ console.log(error); document.getElementById('lista').innerHTML = "<p>Error: "+error.message+"<br>Revisá tu ANON KEY en el código</p>"; return; }
+  todos = data || [];
+  filtrar();
+}
+async function publicar(){
   if(estaBloqueado){ alert("🔒 Se terminaron tus 30 días gratis. Pagá 20.000 Gs para publicar de nuevo."); document.getElementById('pagarBox').scrollIntoView({behavior:'smooth'}); return; }
   let n = document.getElementById('nombreProd').value.trim();
   let pr = document.getElementById('precioProd').value;
@@ -191,14 +204,14 @@ function publicar(){
   let f = fotoBase64 || fLink || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
   if(!n || !pr){ alert("Poné nombre y precio"); return; }
   if(!w){ alert("Poné tu WhatsApp"); return; }
-  todos.unshift({ nombre: n, precio: Number(pr), categoria: c, vendedor: v, whatsapp: w, foto: f });
-  localStorage.setItem('mercapy_productos', JSON.stringify(todos));
-  alert("¡Publicado! 🎉 Te quedan " + diasRestantes + " días gratis");
+  let {error} = await supabaseClient.from('productos').insert([{nombre:n, precio:Number(pr), categoria:c, vendedor:v, whatsapp:w, foto:f}]);
+  if(error){ alert("Error: "+error.message); return; }
+  alert("¡Publicado! 🎉 Ahora todos lo ven. Te quedan " + diasRestantes + " días gratis");
   document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value="";
   document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
-  filtrar(); window.scrollTo({top:0, behavior:'smooth'});
+  cargar(); window.scrollTo({top:0, behavior:'smooth'});
 }
-pintarCats(); actualizarPlan(); filtrar();
+pintarCats(); actualizarPlan(); cargar();
 </script>
 </body>
 </html>
