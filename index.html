@@ -42,8 +42,8 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .form input,.form select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
 .form button{width:100%;padding:14px;background:#ff3b30;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold}
 .plan{background:#e8ffe8;border:1px solid #25D366;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px}
-.foto-btn{display:block;text-align:center;background:#1877F2;color:#fff;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0}
-.video-btn{display:block;text-align:center;background:#000;color:#fff;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0}
+.foto-btn{display:block;text-align:center;background:#1877F2;color:#fff;padding:14px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0;border:0;width:100%;font-size:16px}
+.video-btn{display:block;text-align:center;background:#000;color:#fff;padding:14px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0;border:0;width:100%;font-size:16px}
 .foto-preview{width:100%;max-height:220px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}
 .video-preview{width:100%;max-height:220px;border-radius:10px;display:none;margin-top:6px;background:#000}
 .share-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
@@ -81,12 +81,19 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <input id="vendedorProd" placeholder="Tu nombre">
 <input id="wpProd" placeholder="Tu WhatsApp Ej: 0984522026">
 <input id="pagoProd" placeholder="Link para cobrar automático (Mercado Pago / Tigo Money) - Opcional">
-<label for="fotoArchivo" class="foto-btn">📸 ELEGIR FOTO DE TU PRODUCTO</label>
-<input type="file" id="fotoArchivo" accept="image/*" style="display:none" onchange="previsualizarFoto(event)">
+
+<!-- GALERÍA QUE SÍ ANDA -->
+<button type="button" class="foto-btn" onclick="document.getElementById('fotoArchivo').click()">🖼️ ELEGIR DE GALERÍA</button>
+<button type="button" class="foto-btn" style="background:#ff3b30" onclick="document.getElementById('fotoCamara').click()">📸 SACAR FOTO AHORA</button>
+<input type="file" id="fotoArchivo" accept="image/*" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarFoto(event)">
+<input type="file" id="fotoCamara" accept="image/*" capture="environment" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarFoto(event)">
 <img id="previewFoto" class="foto-preview">
-<input id="fotoProd" placeholder="Link de foto (opcional)">
-<label for="videoArchivo" class="video-btn">🎥 SUBIR VIDEO CORTITO (15-30 seg)</label>
-<input type="file" id="videoArchivo" accept="video/*" style="display:none" onchange="previsualizarVideo(event)">
+<p id="textoFoto" style="font-size:13px;color:#25D366;text-align:center;display:none;font-weight:bold">✅ Foto lista! Ya se ve arriba 👆</p>
+<input id="fotoProd" placeholder="O pegá link de foto (opcional)">
+
+<!-- VIDEO -->
+<button type="button" class="video-btn" onclick="document.getElementById('videoArchivo').click()">🎥 SUBIR VIDEO CORTITO (15-30 seg)</button>
+<input type="file" id="videoArchivo" accept="video/*" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarVideo(event)">
 <video id="previewVideo" class="video-preview" controls></video>
 <input id="videoLinkProd" placeholder="O pegá link de TikTok / YouTube del video (opcional)">
 <button onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
@@ -158,7 +165,8 @@ function pagar(){
   }
 }
 function previsualizarFoto(event){
-  let file = event.target.files[0]; if(!file) return;
+  let file = event.target.files[0];
+  if(!file){ alert("No elegiste ninguna foto"); return; }
   let reader = new FileReader();
   reader.onload = function(e){
     let img = new Image();
@@ -169,9 +177,17 @@ function previsualizarFoto(event){
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
       fotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
-      let prev = document.getElementById('previewFoto'); prev.src = fotoBase64; prev.style.display = 'block';
-    }; img.src = e.target.result;
-  }; reader.readAsDataURL(file);
+      let prev = document.getElementById('previewFoto');
+      prev.src = fotoBase64; prev.style.display = 'block';
+      let txt = document.getElementById('textoFoto');
+      if(txt) txt.style.display = 'block';
+      alert("✅ Foto cargada! Ya se ve arriba, ahora apretá PUBLICAR");
+    };
+    img.onerror = function(){ alert("Esa foto no se pudo leer, probá con otra foto de tu galería"); };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  event.target.value = "";
 }
 function previsualizarVideo(event){
   let file = event.target.files[0]; if(!file) return;
@@ -204,8 +220,6 @@ function cerrarZoom(){ document.getElementById('zoomModal').style.display='none'
 function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
-
-// --- NUEVO: FOTO GRANDE PARA COMPARTIR ---
 function actualizarMetaProducto(p){
   if(!p) return;
   let fotoGrande = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=630&fit=crop";
@@ -275,11 +289,4 @@ function mostrar(lista){
     }
     let media = "";
     if(p.video){
-      media = `<video src="${p.video}" controls playsinline></video><div class="zoomHint">🎥 VIDEO - Tocá play para ver</div><button class="verFotoBtn" onclick="abrirZoomVideo('${p.video}', '${String(p.nombre||'').replace(/'/g,'')}', ${p.precio||0})">🔍 VER VIDEO EN GRANDE</button>`;
-    } else if(p.video_link){
-      media = `<a href="${p.video_link}" target="_blank" style="display:block;background:#000;color:#fff;text-align:center;padding:20px;text-decoration:none">🎥 VER VIDEO EN TIKTOK / YOUTUBE ▶️</a>`;
-    } else {
-      media = `<img src="${foto}" onclick="abrirZoom('${foto}', '${String(p.nombre||'').replace(/'/g,'')}', ${p.precio||0})"><div class="zoomHint">👆 Tocá la foto para ver en GRANDE / ACERCAR</div>`;
-    }
-    if(p.video && p.foto){ media = `<video src="${p.video}" controls playsinline></video><img src="${foto}" style="margin-top:6px" onclick="abrirZoom('${foto}', '${String(p.nombre||'').replace(/'/g,'')}', ${p.precio||0})"><div class="zoomHint">👆 Foto + Video - Tocá para ver grande</div>`; }
-    return `<div class="card">${media}<div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Ven
+      media = `<video src="${p.video}" controls playsinline></video><div class="zoomHint">🎥 VIDEO - Tocá play para ver</div><button class="v
