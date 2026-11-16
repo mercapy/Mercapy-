@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MERCA PY - Comprá y Vendé</title>
+<meta name="description" content="Celulares, motos, autos, ropa, comida y más. Publicá gratis y vendé hoy en Caacupé y todo Paraguay.">
+<meta property="og:title" content="🛍️ MERCA PY - Comprá y Vendé Todo en Paraguay">
+<meta property="og:description" content="🔥 Celulares, motos, autos, ropa y más. Publicá GRATIS por 30 días y vendé hoy mismo.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mercapy.github.io/Mercapy-/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MERCA PY">
+<meta name="twitter:card" content="summary_large_image">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f4f4f4}
@@ -133,7 +143,7 @@ function pintarCats(){ document.getElementById('cats').innerHTML = categorias.ma
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
 function linksCompartir(p){
-  let url = "https://mercapy.github.io/";
+  let url = "https://mercapy.github.io/Mercapy-/";
   let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n🛍️ " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + "\n📲 " + url;
   let encTexto = encodeURIComponent(texto);
   let encUrl = encodeURIComponent(url);
