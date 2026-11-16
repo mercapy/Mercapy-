@@ -24,44 +24,100 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .card .vn{color:#555;font-size:13px}
 .wa{display:block;text-align:center;background:#25D366;color:#fff;padding:11px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
 .form{background:#fff;padding:16px;border-radius:14px;margin-top:18px}
-.form h2{margin-top:0}
 .form input,.form select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
 .form button{width:100%;padding:14px;background:#ff3b30;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold}
 .plan{background:#e8ffe8;border:1px solid #25D366;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px}
 .foto-btn{display:block;text-align:center;background:#1877F2;color:#fff;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0}
 .foto-preview{width:100%;max-height:200px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}
+.share-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.share-row a,.share-row button{flex:1;min-width:42px;text-align:center;padding:9px 4px;border-radius:8px;font-size:12px;font-weight:bold;text-decoration:none;color:#fff;border:0;cursor:pointer}
+.fb{background:#1877F2} .ig{background:#E1306C} .tk{background:#000} .yt{background:#FF0000} .wp{background:#25D366} .cp{background:#333}
+.bloqueo{background:#ff3b30;color:#fff;padding:16px;border-radius:12px;text-align:center;margin-top:12px}
+.bloqueo button{background:#ffe600;border:0;padding:13px 18px;border-radius:10px;font-weight:900;font-size:16px;margin-top:10px;width:100%}
 footer{text-align:center;color:#888;padding:20px;font-size:13px}
 </style>
 </head>
 <body>
 <header><h1>🛍️ MERCA PY</h1><p>Comprá y Vendé Todo en Paraguay 🇵🇾</p></header>
-<div class="oferta">🎉 30 DÍAS GRATIS para publicar<br><span style="font-size:14px">Después solo 20.000 Gs por mes • Sin permanencia</span></div>
+<div class="oferta" id="ofertaTop">🎉 30 DÍAS GRATIS para publicar<br><span style="font-size:14px">Después solo 20.000 Gs por mes • Sin permanencia</span></div>
 <div class="wrap">
 <input id="buscador" class="search" placeholder="🔍 Buscar: celular, ropa, comida..." oninput="filtrar()">
 <div class="cats" id="cats"></div>
+<div id="avisoBloqueo"></div>
 <div class="grid" id="lista"></div>
-<div class="form">
+<div class="form" id="formPublicar">
 <h2>📦 Publicá tu producto GRATIS</h2>
-<div class="plan">✅ <b>Hoy tenés 30 DÍAS GRATIS.</b><br>Publicá sin pagar. Cuando se termine, solo 20.000 Gs por mes para seguir vendiendo.</div>
+<div class="plan" id="planTexto">✅ <b>Hoy tenés 30 DÍAS GRATIS.</b><br>Publicá sin pagar. Cuando se termine, solo 20.000 Gs por mes para seguir vendiendo.</div>
 <input id="nombreProd" placeholder="¿Qué vendés? Ej: Camisa Nike">
 <input id="precioProd" type="number" placeholder="Precio en Gs Ej: 150000">
 <select id="catProd"><option>Todo</option><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzado</option><option>Hogar</option><option>Otros</option></select>
 <input id="vendedorProd" placeholder="Tu nombre">
-<input id="wpProd" placeholder="Tu WhatsApp Ej: 0991247112">
-<label for="fotoArchivo" class="foto-btn">📸 ELEGIR FOTO DE TU PRODUCTO (de tu celular)</label>
+<input id="wpProd" placeholder="Tu WhatsApp Ej: 0984522026">
+<label for="fotoArchivo" class="foto-btn">📸 ELEGIR FOTO DE TU PRODUCTO</label>
 <input type="file" id="fotoArchivo" accept="image/*" style="display:none" onchange="previsualizarFoto(event)">
 <img id="previewFoto" class="foto-preview">
-<p style="font-size:12px;color:#888;text-align:center;margin:0">O si tenés link, pegalo abajo (opcional)</p>
-<input id="fotoProd" placeholder="Link de foto (opcional, si no subiste foto)">
+<input id="fotoProd" placeholder="Link de foto (opcional)">
 <button onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
 </div>
+<div id="pagarBox" style="display:none" class="bloqueo">
+<h2 style="margin:0">🔒 SE TERMINARON TUS 30 DÍAS GRATIS</h2>
+<p>Tus productos están pausados. Pagá 20.000 Gs para volver a vender.</p>
+<button onclick="pagar()">💳 PAGAR 20.000 Gs POR WHATSAPP</button>
+<p style="font-size:12px">Al pagar, yo (Reinerio) te activo de nuevo por 30 días más.</p>
 </div>
-<footer>MERCA PY © 2026 - Hecho en Paraguay</footer>
+</div>
+<footer>MERCA PY © 2026 - Hecho en Paraguay - Admin 0984522026</footer>
 <script>
+// ===== CONFIGURACIÓN DUEÑO =====
+let ADMIN_WA = "595984522026"; // Tu WhatsApp para cobrar
+let PRECIO_MES = 20000;
+let DIAS_GRATIS = 30;
+// ===============================
+
 let todos = JSON.parse(localStorage.getItem('mercapy_productos') || '[]');
 let catActual = "Todo";
 let categorias = ["Todo","Ropa","Comida","Celulares","Calzado","Hogar","Otros"];
 let fotoBase64 = "";
+
+// Guardar fecha de inicio la primera vez
+if(!localStorage.getItem('mercapy_inicio')){
+  localStorage.setItem('mercapy_inicio', Date.now());
+}
+let inicio = parseInt(localStorage.getItem('mercapy_inicio'));
+let pagadoHasta = parseInt(localStorage.getItem('mercapy_pagado_hasta') || '0');
+let ahora = Date.now();
+let diasPasados = Math.floor((ahora - inicio) / (1000*60*60*24));
+let diasRestantes = DIAS_GRATIS - diasPasados;
+let estaBloqueado = false;
+
+// Si pagó, no se bloquea hasta que venza el pago
+if(pagadoHasta > ahora){ estaBloqueado = false; diasRestantes = Math.ceil((pagadoHasta - ahora)/(1000*60*60*24)); }
+else if(diasPasados >= DIAS_GRATIS){ estaBloqueado = true; }
+
+function actualizarPlan(){
+  let top = document.getElementById('ofertaTop');
+  let txt = document.getElementById('planTexto');
+  if(estaBloqueado){
+    top.innerHTML = "🔒 PERIODO GRATIS TERMINADO - Pagá 20.000 Gs para seguir vendiendo";
+    txt.innerHTML = "🔒 <b>Se terminaron tus 30 días gratis.</b><br>Pagá 20.000 Gs para desbloquear tus productos.";
+    document.getElementById('formPublicar').style.display='none';
+    document.getElementById('pagarBox').style.display='block';
+    document.getElementById('avisoBloqueo').innerHTML = '<div class="bloqueo">🔒 Este vendedor terminó sus 30 días gratis. Productos pausados hasta pagar 20.000 Gs. <br><button onclick="pagar()" style="background:#ffe600;border:0;padding:10px;border-radius:8px;font-weight:900;margin-top:8px">PAGAR 20.000 Gs</button></div>';
+  } else {
+    top.innerHTML = "🎉 Te quedan " + diasRestantes + " DÍAS GRATIS<br><span style='font-size:14px'>Después solo 20.000 Gs por mes</span>";
+    txt.innerHTML = "✅ <b>Te quedan " + diasRestantes + " días gratis.</b><br>Después solo 20.000 Gs por mes para seguir vendiendo.";
+  }
+}
+function pagar(){
+  let msg = "Hola Reinerio! Quiero pagar mis 20.000 Gs de MERCA PY para desbloquear mis productos. Mi nombre es: ";
+  window.open("https://wa.me/"+ADMIN_WA+"?text="+encodeURIComponent(msg), "_blank");
+  let clave = prompt("Si ya pagaste, poné la clave que te dio Reinerio para activar:");
+  if(clave === "mercapy2026"){
+    let nuevoHasta = Date.now() + 30*24*60*60*1000;
+    localStorage.setItem('mercapy_pagado_hasta', nuevoHasta);
+    alert("¡Activado! Tenés 30 días más 🎉"); location.reload();
+  }
+}
 function previsualizarFoto(event){
   let file = event.target.files[0]; if(!file) return;
   let reader = new FileReader();
@@ -81,18 +137,43 @@ function previsualizarFoto(event){
 function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
+
+function linksCompartir(p){
+  let url = "https://mercapy.github.io/";
+  let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n🛍️ " + p.nombre + " - Gs " + Number(p.precio).toLocaleString('es-PY') + "\n📲 " + url;
+  let encTexto = encodeURIComponent(texto);
+  let encUrl = encodeURIComponent(url);
+  return `<div class="share-row">
+    <a class="fb" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${encUrl}&quote=${encTexto}">Facebook</a>
+    <a class="wp" target="_blank" href="https://wa.me/?text=${encTexto}">WhatsApp</a>
+    <button class="ig" onclick="copiarYAvistar('${encTexto}','Instagram')">Instagram</button>
+    <button class="tk" onclick="copiarYAvistar('${encTexto}','TikTok')">TikTok</button>
+    <button class="yt" onclick="copiarYAvistar('${encTexto}','YouTube')">YouTube</button>
+    <button class="cp" onclick="copiarTexto('${encTexto}')">🔗 Copiar</button>
+  </div><p style="font-size:11px;color:#888;margin:4px 0 0">Para Instagram / TikTok / YouTube: se copia el texto y lo pegás en tu historia o video.</p>`;
+}
+function copiarTexto(enc){
+  let t = decodeURIComponent(enc);
+  navigator.clipboard.writeText(t).then(()=>alert("¡Copiado! Pegalo donde quieras 🎉"));
+}
+function copiarYAvistar(enc, red){
+  copiarTexto(enc);
+  setTimeout(()=>{
+    if(red==='Instagram') window.open("https://www.instagram.com/","_blank");
+    if(red==='TikTok') window.open("https://www.tiktok.com/","_blank");
+    if(red==='YouTube') window.open("https://www.youtube.com/","_blank");
+  }, 500);
+}
+
 function mostrar(lista){
   let el = document.getElementById('lista');
+  if(estaBloqueado){ el.innerHTML = "<p style='text-align:center'>🔒 Productos pausados. Pagá 20.000 Gs para verlos de nuevo.</p>"; return; }
   if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return; }
   el.innerHTML = lista.map((p,i)=>{
     let wa = limpiarWP(p.whatsapp||"");
     let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
-    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><button onclick="compartirProducto('${(p.nombre||'').replace(/'/g,'')}', ${p.precio||0}, '${wa}')" style="width:100%;margin-top:8px;padding:10px;background:#1877F2;color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:bold">📤 Compartir</button></div></div>`;
+    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}</div></div>`;
   }).join('');
-}
-function compartirProducto(nombre, precio, wa){
-  let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n\n🛍️ " + nombre + "\n💰 Gs " + Number(precio).toLocaleString('es-PY') + "\n\n📲 Pedilo acá: https://wa.me/" + wa;
-  if(navigator.share){ navigator.share({ title: nombre, text: texto }); } else { window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank"); }
 }
 function filtrar(){
   let q = document.getElementById('buscador').value.toLowerCase();
@@ -100,6 +181,7 @@ function filtrar(){
   mostrar(f);
 }
 function publicar(){
+  if(estaBloqueado){ alert("🔒 Se terminaron tus 30 días gratis. Pagá 20.000 Gs para publicar de nuevo."); document.getElementById('pagarBox').scrollIntoView({behavior:'smooth'}); return; }
   let n = document.getElementById('nombreProd').value.trim();
   let pr = document.getElementById('precioProd').value;
   let c = document.getElementById('catProd').value;
@@ -111,12 +193,12 @@ function publicar(){
   if(!w){ alert("Poné tu WhatsApp"); return; }
   todos.unshift({ nombre: n, precio: Number(pr), categoria: c, vendedor: v, whatsapp: w, foto: f });
   localStorage.setItem('mercapy_productos', JSON.stringify(todos));
-  alert("¡Publicado! 🎉 Ya se ve arriba");
+  alert("¡Publicado! 🎉 Te quedan " + diasRestantes + " días gratis");
   document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value="";
   document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
   filtrar(); window.scrollTo({top:0, behavior:'smooth'});
 }
-pintarCats(); filtrar();
+pintarCats(); actualizarPlan(); filtrar();
 </script>
 </body>
 </html>
