@@ -81,17 +81,17 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <input id="vendedorProd" placeholder="Tu nombre">
 <input id="wpProd" placeholder="Tu WhatsApp Ej: 0984522026">
 <input id="pagoProd" placeholder="Link para cobrar automático (Mercado Pago / Tigo Money) - Opcional">
-
-<!-- GALERÍA QUE SÍ ANDA -->
 <button type="button" class="foto-btn" onclick="document.getElementById('fotoArchivo').click()">🖼️ ELEGIR DE GALERÍA</button>
 <button type="button" class="foto-btn" style="background:#ff3b30" onclick="document.getElementById('fotoCamara').click()">📸 SACAR FOTO AHORA</button>
 <input type="file" id="fotoArchivo" accept="image/*" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarFoto(event)">
 <input type="file" id="fotoCamara" accept="image/*" capture="environment" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarFoto(event)">
-<img id="previewFoto" class="foto-preview">
-<p id="textoFoto" style="font-size:13px;color:#25D366;text-align:center;display:none;font-weight:bold">✅ Foto lista! Ya se ve arriba 👆</p>
+<div style="border:2px dashed #ff3b30;border-radius:12px;padding:10px;text-align:center;background:#fff5f5;margin:8px 0">
+  <p id="textoSinFoto" style="color:#888;font-size:14px;margin:4px">📸 Acá va a aparecer tu foto cuando la elijas de la galería</p>
+  <img id="previewFoto" style="width:100%;max-height:300px;object-fit:cover;border-radius:10px;display:none">
+  <p id="textoFoto" style="font-size:14px;color:#25D366;text-align:center;display:none;font-weight:bold">✅ Foto lista! Así se va a ver tu producto 👆</p>
+  <button type="button" id="btnQuitarFoto" onclick="quitarFoto()" style="display:none;background:#111;color:#fff;border:0;padding:8px 14px;border-radius:8px;margin-top:6px">❌ Quitar esta foto y elegir otra</button>
+</div>
 <input id="fotoProd" placeholder="O pegá link de foto (opcional)">
-
-<!-- VIDEO -->
 <button type="button" class="video-btn" onclick="document.getElementById('videoArchivo').click()">🎥 SUBIR VIDEO CORTITO (15-30 seg)</button>
 <input type="file" id="videoArchivo" accept="video/*" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px" onchange="previsualizarVideo(event)">
 <video id="previewVideo" class="video-preview" controls></video>
@@ -164,26 +164,37 @@ function pagar(){
     alert("¡Activado! Tenés 30 días más 🎉"); location.reload();
   }
 }
+function quitarFoto(){
+  fotoBase64 = "";
+  document.getElementById('previewFoto').style.display='none';
+  document.getElementById('previewFoto').src='';
+  document.getElementById('textoFoto').style.display='none';
+  document.getElementById('btnQuitarFoto').style.display='none';
+  document.getElementById('textoSinFoto').style.display='block';
+}
 function previsualizarFoto(event){
   let file = event.target.files[0];
   if(!file){ alert("No elegiste ninguna foto"); return; }
+  let url = URL.createObjectURL(file);
+  let prev = document.getElementById('previewFoto');
+  prev.src = url;
+  prev.style.display = 'block';
+  document.getElementById('textoSinFoto').style.display='none';
+  document.getElementById('textoFoto').style.display='block';
+  document.getElementById('btnQuitarFoto').style.display='inline-block';
   let reader = new FileReader();
   reader.onload = function(e){
     let img = new Image();
     img.onload = function(){
       let canvas = document.createElement('canvas');
-      let max = 1200; let w = img.width, h = img.height;
-      if(w > h){ if(w > max){ h = h * max / w; w = max; } } else { if(h > max){ w = w * max / h; h = max; } }
+      let max = 1000; let w = img.width, h = img.height;
+      if(w > max || h > max){
+        if(w > h){ h = h * max / w; w = max; } else { w = w * max / h; h = max; }
+      }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      fotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
-      let prev = document.getElementById('previewFoto');
-      prev.src = fotoBase64; prev.style.display = 'block';
-      let txt = document.getElementById('textoFoto');
-      if(txt) txt.style.display = 'block';
-      alert("✅ Foto cargada! Ya se ve arriba, ahora apretá PUBLICAR");
+      fotoBase64 = canvas.toDataURL('image/jpeg', 0.80);
     };
-    img.onerror = function(){ alert("Esa foto no se pudo leer, probá con otra foto de tu galería"); };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
@@ -277,16 +288,4 @@ function copiarYAvistar(enc, red){
 }
 function mostrar(lista){
   let el = document.getElementById('lista');
-  if(estaBloqueado){ el.innerHTML = "<p style='text-align:center'>🔒 Productos pausados. Pagá 20.000 Gs para verlos de nuevo.</p>"; return; }
-  if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return; }
-  el.innerHTML = lista.map((p,i)=>{
-    let wa = limpiarWP(p.whatsapp||"");
-    let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200";
-    let btnPagar = "";
-    if(p.link_pago){
-      let linkPago = p.link_pago.startsWith('http') ? p.link_pago : 'https://' + p.link_pago;
-      btnPagar = `<a class="pagarAhora" target="_blank" href="${linkPago}">💳 PAGAR AHORA - Cobro automático</a>`;
-    }
-    let media = "";
-    if(p.video){
-      media = `<video src="${p.video}" controls playsinline></video><div class="zoomHint">🎥 VIDEO - Tocá play para ver</div><button class="v
+  if(estaBloqueado){ el.innerHTML = "<p
