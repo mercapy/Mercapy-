@@ -34,21 +34,12 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 </style>
 </head>
 <body>
-
-<header>
-<h1>🛍️ MERCA PY</h1>
-<p>Comprá y Vendé Todo en Paraguay 🇵🇾</p>
-</header>
-
+<header><h1>🛍️ MERCA PY</h1><p>Comprá y Vendé Todo en Paraguay 🇵🇾</p></header>
 <div class="oferta">🎉 30 DÍAS GRATIS para publicar<br><span style="font-size:14px">Después solo 20.000 Gs por mes • Sin permanencia</span></div>
-
 <div class="wrap">
 <input id="buscador" class="search" placeholder="🔍 Buscar: celular, ropa, comida..." oninput="filtrar()">
-
 <div class="cats" id="cats"></div>
-
-<div class="grid" id="lista"><p>Cargando productos...</p></div>
-
+<div class="grid" id="lista"></div>
 <div class="form">
 <h2>📦 Publicá tu producto GRATIS</h2>
 <div class="plan">✅ <b>Hoy tenés 30 DÍAS GRATIS.</b><br>Publicá sin pagar. Cuando se termine, solo 20.000 Gs por mes para seguir vendiendo.</div>
@@ -57,172 +48,75 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <select id="catProd"><option>Todo</option><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzado</option><option>Hogar</option><option>Otros</option></select>
 <input id="vendedorProd" placeholder="Tu nombre">
 <input id="wpProd" placeholder="Tu WhatsApp Ej: 0991247112">
-
-<!-- NUEVO: SUBIR FOTO -->
 <label for="fotoArchivo" class="foto-btn">📸 ELEGIR FOTO DE TU PRODUCTO (de tu celular)</label>
 <input type="file" id="fotoArchivo" accept="image/*" style="display:none" onchange="previsualizarFoto(event)">
 <img id="previewFoto" class="foto-preview">
 <p style="font-size:12px;color:#888;text-align:center;margin:0">O si tenés link, pegalo abajo (opcional)</p>
 <input id="fotoProd" placeholder="Link de foto (opcional, si no subiste foto)">
-
 <button onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
-<p style="font-size:13px;color:#666">Al publicar, tu producto queda guardado en MERCA PY y tu WhatsApp queda para que te compren.</p>
 </div>
 </div>
-
-<footer>MERCA PY © 2026 - Hecho en Paraguay - WhatsApp 0991247112</footer>
-
+<footer>MERCA PY © 2026 - Hecho en Paraguay</footer>
 <script>
-const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
-const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
-const CLAVE_ADMIN = "mercapy123";
-const PAGADOS = ["595991247112"];
-let todos = [];
+let todos = JSON.parse(localStorage.getItem('mercapy_productos') || '[]');
 let catActual = "Todo";
 let categorias = ["Todo","Ropa","Comida","Celulares","Calzado","Hogar","Otros"];
 let fotoBase64 = "";
-
 function previsualizarFoto(event){
-  let file = event.target.files[0];
-  if(!file) return;
+  let file = event.target.files[0]; if(!file) return;
   let reader = new FileReader();
   reader.onload = function(e){
-    // Achicar la foto para que no pese mucho
     let img = new Image();
     img.onload = function(){
       let canvas = document.createElement('canvas');
-      let max = 800;
-      let w = img.width, h = img.height;
+      let max = 800; let w = img.width, h = img.height;
       if(w > h){ if(w > max){ h = h * max / w; w = max; } } else { if(h > max){ w = w * max / h; h = max; } }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
       fotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
-      let prev = document.getElementById('previewFoto');
-      prev.src = fotoBase64;
-      prev.style.display = 'block';
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
+      let prev = document.getElementById('previewFoto'); prev.src = fotoBase64; prev.style.display = 'block';
+    }; img.src = e.target.result;
+  }; reader.readAsDataURL(file);
 }
-
-function pintarCats(){
-  document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join('');
-}
-function setCat(c, btn){
-  catActual = c;
-  document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act'));
-  btn.classList.add('act');
-  filtrar();
-}
-function limpiarWP(w){
-  if(!w) return "";
-  w = w.replace(/\D/g,'');
-  if(w.startsWith('0')) w = '595'+w.slice(1);
-  if(!w.startsWith('595')) w = '595'+w;
-  return w;
-}
+function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
+function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
+function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
 function mostrar(lista){
   let el = document.getElementById('lista');
   if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return; }
-  el.innerHTML = lista.map(p=>{
+  el.innerHTML = lista.map((p,i)=>{
     let wa = limpiarWP(p.whatsapp||"");
     let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
-    return `<div class="card">
-      <img src="${foto}" onerror="this.src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400'">
-      <div class="b">
-        <h3>${p.nombre||''}</h3>
-        <div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div>
-        <div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div>
-        <a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a>
-        <button onclick="compartirProducto('${(p.nombre||'').replace(/'/g,'')}', ${p.precio||0}, '${wa}')" style="width:100%;margin-top:8px;padding:10px;background:#1877F2;color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:bold">📤 Compartir este producto</button>
-        <button onclick="eliminarProducto(${p.id}, '${(p.nombre||'').replace(/'/g,'')}')" style="width:100%;margin-top:8px;padding:9px;background:#eee;border:0;border-radius:10px;cursor:pointer">🗑️ Eliminar</button>
-      </div>
-    </div>`;
+    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><button onclick="compartirProducto('${(p.nombre||'').replace(/'/g,'')}', ${p.precio||0}, '${wa}')" style="width:100%;margin-top:8px;padding:10px;background:#1877F2;color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:bold">📤 Compartir</button></div></div>`;
   }).join('');
 }
 function compartirProducto(nombre, precio, wa){
-  let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n\n🛍️ " + nombre + "\n💰 Gs " + Number(precio).toLocaleString('es-PY') + "\n\n📲 Pedilo acá: https://wa.me/" + wa + "\n🌐 Ver todos en: https://mercapy.github.io/Mercapy-/";
-  if(navigator.share){
-    navigator.share({ title: nombre + " - MERCA PY", text: texto, url: "https://mercapy.github.io/Mercapy-/" });
-  } else {
-    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank");
-  }
-}
-async function eliminarProducto(id, nombre){
-  let clave = prompt("Para borrar '"+nombre+"', poné tu clave de admin:");
-  if(clave !== CLAVE_ADMIN){ alert("Clave incorrecta. Solo el dueño puede borrar."); return; }
-  if(!confirm("¿Seguro querés borrar '"+nombre+"'?")) return;
-  let res = await fetch(SUPABASE_URL + "/rest/v1/productos?id=eq." + id, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY } });
-  if(res.ok){ alert("¡Borrado! ✅"); cargarProductos(); } else { alert("Error al borrar. En Supabase tenés que activar DELETE o apagar RLS."); }
+  let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n\n🛍️ " + nombre + "\n💰 Gs " + Number(precio).toLocaleString('es-PY') + "\n\n📲 Pedilo acá: https://wa.me/" + wa;
+  if(navigator.share){ navigator.share({ title: nombre, text: texto }); } else { window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank"); }
 }
 function filtrar(){
   let q = document.getElementById('buscador').value.toLowerCase();
   let f = todos.filter(p => (catActual==="Todo" || p.categoria===catActual) && (p.nombre||"").toLowerCase().includes(q));
   mostrar(f);
 }
-async function cargarProductos(){
-  pintarCats();
-  try{
-    let r = await fetch(SUPABASE_URL + "/rest/v1/productos?select=*&order=created_at.desc", { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY } });
-    let todosRaw = await r.json();
-    let primerDiaPorVendedor = {};
-    todosRaw.forEach(p=>{
-      let claveV = (p.whatsapp||"") + "|" + (p.vendedor||"");
-      let fecha = new Date(p.created_at);
-      if(!primerDiaPorVendedor[claveV] || fecha < primerDiaPorVendedor[claveV]){ primerDiaPorVendedor[claveV] = fecha; }
-    });
-    todos = todosRaw.filter(p=>{
-      let claveV = (p.whatsapp||"") + "|" + (p.vendedor||"");
-      let primerDia = primerDiaPorVendedor[claveV];
-      let dias = Math.floor((new Date() - primerDia) / (1000*60*60*24));
-      let waLimpio = limpiarWP(p.whatsapp||"");
-      if(dias > 30 && !PAGADOS.includes(waLimpio)){ return false; }
-      return true;
-    });
-    filtrar();
-  }catch(e){ document.getElementById('lista').innerHTML = "<p>Error cargando productos. Revisá Supabase.</p>"; }
-}
-async function publicar(){
+function publicar(){
   let n = document.getElementById('nombreProd').value.trim();
   let pr = document.getElementById('precioProd').value;
   let c = document.getElementById('catProd').value;
   let v = document.getElementById('vendedorProd').value.trim() || "Vendedor";
   let w = document.getElementById('wpProd').value.trim();
   let fLink = document.getElementById('fotoProd').value.trim();
-  // Si subió foto, usa esa. Si no, usa link. Si no hay nada, usa foto genérica.
   let f = fotoBase64 || fLink || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
   if(!n || !pr){ alert("Poné nombre y precio"); return; }
-  if(!w){ alert("Poné tu WhatsApp para que te compren"); return; }
-  try{
-    let r = await fetch(SUPABASE_URL + "/rest/v1/productos?select=created_at&vendedor=eq." + encodeURIComponent(v) + "&order=created_at.asc&limit=1", { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY } });
-    let datos = await r.json();
-    if(datos.length > 0){
-      let primerDia = new Date(datos[0].created_at);
-      let hoy = new Date();
-      let dias = Math.floor((hoy - primerDia) / (1000*60*60*24));
-      if(dias > 30){
-        let pagar = confirm("⏰ Tus 30 días gratis ya terminaron ("+dias+" días). Para seguir publicando son solo 20.000 Gs por mes. ¿Querés activar tu plan ahora por WhatsApp?");
-        if(pagar){ window.open("https://wa.me/595991247112?text=" + encodeURIComponent("Hola MERCA PY! Soy " + v + ", quiero pagar mis 20.000 Gs mensuales para seguir publicando. Mi WhatsApp es " + w), "_blank"); }
-        return;
-      } else { alert("Te quedan " + (30-dias) + " días gratis 🎉 ¡Aprovechá!"); }
-    } else { alert("¡Bienvenido! Empezó tu prueba de 30 DÍAS GRATIS 🎉"); }
-  }catch(e){}
-  let res = await fetch(SUPABASE_URL + "/rest/v1/productos", {
-    method: "POST",
-    headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY, "Content-Type": "application/json", "Prefer": "return=minimal" },
-    body: JSON.stringify({ nombre: n, precio: Number(pr), categoria: c, vendedor: v, whatsapp: w, foto: f })
-  });
-  if(res.ok){
-    alert("¡Publicado con foto! Ya lo pueden ver tus clientes 🎉");
-    document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value="";
-    document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
-    cargarProductos();
-  } else {
-    alert("Error al publicar. Fijate si en Supabase la tabla productos tiene RLS apagado.");
-  }
+  if(!w){ alert("Poné tu WhatsApp"); return; }
+  todos.unshift({ nombre: n, precio: Number(pr), categoria: c, vendedor: v, whatsapp: w, foto: f });
+  localStorage.setItem('mercapy_productos', JSON.stringify(todos));
+  alert("¡Publicado! 🎉 Ya se ve arriba");
+  document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value="";
+  document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
+  filtrar(); window.scrollTo({top:0, behavior:'smooth'});
 }
-cargarProductos();
+pintarCats(); filtrar();
 </script>
 </body>
 </html>
