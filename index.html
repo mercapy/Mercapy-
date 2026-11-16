@@ -66,6 +66,9 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <script>
 const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
+const CLAVE_ADMIN = "mercapy123";
+// PONÉ ACÁ LOS WHATSAPP DE LOS QUE YA PAGARON 20.000 Gs
+const PAGADOS = ["595991247112"];
 let todos = [];
 let catActual = "Todo";
 let categorias = ["Todo","Ropa","Comida","Celulares","Calzado","Hogar","Otros"];
@@ -99,9 +102,37 @@ function mostrar(lista){
         <div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div>
         <div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div>
         <a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a>
+        <button onclick="compartirProducto('${(p.nombre||'').replace(/'/g,'')}', ${p.precio||0}, '${wa}')" style="width:100%;margin-top:8px;padding:10px;background:#1877F2;color:#fff;border:0;border-radius:10px;cursor:pointer;font-weight:bold">📤 Compartir este producto</button>
+        <button onclick="eliminarProducto(${p.id}, '${(p.nombre||'').replace(/'/g,'')}')" style="width:100%;margin-top:8px;padding:9px;background:#eee;border:0;border-radius:10px;cursor:pointer">🗑️ Eliminar</button>
       </div>
     </div>`;
   }).join('');
+}
+function compartirProducto(nombre, precio, wa){
+  let texto = "🔥 Mirá esto en MERCA PY 🇵🇾\n\n🛍️ " + nombre + "\n💰 Gs " + Number(precio).toLocaleString('es-PY') + "\n\n📲 Pedilo acá: https://wa.me/" + wa + "\n🌐 Ver todos en: https://mercapy.github.io/Mercapy-/";
+  if(navigator.share){
+    navigator.share({ title: nombre + " - MERCA PY", text: texto, url: "https://mercapy.github.io/Mercapy-/" });
+  } else {
+    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank");
+  }
+}
+async function eliminarProducto(id, nombre){
+  let clave = prompt("Para borrar '"+nombre+"', poné tu clave de admin:");
+  if(clave !== CLAVE_ADMIN){
+    alert("Clave incorrecta. Solo el dueño puede borrar.");
+    return;
+  }
+  if(!confirm("¿Seguro querés borrar '"+nombre+"'?")) return;
+  let res = await fetch(SUPABASE_URL + "/rest/v1/productos?id=eq." + id, {
+    method: "DELETE",
+    headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY }
+  });
+  if(res.ok){
+    alert("¡Borrado! ✅");
+    cargarProductos();
+  } else {
+    alert("Error al borrar. En Supabase tenés que activar DELETE o apagar RLS.");
+  }
 }
 function filtrar(){
   let q = document.getElementById('buscador').value.toLowerCase();
@@ -112,7 +143,25 @@ async function cargarProductos(){
   pintarCats();
   try{
     let r = await fetch(SUPABASE_URL + "/rest/v1/productos?select=*&order=created_at.desc", { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY } });
-    todos = await r.json();
+    let todosRaw = await r.json();
+    let primerDiaPorVendedor = {};
+    todosRaw.forEach(p=>{
+      let claveV = (p.whatsapp||"") + "|" + (p.vendedor||"");
+      let fecha = new Date(p.created_at);
+      if(!primerDiaPorVendedor[claveV] || fecha < primerDiaPorVendedor[claveV]){
+        primerDiaPorVendedor[claveV] = fecha;
+      }
+    });
+    todos = todosRaw.filter(p=>{
+      let claveV = (p.whatsapp||"") + "|" + (p.vendedor||"");
+      let primerDia = primerDiaPorVendedor[claveV];
+      let dias = Math.floor((new Date() - primerDia) / (1000*60*60*24));
+      let waLimpio = limpiarWP(p.whatsapp||"");
+      if(dias > 30 && !PAGADOS.includes(waLimpio)){
+        return false;
+      }
+      return true;
+    });
     filtrar();
   }catch(e){
     document.getElementById('lista').innerHTML = "<p>Error cargando productos. Revisá Supabase.</p>";
@@ -127,7 +176,6 @@ async function publicar(){
   let f = document.getElementById('fotoProd').value.trim() || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
   if(!n || !pr){ alert("Poné nombre y precio"); return; }
   if(!w){ alert("Poné tu WhatsApp para que te compren"); return; }
-
   try{
     let r = await fetch(SUPABASE_URL + "/rest/v1/productos?select=created_at&vendedor=eq." + encodeURIComponent(v) + "&order=created_at.asc&limit=1", { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY } });
     let datos = await r.json();
@@ -148,7 +196,6 @@ async function publicar(){
       alert("¡Bienvenido! Empezó tu prueba de 30 DÍAS GRATIS 🎉");
     }
   }catch(e){}
-
   let res = await fetch(SUPABASE_URL + "/rest/v1/productos", {
     method: "POST",
     headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer "+SUPABASE_KEY, "Content-Type": "application/json", "Prefer": "return=minimal" },
