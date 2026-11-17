@@ -1,50 +1,65 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MERCAPY - Registro</title>
-<style>
-body{font-family:Arial;background:#111;color:white;padding:15px;text-align:center}
-.caja{background:white;color:black;border-radius:15px;padding:20px;max-width:400px;margin:auto}
-input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc;font-size:16px;box-sizing:border-box}
-button{padding:15px;width:100%;border:none;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:5px}
-.amarillo{background:#FFE600}
-.verde{background:#25D366;color:white}
-.rojo{background:#ff3b30;color:white;padding:8px;font-size:14px}
-.producto{background:#f2f2f2;padding:12px;border-radius:10px;margin:10px 0;text-align:left}
-.oculto{display:none}
-.bloqueado{background:#ff3b30;color:white;padding:20px;border-radius:15px;max-width:400px;margin:auto}
-.soporte{background:#222;color:white;padding:15px;border-radius:15px;max-width:400px;margin:20px auto}
-.soporte a{color:#25D366;font-weight:bold;font-size:18px}
-</style>
-</head>
-<body>
-<h1>MERCAPY</h1>
-<p>Publica gratis 30 dias. Despues 20.000 Gs por mes.</p>
-<div id="bloqueo" class="bloqueado oculto"><h2>CUENTA BLOQUEADA</h2><p>Se terminaron tus 30 dias gratis.</p><button class="verde" onclick="pagar()">PAGAR POR WHATSAPP</button></div>
-<div class="caja" id="paso1"><h2>1. Registrate</h2><input id="nombre" placeholder="Tu nombre"><input id="whatsapp" placeholder="Tu WhatsApp"><input id="ciudad" placeholder="Tu ciudad"><select id="rubro"><option value="">Que vas a vender?</option><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzados</option><option>Hogar</option><option>Belleza</option><option>Otro</option></select><button class="amarillo" onclick="registrar()">REGISTRARME GRATIS</button><br><br><a href="https://mercapy.github.io">Volver a MERCAPY</a></div>
-<div class="caja oculto" id="paso2"><h2 id="bienvenida"></h2><p id="diasRestantes"></p><input id="prodNombre" placeholder="Nombre del producto"><input id="prodPrecio" placeholder="Precio" type="number"><input id="prodFoto" placeholder="Link de foto (opcional)"><select id="prodCat"><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzados</option><option>Hogar</option><option>Belleza</option><option>Otro</option></select><button class="amarillo" onclick="agregarProducto()">PUBLICAR PRODUCTO</button><div id="misProductos"></div><button class="verde" onclick="terminar()">TERMINAR</button></div>
-<div class="soporte"><p>AYUDA?</p><a href="https://wa.me/595981123456?text=Hola%20MERCAPY%20necesito%20ayuda">SOPORTE MERCAPY - Escribinos por WhatsApp</a></div>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MERCA PY - Comprá y Vendé Todo</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>body{font-family:Arial;margin:0;background:#f2f2f2;padding-bottom:40px}header{background:#D32F2F;color:white;text-align:center;padding:20px}header h1{margin:0;font-size:32px}header p{margin:5px}.amarillo{background:#FFC107;color:#111;display:inline-block;padding:6px 15px;border-radius:20px;font-weight:bold;margin-top:10px}.buscador{padding:12px}.buscador input{width:100%;padding:14px;border-radius:10px;border:1px solid #ddd;font-size:16px;box-sizing:border-box}.cats{display:flex;gap:8px;overflow-x:auto;padding:0 12px 10px}.cats button{white-space:nowrap;padding:10px 16px;border:none;border-radius:20px;background:white;font-weight:bold}.cats button.activo{background:#D32F2F;color:white}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,.1)}.card img{width:100%;height:150px;object-fit:cover;background:#eee}.card-body{padding:10px}.precio{color:#D32F2F;font-weight:bold;font-size:18px;margin:4px 0}.vendedor{color:#777;font-size:12px}.btn-wp{background:#25D366;color:white;border:none;width:100%;padding:11px;border-radius:8px;font-weight:bold;margin-top:6px}.btn-vender{background:#1976D2;color:white;border:none;padding:15px;border-radius:10px;font-size:17px;width:100%;font-weight:bold}.form{background:white;margin:12px;padding:15px;border-radius:12px}.form input,.form select{width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;font-size:15px;margin-top:8px;box-sizing:border-box}.pago{background:#FFF3E0;border:2px solid #FFC107;margin:12px;padding:15px;border-radius:12px;text-align:center}.btn-pagar{background:#25D366;color:white;border:none;padding:14px 20px;border-radius:10px;font-weight:bold;font-size:16px;width:100%}</style>
+</head><body>
+<header><h1>🛍️ MERCA PY</h1><p>Comprá y Vendé Todo en Paraguay 🇵🇾</p><div class="amarillo">🎉 30 DÍAS GRATIS - Después solo 20.000 Gs por mes</div></header>
+
+<div class="pago"><b>¿Ya se te acabó lo gratis?</b><p>Pagá 20.000 Gs y seguí vendiendo 30 días más</p><button class="btn-pagar" onclick="window.open('https://wa.me/595984522026?text='+encodeURIComponent('Hola! Quiero pagar mis 20.000 Gs de MERCA PY para seguir vendiendo'))">💬 PAGAR POR WHATSAPP</button></div>
+
+<div class="buscador"><input id="buscar" placeholder="🔍 Buscar ropa, celular, comida..." oninput="filtrar()"></div>
+<div class="cats"><button class="activo" onclick="setCat('Todos',this)">Todo</button><button onclick="setCat('Ropa',this)">👕 Ropa</button><button onclick="setCat('Comida',this)">🍔 Comida</button><button onclick="setCat('Celulares',this)">📱 Celulares</button><button onclick="setCat('Calzado',this)">👟 Calzado</button><button onclick="setCat('Hogar',this)">🏠 Hogar</button><button onclick="setCat('Otros',this)">✨ Otros</button></div>
+<div class="grid" id="grid"><p style="text-align:center">Cargando productos...</p></div>
+
+<div class="form"><h2>📸 ¿Querés vender? Publicá acá</h2>
+<input id="nombreProd" placeholder="¿Qué vendés? Ej: Remera Nike">
+<input id="precioProd" placeholder="Precio en Gs Ej: 50000" type="number">
+<select id="catProd"><option>Ropa</option><option>Comida</option><option>Celulares</option><option>Calzado</option><option>Hogar</option><option>Otros</option></select>
+<input id="vendedorProd" placeholder="Tu nombre">
+<input id="wpProd" placeholder="Tu WhatsApp Ej: 0981123456">
+<input id="fotoProd" type="file" accept="image/*">
+<button class="btn-vender" onclick="publicar()">🚀 PUBLICAR MI PRODUCTO</button>
+<p style="text-align:center;color:#777;font-size:13px">30 días gratis para vender. Después 20.000 Gs por mes.</p>
+</div>
+
+<div class="form"><h3>🗑️ ¿Querés borrar tu producto?</h3><input id="borrarWp" placeholder="Tu WhatsApp para confirmar que es tuyo"><input id="borrarId" placeholder="ID del producto (te aparece abajo)"><button onclick="borrar()" style="background:#ff3b30;color:white;border:none;padding:12px;width:100%;border-radius:8px;font-weight:bold">BORRAR MI PRODUCTO</button></div>
+
+<div class="form" style="text-align:center"><h3>📲 Compartir MERCA PY</h3><button onclick="compartir()" style="background:#111;color:white;border:none;padding:12px;width:100%;border-radius:8px;font-weight:bold">COMPARTIR EN WHATSAPP / FACEBOOK</button></div>
+
 <script>
-let TU_WHATSAPP="595981123456";
-let vendedor=JSON.parse(localStorage.getItem('mercapy_vendedor')||'null');
-let productos=JSON.parse(localStorage.getItem('mercapy_productos')||'[]');
-function revisarBloqueo(){
-if(!vendedor) return false;
-let hoy=new Date().getTime();
-let dias=Math.floor((hoy-vendedor.fechaRegistro)/(1000*60*60*24));
-let quedan=30-dias;
-if(quedan<=0 && !vendedor.pagado){document.getElementById('paso1').classList.add('oculto');document.getElementById('paso2').classList.add('oculto');document.getElementById('bloqueo').classList.remove('oculto');return true;}
-document.getElementById('paso1').classList.add('oculto');document.getElementById('paso2').classList.remove('oculto');document.getElementById('bienvenida').innerText='Hola '+vendedor.nombre+'!';document.getElementById('diasRestantes').innerText='Te quedan '+quedan+' dias gratis';mostrarProductos();return false;
+const supabaseClient = supabase.createClient('https://fbnblubqwrajgdoruyzk.supabase.co','sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf');
+let catActual='Todos'; let productos=[];
+async function cargar(){
+ let {data} = await supabaseClient.from('productos').select('*').order('id',{ascending:false});
+ productos = data || [];
+ filtrar();
 }
-function registrar(){let nombre=document.getElementById('nombre').value;let whatsapp=document.getElementById('whatsapp').value;let ciudad=document.getElementById('ciudad').value;let rubro=document.getElementById('rubro').value;if(!nombre||!whatsapp||!rubro){alert('Falta nombre, WhatsApp y que vendes');return;}vendedor={nombre,whatsapp,ciudad,rubro,fechaRegistro:new Date().getTime(),pagado:false};localStorage.setItem('mercapy_vendedor',JSON.stringify(vendedor));let mensaje="Hola REINERIO! Nuevo vendedor en MERCAPY: "+nombre+" - "+whatsapp+" - "+ciudad+" - Vende: "+rubro;window.open("https://wa.me/"+TU_WHATSAPP+"?text="+encodeURIComponent(mensaje),"_blank");alert('Registrado! Te quedan 30 dias gratis.');revisarBloqueo();}
-function agregarProducto(){let p={nombre:document.getElementById('prodNombre').value,precio:document.getElementById('prodPrecio').value,cat:document.getElementById('prodCat').value,foto:document.getElementById('prodFoto').value};if(!p.nombre||!p.precio){alert('Falta nombre y precio');return;}productos.push(p);localStorage.setItem('mercapy_productos',JSON.stringify(productos));mostrarProductos();document.getElementById('prodNombre').value='';document.getElementById('prodPrecio').value='';document.getElementById('prodFoto').value='';}
-function mostrarProductos(){let html='';productos.forEach((prod,i)=>{let foto=prod.foto?'<img src="'+prod.foto+'" style="width:100%;border-radius:10px">':'<div style="background:#ddd;padding:30px;text-align:center">Sin foto</div>';html+='<div class="producto">'+foto+'<br><b>'+prod.nombre+'</b><br>Precio: '+prod.precio+' Gs<br>Categoria: '+prod.cat+'<br><button class="rojo" onclick="borrarProducto('+i+')">BORRAR PRODUCTO</button></div>';});document.getElementById('misProductos').innerHTML=html;}
-function borrarProducto(i){if(confirm('Seguro queres borrar?')){productos.splice(i,1);localStorage.setItem('mercapy_productos',JSON.stringify(productos));mostrarProductos();}}
-function pagar(){window.open("https://wa.me/"+TU_WHATSAPP+"?text=Hola quiero pagar mis 20.000 Gs de MERCAPY","_blank");}
-function terminar(){alert('Listo! Tu tienda esta activa.');}
-revisarBloqueo();
-</script>
-</body>
-</html>
+function filtrar(){
+ let q=document.getElementById('buscar').value.toLowerCase();
+ let f=productos.filter(p=>(catActual=='Todos'||p.categoria==catActual)&&p.nombre.toLowerCase().includes(q));
+ let html='';
+ f.forEach(p=>{
+  html+=`<div class="card"><img src="${p.foto||'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400'}"><div class="card-body"><b>${p.nombre}</b><div style="font-size:12px;background:#FFF3E0;display:inline-block;padding:2px 8px;border-radius:10px">${p.categoria}</div><div class="precio">${Number(p.precio).toLocaleString('es-PY')} Gs</div><div class="vendedor">👤 ${p.vendedor} - ID: ${p.id}</div><button class="btn-wp" onclick="comprar('${p.whatsapp}','${p.nombre}','${p.precio}')">💬 Comprar por WhatsApp</button></div></div>`;
+ });
+ document.getElementById('grid').innerHTML=html||"<p style='text-align:center'>Todavía no hay productos. ¡Sé el primero!</p>";
+}
+function setCat(c,btn){catActual=c;document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('activo'));btn.classList.add('activo');filtrar();}
+function comprar(wp,nombre,precio){window.open('https://wa.me/595'+wp.replace(/^0/,'')+'?text='+encodeURIComponent(`Hola! Vi en MERCA PY: ${nombre} - ${Number(precio).toLocaleString('es-PY')} Gs. ¿Todavía tenés?`));}
+async function publicar(){
+ let n=document.getElementById('nombreProd').value; let pr=document.getElementById('precioProd').value; let c=document.getElementById('catProd').value; let v=document.getElementById('vendedorProd').value; let w=document.getElementById('wpProd').value;
+ if(!n||!pr||!v||!w) return alert('Completá nombre, precio, tu nombre y WhatsApp');
+ let foto='https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400';
+ let file=document.getElementById('fotoProd').files[0];
+ if(file){ foto=URL.createObjectURL(file); }
+ let {error}=await supabaseClient.from('productos').insert([{nombre:n,precio:Number(pr),categoria:c,vendedor:v,whatsapp:w,foto:foto}]);
+ if(error) alert('Error: '+error.message); else {alert('¡Publicado! 🎉'); cargar();}
+}
+async function borrar(){
+ let w=document.getElementById('borrarWp').value; let id=document.getElementById('borrarId').value;
+ if(!w||!id) return alert('Poné WhatsApp y ID');
+ let {error}=await supabaseClient.from('productos').delete().eq('id',id).eq('whatsapp',w);
+ if(error) alert('Error: '+error.message); else {alert('Borrado ✅'); cargar();}
+}
+function compartir(){let t='🔥 MERCA PY - Comprá y Vendé Todo en Paraguay - 30 DÍAS GRATIS '+window.location.href; window.open('https://wa.me/?text='+encodeURIComponent(t));}
+cargar();
+</script></body></html>
