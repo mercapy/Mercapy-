@@ -61,7 +61,7 @@ async function enviar(){
   await new Promise(r=>setTimeout(r,400));
   let t=norm(texto); let r="";
   if(t.includes('dueno')||t.includes('quien es')||t.includes('reinerio')||t.includes('ayala')||t.includes('admin')||t.includes('creador')||t.includes('cuantos anos')||t.includes('edad')||t.includes('nombre')){
-    r="👤 <b>El dueño es REINERIO AYALA</b> 🇵🇾<br><br>📝 <b>Nombre completo:</b> Reinerio Ayala<br>🎂 <b>Edad:</b> 36 años<br>📍 <b>País:</b> Paraguay<br>📲 <b>WhatsApp:</b> 0984 522 026<br>🛍️ <b>Su proyecto:</b> MERCA PY - para que todos en Paraguay vendan gratis.<br><br>Es un capo, creó todo esto para ayudar a la gente a vender. ¡Escribile nomás!";
+    r="👤 <b>El dueño es REINERIO AYALA</b> 🇵🇾<br><br>📝 <b>Nombre completo:</b> Reinerio Ayala<br><br>📍 <b>País:</b> Paraguay<br>📲 <b>WhatsApp:</b> 0984 522 026<br>🛍️ <b>Su proyecto:</b> MERCA PY - para que todos en Paraguay vendan <br><br>Es un capo, creó todo esto para ayudar a la gente a vender. ¡Escribile nomás!";
   } else if(t.includes('hola')||t.includes('buenas')||t.includes('mba')){
     r="👋 ¡Holaa! ¡Mba'éichapa! Soy la IA de <b>Reinerio Ayala</b>. ¿Qué buscás hoy? ¿Comprar, vender o saber el precio?";
   } else if(t.includes('ayuda')||t.includes('que sabes')){
