@@ -47,8 +47,6 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .bloqueo{background:#ff3b30;color:#fff;padding:16px;border-radius:12px;text-align:center;margin-top:12px}
 .bloqueo button{background:#ffe600;border:0;padding:13px 18px;border-radius:10px;font-weight:900;font-size:16px;margin-top:10px;width:100%}
 footer{text-align:center;color:#888;padding:20px;font-size:13px}
-#chatBtn{position:fixed;bottom:20px;right:20px;background:#ff3b30;color:#fff;width:65px;height:65px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,.3)}
-#chatBox{display:none;position:fixed;bottom:95px;right:15px;width:320px;max-width:calc(100vw - 30px);background:#fff;border-radius:15px;box-shadow:0 5px 25px rgba(0,0,0,.3);z-index:9999;overflow:hidden}
 </style>
 </head>
 <body>
@@ -81,21 +79,6 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 </div>
 </div>
 <footer>MERCA PY © 2026 - Hecho en Paraguay - Admin 0984522026</footer>
-
-<!-- 🤖 IA MERCA BOT -->
-<div id="chatBtn" onclick="document.getElementById('chatBox').style.display='block';document.getElementById('chatBtn').style.display='none'">🤖</div>
-<div id="chatBox">
-<div style="background:#ff3b30;color:#fff;padding:13px;font-weight:bold">🤖 MERCA BOT <span style="float:right;cursor:pointer" onclick="document.getElementById('chatBox').style.display='none';document.getElementById('chatBtn').style.display='flex'">✖</span><br><span style="font-size:11px;font-weight:normal">En línea • Contesta al instante</span></div>
-<div id="chatMsgs" style="height:230px;overflow-y:auto;padding:10px;font-size:14px"><div style="background:#f2f2f2;padding:9px;border-radius:10px">👋 ¡Hola! Soy <b>MERCA BOT</b> 🤖<br>Te ayudo a comprar y vender.<br><br>Escribí:<br>🔹 <b>precio</b> - ¿Cuánto cuesta publicar?<br>🔹 <b>comprar</b> - Quiero comprar<br>🔹 <b>salon</b> - Alquilar salón<br>🔹 <b>whatsapp</b> - Hablar con Reinerio</div></div>
-<div style="display:flex;gap:5px;padding:8px;flex-wrap:wrap">
-<button onclick="rapido('precio')" style="background:#ffe600;border:0;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer">💰 Precio</button>
-<button onclick="rapido('comprar')" style="background:#e8ffe8;border:0;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer">🛒 Comprar</button>
-<button onclick="rapido('salon')" style="background:#e3f2ff;border:0;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer">🎉 Salón</button>
-<button onclick="rapido('whatsapp')" style="background:#25D366;color:#fff;border:0;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer">💬 WhatsApp</button>
-</div>
-<div style="display:flex;padding:8px;border-top:1px solid #eee"><input id="chatInput" placeholder="Escribí acá..." style="flex:1;padding:11px;border:1px solid #ddd;border-radius:10px" onkeypress="if(event.key==='Enter') enviarChat()"><button onclick="enviarChat()" style="background:#ff3b30;color:#fff;border:none;padding:11px 14px;border-radius:10px;margin-left:5px">➤</button></div>
-</div>
-
 <script>
 const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
@@ -188,4 +171,57 @@ function copiarYAvistar(enc, red){
 function mostrar(lista){
   let el = document.getElementById('lista');
   if(estaBloqueado){ el.innerHTML = "<p style='text-align:center'>🔒 Productos pausados. Pagá 20.000 Gs para verlos de nuevo.</p>"; return; }
-  if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return
+  if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return; }
+  el.innerHTML = lista.map((p,i)=>{
+    let wa = limpiarWP(p.whatsapp||"");
+    let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
+    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}<button class="del" onclick="eliminarProducto(${p.id}, '${String(p.whatsapp||'').replace(/'/g,'')}')">🗑️ Eliminar mi producto</button></div></div>`;
+  }).join('');
+}
+async function eliminarProducto(id, whatsappOriginal){
+  let confirmar = confirm("¿Seguro querés eliminar este producto?");
+  if(!confirmar) return;
+  let wp = prompt("Para confirmar que es tuyo, escribí tu WhatsApp con el que publicaste (Ej: 0984522026):");
+  if(!wp){ return; }
+  if(limpiarWP(wp) !== limpiarWP(whatsappOriginal)){
+    alert("❌ Ese WhatsApp no coincide con el del producto. No se puede borrar.");
+    return;
+  }
+  let {error} = await supabaseClient.from('productos').delete().eq('id', id);
+  if(error){ alert("Error al borrar: "+error.message); return; }
+  alert("✅ Producto eliminado");
+  cargar();
+}
+function filtrar(){
+  let q = document.getElementById('buscador').value.toLowerCase();
+  let f = todos.filter(p => (catActual==="Todo" || p.categoria===catActual) && (p.nombre||"").toLowerCase().includes(q));
+  mostrar(f);
+}
+async function cargar(){
+  let {data, error} = await supabaseClient.from('productos').select('*').order('id',{ascending:false});
+  if(error){ console.log(error); document.getElementById('lista').innerHTML = "<p>Error: "+error.message+"<br>Revisá tu ANON KEY en el código</p>"; return; }
+  todos = data || [];
+  filtrar();
+}
+async function publicar(){
+  if(estaBloqueado){ alert("🔒 Se terminaron tus 30 días gratis. Pagá 20.000 Gs para publicar de nuevo."); document.getElementById('pagarBox').scrollIntoView({behavior:'smooth'}); return; }
+  let n = document.getElementById('nombreProd').value.trim();
+  let pr = document.getElementById('precioProd').value;
+  let c = document.getElementById('catProd').value;
+  let v = document.getElementById('vendedorProd').value.trim() || "Vendedor";
+  let w = document.getElementById('wpProd').value.trim();
+  let fLink = document.getElementById('fotoProd').value.trim();
+  let f = fotoBase64 || fLink || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
+  if(!n || !pr){ alert("Poné nombre y precio"); return; }
+  if(!w){ alert("Poné tu WhatsApp"); return; }
+  let {error} = await supabaseClient.from('productos').insert([{nombre:n, precio:Number(pr), categoria:c, vendedor:v, whatsapp:w, foto:f}]);
+  if(error){ alert("Error: "+error.message); return; }
+  alert("¡Publicado! 🎉 Ahora todos lo ven. Te quedan " + diasRestantes + " días gratis");
+  document.getElementById('nombreProd').value=""; document.getElementById('precioProd').value=""; document.getElementById('wpProd').value=""; document.getElementById('fotoProd').value="";
+  document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
+  cargar(); window.scrollTo({top:0, behavior:'smooth'});
+}
+pintarCats(); actualizarPlan(); cargar();
+</script>
+</body>
+</html>
