@@ -3,100 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IA MERCAPY 🤖</title>
+<title>IA MERCAPY V5 🤖</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f3f0ff}
-.top{background:#7c3aed;color:#fff;padding:18px;text-align:center}
-.top h1{margin:0;font-size:28px} .top p{margin:5px 0 0;opacity:.9}
-.wrap{max-width:600px;margin:auto;padding:12px}
-.chat{background:#fff;border-radius:14px;padding:12px;min-height:350px;margin-bottom:10px}
-.msg{padding:11px 13px;border-radius:14px;margin:8px 0;max-width:90%;line-height:1.4;font-size:15px}
+.top{background:linear-gradient(90deg,#7c3aed,#db2777);color:#fff;padding:18px;text-align:center;position:sticky;top:0;z-index:10}
+.top h1{margin:0;font-size:28px} .top p{margin:5px 0 0;font-size:13px;opacity:.9}
+.stats{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.stats span{background:rgba(255,255,255,.25);padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+.wrap{max-width:620px;margin:auto;padding:12px}
+.chat{background:#fff;border-radius:16px;padding:12px;min-height:380px;margin-bottom:10px;box-shadow:0 2px 10px #0001}
+.msg{padding:11px 13px;border-radius:14px;margin:8px 0;max-width:92%;line-height:1.5;font-size:15px;word-wrap:break-word}
 .yo{background:#dcfce7;margin-left:auto;text-align:right}
 .ia{background:#ede9fe}
 .row{display:flex;gap:8px}
 .row input{flex:1;padding:14px;border-radius:12px;border:1px solid #ddd;font-size:16px}
-.row button{background:#7c3aed;color:#fff;border:0;padding:14px 20px;border-radius:12px;font-weight:bold;font-size:16px}
+.row button{background:#7c3aed;color:#fff;border:0;padding:14px 20px;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer}
 .volver{display:block;background:#ff3b30;color:#fff;text-align:center;padding:14px;border-radius:12px;text-decoration:none;font-weight:bold;margin-top:10px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.chips button{background:#fff;border:1px solid #7c3aed;color:#7c3aed;padding:8px 12px;border-radius:20px;font-weight:bold;cursor:pointer}
+.chips button{background:#fff;border:1px solid #7c3aed;color:#7c3aed;padding:8px 11px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px}
+.prod{background:#f8f5ff;border:1px solid #ddd;border-radius:12px;padding:10px;margin:8px 0}
+.prod a{display:inline-block;background:#25D366;color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:6px;font-size:13px}
 </style>
 </head>
 <body>
-<div class="top"><h1>🤖 IA MERCAPY</h1><p>Preguntame lo que quieras de MERCA PY</p></div>
+<div class="top"><h1>🤖 IA MERCAPY V5</h1><p>La IA de Reinerio Ayala 🇵🇾</p><div class="stats"><span id="statProd">🛍️ Cargando...</span><span>⚡ Online</span><span>🇵🇾 Paraguay</span></div></div>
 <div class="wrap">
 <div class="chips">
-<button onclick="preg('¿Quién es el dueño?')">👤 Dueño</button>
-<button onclick="preg('¿Cómo publico?')">📦 Publicar</button>
-<button onclick="preg('¿Cómo compro?')">🛒 Comprar</button>
-<button onclick="preg('¿Cuánto cuesta?')">💰 Precio</button>
-<button onclick="preg('¿Qué hay para vender?')">🔥 Productos</button>
+<button onclick="preg('Quien es el dueno')">👤 Dueño</button>
+<button onclick="preg('Como publico')">📦 Publicar</button>
+<button onclick="preg('Como compro')">🛒 Comprar</button>
+<button onclick="preg('Cuanto cuesta')">💰 Precio</button>
+<button onclick="preg('Que productos hay')">🔥 Productos</button>
+<button onclick="preg('Cual es lo mas barato')">💸 Barato</button>
+<button onclick="preg('Ayuda')">❓ Ayuda</button>
 </div>
-<div class="chat" id="chat">
-<div class="msg ia">🤖 Hola! Soy la IA de MERCA PY. Preguntame por productos, precios, cómo publicar, quién es el dueño, WhatsApp, etc. ¡Te ayudo en todo!</div>
-</div>
-<div class="row"><input id="q" placeholder="Escribí acá... Ej: Quiero un celular barato" onkeydown="if(event.key==='Enter') enviar()"><button onclick="enviar()">Enviar</button></div>
+<div class="chat" id="chat"><div class="msg ia">🤖 ¡Hola! Soy la IA de <b>Reinerio Ayala</b>, el dueño de MERCA PY 🇵🇾<br><br>Reinerio tiene 36 años, es de Paraguay y creó esta página para que todos vendan gratis.<br><br>Escribí: <i>quien es el dueño</i> y te cuento todo de él.</div></div>
+<div class="row"><input id="q" placeholder="Escribí acá..." onkeydown="if(event.key==='Enter') enviar()"><button onclick="enviar()">Enviar</button></div>
 <a class="volver" href="index.html">⬅️ Volver a MERCA PY</a>
+<p style="text-align:center;color:#888;font-size:12px">IA MERCA PY V5 • De Reinerio Ayala • 36 años • Paraguay 🇵🇾</p>
 </div>
 <script>
 const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let productos = [];
-async function cargarProd(){ try{ let {data} = await supabaseClient.from('productos').select('*').order('id',{ascending:false}).limit(20); productos = data||[]; }catch(e){} }
+async function cargarProd(){ try{ let {data} = await supabaseClient.from('productos').select('*').order('id',{ascending:false}).limit(50); productos=data||[]; document.getElementById('statProd').innerText='🛍️ '+productos.length+' productos'; }catch(e){} }
 cargarProd();
 function preg(t){ document.getElementById('q').value=t; enviar(); }
-function add(texto, clase){ let c=document.getElementById('chat'); let d=document.createElement('div'); d.className='msg '+clase; d.innerHTML=texto; c.appendChild(d); c.scrollTop=c.scrollHeight; }
-function buscarProducto(texto){
-  let t = texto.toLowerCase();
-  // sacar palabras comunes
-  let palabras = t.split(' ').filter(w=>w.length>3 && !['quiero','busco','tienes','tienen','cuanto','cuesta','precio','para','vender','comprar','mostrar','ver'].includes(w));
-  if(!palabras.length) return [];
-  return productos.filter(p=>{
-    let hay = (p.nombre+' '+p.categoria+' '+p.vendedor).toLowerCase();
-    return palabras.some(w=>hay.includes(w));
-  });
-}
+function add(texto,clase){ let c=document.getElementById('chat'); let d=document.createElement('div'); d.className='msg '+clase; d.innerHTML=texto; c.appendChild(d); c.scrollTop=c.scrollHeight; }
+function norm(s){ s=s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); s=s.replace(/cuota/g,'cuanto').replace(/kepis/g,'kepi').replace(/gorra/g,'kepi'); return s; }
+function waLink(p){ let w=String(p.whatsapp||'').replace(/\D/g,''); if(w.startsWith('0')) w='595'+w.slice(1); if(!w.startsWith('595')) w='595'+w; return 'https://wa.me/'+w+'?text='+encodeURIComponent('Hola! Vi tu '+p.nombre+' en MERCA PY. ¿Sigue disponible?'); }
+function card(p){ return `<div class="prod">🛍️ <b>${p.nombre}</b><br>💰 <b>Gs ${Number(p.precio).toLocaleString('es-PY')}</b> • 📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor}<br><a target="_blank" href="${waLink(p)}">💬 Hablar con vendedor</a></div>`; }
+function buscar(t){ let palabras=t.split(' ').filter(w=>w.length>2 && !['que','los','las','una','uno','para','cuanto','precio','quiero','busco','tiene','hay','como'].includes(w)); if(!palabras.length) return productos; return productos.filter(p=>{ let hay=norm(p.nombre+' '+p.categoria+' '+p.vendedor); return palabras.some(w=>hay.includes(w)||hay.includes(w.slice(0,4))); }); }
 async function enviar(){
-  let inp=document.getElementById('q'); let texto=inp.value.trim(); if(!texto) return;
-  add(texto,'yo'); inp.value='';
+  let inp=document.getElementById('q'); let texto=inp.value.trim(); if(!texto) return; add(texto,'yo'); inp.value='';
   await new Promise(r=>setTimeout(r,400));
-  let t = texto.toLowerCase();
-  let r = "";
-  if(t.includes('dueño')||t.includes('dueno')||t.includes('quien es')||t.includes('admin')||t.includes('creador')||t.includes('reinerio')){
-    r = "👤 El dueño de MERCA PY es <b>Reinerio</b> 🇵🇾<br>📲 Su WhatsApp es <b>0984 522 026</b><br>Él es quien te activa cuando pagás tus 20.000 Gs. Escribile sin miedo, es buena onda!";
-  } else if(t.includes('hola')||t.includes('buenas')||t.includes('que tal')||t.includes('hey')){
-    r = "👋 ¡Hola! ¡Qué gusto saludarte! Soy la IA de MERCA PY. ¿Querés comprar, vender, saber precios o conocer al dueño? Escribí lo que buscás, por ejemplo: <i>Quiero un celular</i>";
-  } else if(t.includes('publicar')||t.includes('vender')||t.includes('subir')||t.includes('ofrecer')){
-    r = "📦 <b>Para publicar es GRATIS:</b><br>1️⃣ Entrá a MERCA PY<br>2️⃣ Bajá donde dice <b>Publicá tu producto GRATIS</b><br>3️⃣ Poné nombre, precio, tu nombre y tu WhatsApp<br>4️⃣ Elegí tu foto y apretá PUBLICAR<br>¡Y listo! Todos lo ven. Tenés 30 días gratis.";
-  } else if(t.includes('comprar')||t.includes('quiero')||t.includes('busco')||t.includes('necesito')||t.includes('tienes')||t.includes('hay')){
-    let encontrados = buscarProducto(t);
-    if(encontrados.length){
-      r = "🔥 ¡Sí! Encontré esto para vos:<br><br>" + encontrados.slice(0,5).map(p=>`🛍️ <b>${p.nombre}</b> - <b>Gs ${Number(p.precio).toLocaleString('es-PY')}</b><br>👤 ${p.vendedor} • 📲 <a href='https://wa.me/595${String(p.whatsapp).replace(/\D/g,'').slice(-9)}' target='_blank'>Hablar por WhatsApp</a><br><br>`).join('') + "¿Te gusta alguno? Si querés ver todos, volvé a la página principal.";
-    } else if(productos.length){
-      r = "🛍️ Ahora mismo tenemos estos productos:<br><br>" + productos.slice(0,5).map(p=>`• <b>${p.nombre}</b> - Gs ${Number(p.precio).toLocaleString('es-PY')}<br>`).join('') + "<br>Decime qué buscás, por ejemplo: <i>celular, moto, ropa, comida</i> y te busco el mejor.";
-    } else {
-      r = "🛒 Para comprar es fácil: elegí el producto que te gusta en MERCA PY y apretá <b>Comprar por WhatsApp</b>. Te habla directo con el vendedor. ¿Qué estás buscando? Decime: celular, moto, ropa...";
-    }
-  } else if(t.includes('precio')||t.includes('cuesta')||t.includes('cuanto')||t.includes('pagar')||t.includes('costo')||t.includes('gratis')){
-    r = "💰 <b>¡Es casi gratis!</b><br>✅ Primeros <b>30 DÍAS GRATIS</b> para publicar todo lo que quieras.<br>Después solo <b>20.000 Gs por mes</b>. Sin permanencia.<br>Comprar es 100% gratis, solo pagás el producto al vendedor.";
-  } else if(t.includes('whatsapp')||t.includes('numero')||t.includes('contacto')||t.includes('telefono')){
-    r = "📲 El WhatsApp del admin Reinerio es <b>0984 522 026</b><br>Si querés comprar un producto, apretá el botón verde de WhatsApp que está en cada producto y hablás directo con el vendedor.";
-  } else if(t.includes('celular')||t.includes('moto')||t.includes('auto')||t.includes('ropa')||t.includes('comida')||t.includes('calzado')||t.includes('hogar')){
-    let encontrados = buscarProducto(t);
-    if(encontrados.length){
-      r = "🔥 Encontré de eso:<br><br>" + encontrados.map(p=>`🛍️ <b>${p.nombre}</b> - Gs ${Number(p.precio).toLocaleString('es-PY')} - ${p.vendedor}<br>`).join('') + "<br>¿Querés que te pase el WhatsApp del vendedor?";
-    } else {
-      r = `🔍 Busqué <b>${texto}</b> pero ahora mismo no hay publicado de eso. ¡Pero podés publicar vos lo que buscás o escribirle a Reinerio al 0984 522 026 para que te avise cuando haya! ¿Querés ver todos los productos?`;
-    }
+  let t=norm(texto); let r="";
+  if(t.includes('dueno')||t.includes('quien es')||t.includes('reinerio')||t.includes('ayala')||t.includes('admin')||t.includes('creador')||t.includes('cuantos anos')||t.includes('edad')||t.includes('nombre')){
+    r="👤 <b>El dueño es REINERIO AYALA</b> 🇵🇾<br><br>📝 <b>Nombre completo:</b> Reinerio Ayala<br>🎂 <b>Edad:</b> 36 años<br>📍 <b>País:</b> Paraguay<br>📲 <b>WhatsApp:</b> 0984 522 026<br>🛍️ <b>Su proyecto:</b> MERCA PY - para que todos en Paraguay vendan gratis.<br><br>Es un capo, creó todo esto para ayudar a la gente a vender. ¡Escribile nomás!";
+  } else if(t.includes('hola')||t.includes('buenas')||t.includes('mba')){
+    r="👋 ¡Holaa! ¡Mba'éichapa! Soy la IA de <b>Reinerio Ayala</b>. ¿Qué buscás hoy? ¿Comprar, vender o saber el precio?";
+  } else if(t.includes('ayuda')||t.includes('que sabes')){
+    r="❓ <b>Te ayudo en todo:</b><br>👤 <i>quien es el dueño</i> - Te cuento de Reinerio Ayala<br>📦 <i>como publico</i><br>🛒 <i>como compro</i><br>💰 <i>cuanto cuesta</i><br>🔥 <i>que productos hay</i><br>💸 <i>cual es lo mas barato</i><br>¡Escribí cualquiera!";
+  } else if(t.includes('publicar')||t.includes('vender')){
+    r="📦 <b>Para vender GRATIS 30 días:</b><br>1️⃣ Entrá a MERCA PY<br>2️⃣ Bajá a Publicá tu producto GRATIS<br>3️⃣ Poné nombre, precio, tu nombre, WhatsApp<br>4️⃣ Elegí foto y PUBLICAR. ¡Listo!";
+  } else if(t.includes('comprar')||t.includes('quiero')||t.includes('busco')||t.includes('cuanto')||t.includes('precio')||t.includes('kepi')||t.includes('celular')||t.includes('moto')||t.includes('ropa')){
+    let enc=buscar(t);
+    if(enc.length) r="🔥 <b>Encontré "+enc.length+" para vos:</b><br>"+enc.slice(0,6).map(card).join('');
+    else if(productos.length) r="💰 <b>Precios de hoy:</b><br>"+productos.slice(0,6).map(card).join('');
+    else r="💰 Publicar es 0 Gs por 30 días. Después 20.000 Gs por mes. Comprar es gratis.";
+  } else if(t.includes('producto')||t.includes('que hay')){
+    if(!productos.length) r="📭 Todavía no hay productos. ¡Sé el primero!";
+    else r="🔥 <b>Productos ("+productos.length+"):</b><br>"+productos.slice(0,10).map(card).join('');
+  } else if(t.includes('pagar')||t.includes('gratis')||t.includes('costo')){
+    r="💰 <b>30 DÍAS GRATIS</b> Después 20.000 Gs por mes. Pagás por WhatsApp al 0984 522 026 y Reinerio Ayala te activa.";
+  } else if(t.includes('whatsapp')||t.includes('numero')||t.includes('contacto')){
+    r="📲 <b>WhatsApp de Reinerio Ayala: 0984 522 026</b><br><a href='https://wa.me/595984522026' target='_blank' style='background:#25D366;color:#fff;padding:10px;border-radius:8px;display:inline-block;text-decoration:none;font-weight:bold'>💬 Hablar con Reinerio</a>";
+  } else if(t.includes('barato')){
+    if(!productos.length) r="💸 Todavía no hay productos.";
+    else { let ord=[...productos].sort((a,b)=>a.precio-b.precio); r="💸 <b>LO MÁS BARATO:</b><br>"+ord.slice(0,5).map(card).join(''); }
   } else if(t.includes('gracias')){
-    r = "🥰 ¡De nada! Para eso estoy. Si necesitás algo más de MERCA PY, preguntame nomás. ¡Que vendas mucho hoy! 🇵🇾";
-  } else if(t.includes('donde')||t.includes('ubicacion')||t.includes('caacupe')||t.includes('paraguay')){
-    r = "📍 MERCA PY es de <b>Caacupé, Paraguay</b> 🇵🇾 pero vende en todo Paraguay. Todo se coordina por WhatsApp con el vendedor.";
-  } else if(t.includes('eliminar')||t.includes('borrar')||t.includes('sacar')){
-    r = "🗑️ Para borrar tu producto: apretá el botón <b>Eliminar mi producto</b> que está abajo de tu producto y poné el mismo WhatsApp con el que publicaste. Solo vos podés borrar lo tuyo.";
+    r="🥰 ¡De nada! De parte de Reinerio Ayala, gracias por usar MERCA PY 🇵🇾";
   } else {
-    r = "🤔 Te entiendo, me preguntaste por <b>" + texto + "</b>.<br><br>Puedo ayudarte a:<br>✅ <b>Comprar</b> - Decime qué buscás<br>✅ <b>Vender</b> - Te explico cómo publicar gratis<br>✅ <b>Precios</b> - Te digo cuánto cuesta<br>✅ <b>Dueño</b> - Te digo quién es Reinerio<br><br>Probá escribiendo: <i>Quiero un celular</i> o <i>Cómo publico</i>";
+    r="🤔 Me dijiste: <b>"+texto+"</b><br><br>Probá:<br>✅ <i>quien es el dueño</i><br>✅ <i>cuota sale un kepis</i><br>✅ <i>como publico</i><br>Escribí <b>ayuda</b> y te muestro todo.";
   }
   add("🤖 "+r,'ia');
 }
