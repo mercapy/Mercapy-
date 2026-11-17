@@ -1,32 +1,4 @@
-function enviarChat(){
-  let inp = document.getElementById('chatInput');
-  let txt = inp.value.trim(); if(!txt) return;
-  let box = document.getElementById('chatMsgs');
-  box.innerHTML += '<div style="text-align:right;margin:6px 0"><span style="background:#ff3b30;color:#fff;padding:8px 10px;border-radius:12px;display:inline-block">'+txt+'</span></div>';
-  let t = txt.toLowerCase();
-  let btnWA = "<br><a href='https://wa.me/595984522026?text=Hola%20Reinerio!%20Vengo%20de%20MERCA%20PY' target='_blank' style='display:inline-block;background:#25D366;color:#fff;padding:9px 14px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:6px'>📲 Hablar con Reinerio</a>";
-  let r = "🤖 No entendí. Escribí <b>precio, comprar, vender, ropa, celular, reloj, comida, moto, auto, calzado, hogar, borrar</b>" + btnWA;
-  if(t.includes('hola')||t.includes('buenas')) r = "👋 ¡Hola! Soy MERCA BOT 🤖 ¿Querés <b>comprar</b> o <b>vender</b>? Escribí <b>precio</b>.";
-  if(t.includes('precio')||t.includes('cuesta')) r = "💰 <b>¡30 DÍAS GRATIS!</b><br>Después solo <b>20.000 Gs por mes</b>." + btnWA;
-  if(t.includes('vender')||t.includes('publicar')) r = "🚀 <b>Para VENDER:</b><br>1. Bajá al formulario<br>2. Poné nombre, precio, WhatsApp y foto<br>3. Apretá <b>PUBLICAR GRATIS</b>" + btnWA;
-  if(t.includes('comprar')||t.includes('busco')) r = "🛒 <b>Para COMPRAR:</b><br>Buscá arriba lo que querés y tocá <b>Comprar por WhatsApp</b>. ¿Qué buscás? <b>ropa, celular, reloj, moto, comida</b>";
-  if(t.includes('cerrar')||t.includes('cierre')||t.includes('confirmar')) r = "✅ <b>¡Vamos a cerrar la venta!</b><br>Escribile así: <i>'Hola! Vi tu producto en MERCA PY. ¿Sigue disponible? ¿Me guardás?'</i>" + btnWA;
-  if(t.includes('comprar mas')||t.includes('comprar más')||t.includes('otro')) r = "🛍️ ¡Dale! Escribí: <b>ropa, celular, reloj, moto, auto, comida, calzado, hogar</b>";
-  if(t.includes('borrar')||t.includes('eliminar')) r = "🗑️ <b>Para BORRAR:</b><br>Buscá tu producto, apretá <b>Eliminar mi producto</b> y poné el mismo WhatsApp." + btnWA;
-  if(t.includes('ropa')||t.includes('remera')||t.includes('camisa')) r = "👕 <b>ROPA:</b> Tenemos remeras, camisas, pantalones y más. Buscá <b>Ropa</b> arriba." + btnWA;
-  if(t.includes('celular')||t.includes('iphone')||t.includes('samsung')) r = "📱 <b>CELULARES:</b> Samsung, iPhone, Xiaomi. Buscá <b>Celulares</b> arriba." + btnWA;
-  if(t.includes('reloj')) r = "⌚ <b>RELOJES:</b> Reloj nuevo, Reloj Led desde Gs 35.000. Buscá <b>Reloj</b> arriba." + btnWA;
-  if(t.includes('comida')||t.includes('pizza')||t.includes('empanada')) r = "🍔 <b>COMIDA:</b> Empanadas, pizza, asado y más. Buscá <b>Comida</b>." + btnWA;
-  if(t.includes('moto')) r = "🏍️ <b>MOTOS:</b> Nuevas y usadas. Buscá <b>Moto</b> arriba." + btnWA;
-  if(t.includes('auto')||t.includes('coche')) r = "🚗 <b>AUTOS:</b> Autos y camionetas. Buscá <b>Auto</b>." + btnWA;
-  if(t.includes('calzado')||t.includes('zapatilla')) r = "👟 <b>CALZADO:</b> Zapatillas, championes, botas. Buscá <b>Calzado</b>." + btnWA;
-  if(t.includes('hogar')||t.includes('heladera')||t.includes('mueble')) r = "🏠 <b>HOGAR:</b> Muebles, heladera, cocina y más. Buscá <b>Hogar</b>." + btnWA;
-  if(t.includes('whatsapp')||t.includes('reinerio')) r = "💬 WhatsApp: <b>0984 522 026</b>" + btnWA;
-  if(t.includes('gracias')) r = "😊 ¡De nada Rey! Gracias por usar MERCA PY 🇵🇾";
-  if(t.includes('delivery')||t.includes('envio')) r = "🚚 El delivery lo arreglás con el vendedor por WhatsApp." + btnWA;
-  box.innerHTML += '<div style="background:#f2f2f2;padding:9px;border-radius:10px;margin:6px 0">'+r+'</div>';
-  inp.value=''; box.scrollTop = box.scrollHeight;
-}<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -253,3 +225,4 @@ pintarCats(); actualizarPlan(); cargar();
 </script>
 </body>
 </html>
+
