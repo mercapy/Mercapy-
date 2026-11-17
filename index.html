@@ -8,6 +8,8 @@
 <meta property="og:title" content="🛍️ MERCA PY - Comprá y Vendé Todo en Paraguay">
 <meta property="og:description" content="🔥 Celulares, motos, autos, ropa y más. Publicá GRATIS por 30 días y vendé hoy mismo.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://mercapy.github.io/Mercapy-/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MERCA PY">
@@ -36,7 +38,6 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 .form{background:#fff;padding:16px;border-radius:14px;margin-top:18px}
 .form input,.form select,.form textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
 .form button{width:100%;padding:14px;background:#ff3b30;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold}
-.btnIA-desc{background:#7c3aed !important}
 .plan{background:#e8ffe8;border:1px solid #25D366;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px}
 .foto-btn{display:block;text-align:center;background:#1877F2;color:#fff;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer;margin:6px 0}
 .foto-preview{width:100%;max-height:200px;object-fit:cover;border-radius:10px;display:none;margin-top:6px}
@@ -48,7 +49,9 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 footer{text-align:center;color:#888;padding:20px;font-size:13px}
 .soporte{background:#222;color:white;padding:16px;border-radius:14px;text-align:center;margin-top:18px}
 .soporte a{color:#25D366;font-weight:bold;font-size:17px;text-decoration:none}
-#btnIA{position:fixed;bottom:20px;right:20px;background:#7c3aed;color:white;border:none;padding:15px 18px;border-radius:50px;font-size:16px;font-weight:bold;cursor:pointer;z-index:999;box-shadow:0 4px 15px rgba(0,0,0,0.4);width:auto}
+/* ===== CODIGO INTELIGENCIA ARTIFICIAL - AGREGADO ABAJO ===== */
+.btnIA-desc{background:#7c3aed !important}
+#btnIA{position:fixed;bottom:20px;right:20px;background:#7c3aed;color:white;border:none;padding:15px 18px;border-radius:50px;font-size:16px;font-weight:bold;cursor:pointer;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.4);width:auto}
 #chatIA{position:fixed;bottom:80px;right:15px;width:330px;max-width:92vw;background:white;color:black;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.5);z-index:9999;overflow:hidden;text-align:left}
 #chatHeader{background:#7c3aed;color:white;padding:12px;font-weight:bold}
 #chatMensajes{height:230px;overflow-y:auto;padding:10px;font-size:14px}
@@ -97,6 +100,7 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 </div>
 <footer>MERCA PY © 2026 - Hecho en Paraguay</footer>
 
+<!-- ===== INTELIGENCIA ARTIFICIAL - AGREGADO ABAJO ===== -->
 <button type="button" id="btnIA" onclick="abrirChatIA(event)">🤖 IA MERCAPY</button>
 <div id="chatIA" class="oculto">
 <div id="chatHeader">🤖 IA MERCAPY - Te ayudo <span style="float:right;cursor:pointer" onclick="abrirChatIA(event)">X</span></div>
@@ -129,7 +133,7 @@ function actualizarPlan(){
   let txt = document.getElementById('planTexto');
   if(estaBloqueado){
     top.innerHTML = "🔒 PERIODO GRATIS TERMINADO - Pagá 20.000 Gs para publicar nuevos";
-    txt.innerHTML = "🔒 <b>Se terminaron tus 30 días gratis.</b><br>Pagá 20.000 Gs para publicar nuevos productos. Tus productos viejos siguen visibles.";
+    txt.innerHTML = "🔒 <b>Se terminaron tus 30 días gratis.</b><br>Pagá 20.000 Gs para publicar nuevos. Tus productos viejos siguen visibles.";
     document.getElementById('formPublicar').style.display='none';
     document.getElementById('pagarBox').style.display='block';
     document.getElementById('avisoBloqueo').innerHTML = '';
@@ -245,6 +249,8 @@ async function publicar(){
   document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
   cargar(); window.scrollTo({top:0, behavior:'smooth'});
 }
+
+// ===== CODIGO COMPLETO INTELIGENCIA ARTIFICIAL - AGREGADO ABAJO MISMO =====
 function generarDescripcionIA(){
   let nombre=document.getElementById('nombreProd').value;
   let precio=document.getElementById('precioProd').value;
@@ -272,5 +278,4 @@ function enviarIA(){
   else if(t.includes('ropa')||t.includes('remera')||t.includes('camisa')||t.includes('calzado')||t.includes('zapato')) respuesta="Tenemos mucha Ropa y Calzado. Tocá la categoría Ropa arriba y elegí lo que te gusta.";
   else if(t.includes('comida')||t.includes('empanada')||t.includes('pizza')||t.includes('moto')||t.includes('auto')) respuesta="En MERCA PY hay de todo: Comida, Motos, Autos y más. Buscá arriba y escribile directo al vendedor.";
   else if(t.includes('como vendo')||t.includes('vender')||t.includes('publicar')||t.includes('subir')) respuesta="Para vender es fácil: 1. Bajá a Publicá tu producto GRATIS 2. Poné nombre, precio, tu WhatsApp y foto 3. Tocá PUBLICAR. Tenés 30 días gratis.";
-  else if(t.includes('cuanto')||t.includes('precio')||t.includes('costo')||t.includes('pagar')||t.includes('gratis')) respuesta="¡Es gratis 30 días! Después solo 20.000 Gs por mes para seguir vendiendo sin límite.";
-  else if(t.includes('soporte')||t.includes('ayuda')||t.includes('problema')) respuesta="Te ayudamos ensegui
+  else if(t.includes('cuanto')
