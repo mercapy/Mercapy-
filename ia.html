@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>IA MERCAPY</title></head>
+<body style="font-family:Arial;background:#f4f4f4;margin:0;padding:14px">
+<h1 style="text-align:center;color:#7c3aed">🤖 IA MERCAPY</h1>
+<p style="text-align:center">Preguntame lo que quieras de MERCA PY</p>
+<div style="background:white;padding:14px;border-radius:14px;max-width:500px;margin:auto">
+<div id="chat" style="height:300px;overflow:auto"><div style="background:#eee;padding:10px;border-radius:10px">Hola! Soy la IA de MERCA PY. Preguntame: Quiero celular, Como vendo, Cuanto cuesta, Soporte?</div></div>
+<input id="txt" placeholder="Escribi aca..." style="width:75%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top:10px">
+<button onclick="enviar()" style="width:20%;padding:12px;background:#7c3aed;color:white;border:0;border-radius:10px;font-weight:bold">Enviar</button>
+<br><br><a href="index.html" style="display:block;text-align:center;background:#ff3b30;color:white;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold">⬅️ Volver a MERCA PY</a>
+</div>
+<script>
+function enviar(){
+let i=document.getElementById('txt');let t=i.value.trim();if(!t)return;
+let c=document.getElementById('chat');
+c.innerHTML+='<div style="background:#dcf8c6;padding:10px;border-radius:10px;margin:5px 0;text-align:right">'+t+'</div>';i.value='';
+let x=t.toLowerCase();let r="Puedo ayudarte a comprar, vender o saber el precio.";
+if(x.includes('hola'))r="Hola! Bienvenido a MERCA PY. Que queres comprar?";
+else if(x.includes('celular'))r="Tenemos celulares. Entra a MERCA PY, busca celular y toca COMPRAR POR WHATSAPP.";
+else if(x.includes('ropa'))r="Tenemos mucha ropa en MERCA PY.";
+else if(x.includes('comida'))r="Tenemos comida rica. Busca en la categoria Comida.";
+else if(x.includes('vendo')||x.includes('vender')||x.includes('publicar'))r="Para vender: entra a MERCA PY, baja a Publica tu producto GRATIS, pone nombre, precio, WhatsApp y foto. Tenes 30 dias gratis.";
+else if(x.includes('cuanto')||x.includes('precio')||x.includes('gratis'))r="Es gratis 30 dias! Despues solo 20.000 Gs por mes.";
+else if(x.includes('soporte')||x.includes('ayuda'))r="Escribile a Soporte MERCA PY en la pagina principal.";
+else if(x.includes('gracias'))r="De nada! Gracias por usar MERCA PY.";
+c.innerHTML+='<div style="background:#eee;padding:10px;border-radius:10px;margin:5px 0">🤖 '+r+'</div>';c.scrollTop=c.scrollHeight;
+}
+</script>
+</body></html>
