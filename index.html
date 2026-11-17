@@ -8,8 +8,6 @@
 <meta property="og:title" content="🛍️ MERCA PY - Comprá y Vendé Todo en Paraguay">
 <meta property="og:description" content="🔥 Celulares, motos, autos, ropa y más. Publicá GRATIS por 30 días y vendé hoy mismo.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://mercapy.github.io/Mercapy-/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MERCA PY">
@@ -50,9 +48,8 @@ header h1{margin:0;font-size:30px} header p{margin:4px 0 0}
 footer{text-align:center;color:#888;padding:20px;font-size:13px}
 .soporte{background:#222;color:white;padding:16px;border-radius:14px;text-align:center;margin-top:18px}
 .soporte a{color:#25D366;font-weight:bold;font-size:17px;text-decoration:none}
-/* IA MERCAPY */
 #btnIA{position:fixed;bottom:20px;right:20px;background:#7c3aed;color:white;border:none;padding:15px 18px;border-radius:50px;font-size:16px;font-weight:bold;cursor:pointer;z-index:999;box-shadow:0 4px 15px rgba(0,0,0,0.4);width:auto}
-#chatIA{position:fixed;bottom:80px;right:15px;width:330px;max-width:92vw;background:white;color:black;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.5);z-index:999;overflow:hidden;text-align:left}
+#chatIA{position:fixed;bottom:80px;right:15px;width:330px;max-width:92vw;background:white;color:black;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.5);z-index:9999;overflow:hidden;text-align:left}
 #chatHeader{background:#7c3aed;color:white;padding:12px;font-weight:bold}
 #chatMensajes{height:230px;overflow-y:auto;padding:10px;font-size:14px}
 .msgIA{background:#eee;padding:8px;border-radius:10px;margin:5px 0}
@@ -84,31 +81,27 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <input type="file" id="fotoArchivo" accept="image/*" style="display:none" onchange="previsualizarFoto(event)">
 <img id="previewFoto" class="foto-preview">
 <input id="fotoProd" placeholder="Link de foto (opcional)">
-<button onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
+<button type="button" onclick="publicar()">🚀 PUBLICAR MI PRODUCTO GRATIS</button>
 </div>
 <div id="pagarBox" style="display:none" class="bloqueo">
 <h2 style="margin:0">🔒 SE TERMINARON TUS 30 DÍAS GRATIS</h2>
-<p>Tus productos están pausados. Pagá 20.000 Gs para volver a vender.</p>
-<button onclick="pagar()">💳 PAGAR 20.000 Gs POR WHATSAPP</button>
+<p>Tus productos siguen visibles. Pagá 20.000 Gs para publicar nuevos.</p>
+<button type="button" onclick="pagar()">💳 PAGAR 20.000 Gs POR WHATSAPP</button>
 <p style="font-size:12px">Al pagar, yo (Reinerio) te activo de nuevo por 30 días más.</p>
 </div>
-
-<!-- SOPORTE SIN MOSTRAR NUMERO -->
 <div class="soporte">
 <p style="margin:0 0 8px 0">AYUDA?</p>
 <a href="https://wa.me/595984522026?text=Hola%20MERCA%20PY%20necesito%20ayuda">SOPORTE MERCA PY - Escribinos por WhatsApp</a>
 <p style="font-size:12px;color:#aaa;margin:8px 0 0">Respondemos de 8:00 a 20:00</p>
 </div>
-
 </div>
 <footer>MERCA PY © 2026 - Hecho en Paraguay</footer>
 
-<!-- BOTON IA FLOTANTE -->
-<button id="btnIA" onclick="abrirChatIA()">🤖 IA MERCAPY</button>
+<button type="button" id="btnIA" onclick="abrirChatIA(event)">🤖 IA MERCAPY</button>
 <div id="chatIA" class="oculto">
-<div id="chatHeader">🤖 IA MERCAPY - Te ayudo <span style="float:right;cursor:pointer" onclick="abrirChatIA()">X</span></div>
+<div id="chatHeader">🤖 IA MERCAPY - Te ayudo <span style="float:right;cursor:pointer" onclick="abrirChatIA(event)">X</span></div>
 <div id="chatMensajes"><div class="msgIA">Hola! Soy la IA de MERCA PY. Preguntame: Que queres comprar? Como vendo? Cuanto cuesta? Soporte?</div></div>
-<div style="padding:8px"><input id="chatInput" placeholder="Escribi aca..."><button id="chatEnviar" onclick="enviarIA()">Enviar</button></div>
+<div style="padding:8px"><input id="chatInput" placeholder="Escribi aca..."><button type="button" id="chatEnviar" onclick="enviarIA()">Enviar</button></div>
 </div>
 
 <script>
@@ -135,11 +128,11 @@ function actualizarPlan(){
   let top = document.getElementById('ofertaTop');
   let txt = document.getElementById('planTexto');
   if(estaBloqueado){
-    top.innerHTML = "🔒 PERIODO GRATIS TERMINADO - Pagá 20.000 Gs para seguir vendiendo";
-    txt.innerHTML = "🔒 <b>Se terminaron tus 30 días gratis.</b><br>Pagá 20.000 Gs para desbloquear tus productos.";
+    top.innerHTML = "🔒 PERIODO GRATIS TERMINADO - Pagá 20.000 Gs para publicar nuevos";
+    txt.innerHTML = "🔒 <b>Se terminaron tus 30 días gratis.</b><br>Pagá 20.000 Gs para publicar nuevos productos. Tus productos viejos siguen visibles.";
     document.getElementById('formPublicar').style.display='none';
     document.getElementById('pagarBox').style.display='block';
-    document.getElementById('avisoBloqueo').innerHTML = '<div class="bloqueo">🔒 Este vendedor terminó sus 30 días gratis. Productos pausados hasta pagar 20.000 Gs. <br><button onclick="pagar()" style="background:#ffe600;border:0;padding:10px;border-radius:8px;font-weight:900;margin-top:8px">PAGAR 20.000 Gs</button></div>';
+    document.getElementById('avisoBloqueo').innerHTML = '';
   } else {
     top.innerHTML = "🎉 Te quedan " + diasRestantes + " DÍAS GRATIS<br><span style='font-size:14px'>Después solo 20.000 Gs por mes</span>";
     txt.innerHTML = "✅ <b>Te quedan " + diasRestantes + " días gratis.</b><br>Después solo 20.000 Gs por mes para seguir vendiendo.";
@@ -171,7 +164,7 @@ function previsualizarFoto(event){
     }; img.src = e.target.result;
   }; reader.readAsDataURL(file);
 }
-function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
+function pintarCats(){ document.getElementById('cats').innerHTML = categorias.map(c=>`<button type="button" onclick="setCat('${c}',this)" class="${c===catActual?'act':''}">${c}</button>`).join(''); }
 function setCat(c, btn){ catActual = c; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('act')); btn.classList.add('act'); filtrar(); }
 function limpiarWP(w){ if(!w) return ""; w = w.replace(/\D/g,''); if(w.startsWith('0')) w = '595'+w.slice(1); if(!w.startsWith('595')) w = '595'+w; return w; }
 function linksCompartir(p){
@@ -182,10 +175,10 @@ function linksCompartir(p){
   return `<div class="share-row">
     <a class="fb" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${encUrl}&quote=${encTexto}">Facebook</a>
     <a class="wp" target="_blank" href="https://wa.me/?text=${encTexto}">WhatsApp</a>
-    <button class="ig" onclick="copiarYAvistar('${encTexto}','Instagram')">Instagram</button>
-    <button class="tk" onclick="copiarYAvistar('${encTexto}','TikTok')">TikTok</button>
-    <button class="yt" onclick="copiarYAvistar('${encTexto}','YouTube')">YouTube</button>
-    <button class="cp" onclick="copiarTexto('${encTexto}')">🔗 Copiar</button>
+    <button type="button" class="ig" onclick="copiarYAvistar('${encTexto}','Instagram')">Instagram</button>
+    <button type="button" class="tk" onclick="copiarYAvistar('${encTexto}','TikTok')">TikTok</button>
+    <button type="button" class="yt" onclick="copiarYAvistar('${encTexto}','YouTube')">YouTube</button>
+    <button type="button" class="cp" onclick="copiarTexto('${encTexto}')">🔗 Copiar</button>
   </div><p style="font-size:11px;color:#888;margin:4px 0 0">Para Instagram / TikTok / YouTube: se copia el texto y lo pegás en tu historia o video.</p>`;
 }
 function copiarTexto(enc){
@@ -202,12 +195,11 @@ function copiarYAvistar(enc, red){
 }
 function mostrar(lista){
   let el = document.getElementById('lista');
-  if(estaBloqueado){ el.innerHTML = "<p style='text-align:center'>🔒 Productos pausados. Pagá 20.000 Gs para verlos de nuevo.</p>"; return; }
   if(!lista.length){ el.innerHTML = "<p>Todavía no hay productos. ¡Sé el primero en publicar!</p>"; return; }
   el.innerHTML = lista.map((p,i)=>{
     let wa = limpiarWP(p.whatsapp||"");
     let foto = p.foto || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400";
-    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}<button class="del" onclick="eliminarProducto(${p.id}, '${String(p.whatsapp||'').replace(/'/g,'')}')">🗑️ Eliminar mi producto</button></div></div>`;
+    return `<div class="card"><img src="${foto}"><div class="b"><h3>${p.nombre||''}</h3><div class="pr">Gs ${Number(p.precio||0).toLocaleString('es-PY')}</div><div class="vn">📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor||'Vendedor'}</div><a class="wa" target="_blank" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola! Vi tu producto '+ (p.nombre||'') +' en MERCA PY. ¿Sigue disponible?')}">💬 Comprar por WhatsApp</a><p style="font-weight:bold;font-size:13px;margin:10px 0 0">📤 Compartir en:</p>${linksCompartir(p)}<button type="button" class="del" onclick="eliminarProducto(${p.id}, '${String(p.whatsapp||'').replace(/'/g,'')}')">🗑️ Eliminar mi producto</button></div></div>`;
   }).join('');
 }
 async function eliminarProducto(id, whatsappOriginal){
@@ -253,7 +245,6 @@ async function publicar(){
   document.getElementById('fotoArchivo').value=""; document.getElementById('previewFoto').style.display='none'; fotoBase64="";
   cargar(); window.scrollTo({top:0, behavior:'smooth'});
 }
-// ===== IA MERCAPY - GRATIS =====
 function generarDescripcionIA(){
   let nombre=document.getElementById('nombreProd').value;
   let precio=document.getElementById('precioProd').value;
@@ -266,7 +257,7 @@ function generarDescripcionIA(){
   ];
   document.getElementById('descProd').value = frases[Math.floor(Math.random()*frases.length)];
 }
-function abrirChatIA(){ document.getElementById('chatIA').classList.toggle('oculto'); }
+function abrirChatIA(e){ if(e) e.preventDefault(); document.getElementById('chatIA').classList.toggle('oculto'); }
 function enviarIA(){
   let input=document.getElementById('chatInput');
   let texto=input.value.trim();
@@ -280,4 +271,6 @@ function enviarIA(){
   else if(t.includes('celular')||t.includes('telefono')||t.includes('iphone')||t.includes('samsung')) respuesta="En Celulares tenemos nuevos y usados. Usá el buscador arriba, escribí celular y tocá COMPRAR POR WHATSAPP para hablar directo con el vendedor.";
   else if(t.includes('ropa')||t.includes('remera')||t.includes('camisa')||t.includes('calzado')||t.includes('zapato')) respuesta="Tenemos mucha Ropa y Calzado. Tocá la categoría Ropa arriba y elegí lo que te gusta.";
   else if(t.includes('comida')||t.includes('empanada')||t.includes('pizza')||t.includes('moto')||t.includes('auto')) respuesta="En MERCA PY hay de todo: Comida, Motos, Autos y más. Buscá arriba y escribile directo al vendedor.";
-  else if(t.includes('como vendo')||t.includes('vender')||t.includes('publicar')||t.includes('subir')) respuesta="Para vender es fácil: 1. Bajá a Publicá tu producto GRATIS 2. P
+  else if(t.includes('como vendo')||t.includes('vender')||t.includes('publicar')||t.includes('subir')) respuesta="Para vender es fácil: 1. Bajá a Publicá tu producto GRATIS 2. Poné nombre, precio, tu WhatsApp y foto 3. Tocá PUBLICAR. Tenés 30 días gratis.";
+  else if(t.includes('cuanto')||t.includes('precio')||t.includes('costo')||t.includes('pagar')||t.includes('gratis')) respuesta="¡Es gratis 30 días! Después solo 20.000 Gs por mes para seguir vendiendo sin límite.";
+  else if(t.includes('soporte')||t.includes('ayuda')||t.includes('problema')) respuesta="Te ayudamos ensegui
