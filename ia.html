@@ -1,25 +1,25 @@
 <!-- CHAT INTELIGENCIA MERCAPY -->
 <div id="chatMERCAPY" style="position:fixed;bottom:10px;right:10px;width:300px;background:white;color:black;border-radius:15px;box-shadow:0 0 15px black;z-index:9999;padding:10px;">
 <b>🤖 MERCAPY AI</b>
-<div id="mensajes" style="height:150px;overflow:auto;border:1px solid #ccc;padding:5px;margin:5px 0;text-align:left;font-size:14px;">Hola! Soy MERCAPY. ¿Qué querés comprar?</div>
-<input id="pregunta" placeholder="Escribí acá..." style="width:70%;padding:8px;">
+<div id="mensajes" style="height:150px;overflow:auto;border:1px solid #ccc;padding:5px;margin:5px 0;text-align:left;font-size:14px;">Hola! Soy MERCAPY. Que queres comprar?</div>
+<input id="pregunta" placeholder="Escribi aca..." style="width:70%;padding:8px;">
 <button onclick="preguntar()" style="width:25%;background:#FFE600;font-weight:bold;">ENVIAR</button>
 </div>
 <script>
-const MI_LLAVE = "PEGA_ACA_TU_LLAVE";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
+const MI_LLAVE = "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";
 async function preguntar(){
 let texto = document.getElementById('pregunta').value;
 if(!texto) return;
 let caja = document.getElementById('mensajes');
 caja.innerHTML += "<br><b>Vos:</b> " + texto;
 document.getElementById('pregunta').value = "";
-caja.innerHTML += "<br><i>MERCAPY está pensando...</i>";
+caja.innerHTML += "<br><i>MERCAPY esta pensando...</i>";
 try{
-let res = await fetch("https://api.groq.com/openai/v1/chat/completions", {method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer " + MI_LLAVE},body: JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system", content:"Sos MERCAPY, asistente de ventas en Paraguay. Hablás en español con guaraní, corto, amable. Ayudás a vender ropa, comida, celulares. Precios en Guaraníes."},{role:"user", content: texto}]})});
+let res = await fetch("https://api.groq.com/openai/v1/chat/completions", {method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer " + MI_LLAVE},body: JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system", content:"Sos MERCAPY, asistente de ventas en Paraguay. Hablas en espanol con guarani, corto, amable."},{role:"user", content: texto}]})});
 let datos = await res.json();
 let respuesta = datos.choices[0].message.content;
 caja.innerHTML += "<br><b>MERCAPY:</b> " + respuesta;
 }catch(e){ caja.innerHTML += "<br><b>MERCAPY:</b> Che, hubo un error. Escribime por WhatsApp."; }
 caja.scrollTop = caja.scrollHeight;
 }
-  </script>
+</script>
