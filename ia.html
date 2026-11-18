@@ -1,25 +1,101 @@
-<!-- CHAT INTELIGENCIA MERCAPY -->
-<div id="chatMERCAPY" style="position:fixed;bottom:10px;right:10px;width:300px;background:white;color:black;border-radius:15px;box-shadow:0 0 15px black;z-index:9999;padding:10px;">
-<b>🤖 MERCAPY AI</b>
-<div id="mensajes" style="height:150px;overflow:auto;border:1px solid #ccc;padding:5px;margin:5px 0;text-align:left;font-size:14px;">Hola! Soy MERCAPY. Que queres comprar?</div>
-<input id="pregunta" placeholder="Escribi aca..." style="width:70%;padding:8px;">
-<button onclick="preguntar()" style="width:25%;background:#FFE600;font-weight:bold;">ENVIAR</button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA MERCAPY V7 🤖</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f3f0ff}
+.top{background:linear-gradient(90deg,#7c3aed,#db2777);color:#fff;padding:18px;text-align:center;position:sticky;top:0;z-index:10}
+.top h1{margin:0;font-size:28px} .top p{margin:5px 0 0;font-size:13px;opacity:.9}
+.stats{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.stats span{background:rgba(255,255,255,.25);padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+.wrap{max-width:620px;margin:auto;padding:12px}
+.chat{background:#fff;border-radius:16px;padding:12px;min-height:380px;margin-bottom:10px;box-shadow:0 2px 10px #0001}
+.msg{padding:11px 13px;border-radius:14px;margin:8px 0;max-width:92%;line-height:1.5;font-size:15px;word-wrap:break-word}
+.yo{background:#dcfce7;margin-left:auto;text-align:right}
+.ia{background:#ede9fe}
+.row{display:flex;gap:8px}
+.row input{flex:1;padding:14px;border-radius:12px;border:1px solid #ddd;font-size:16px}
+.row button{background:#7c3aed;color:#fff;border:0;padding:14px 20px;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer}
+.volver{display:block;background:#ff3b30;color:#fff;text-align:center;padding:14px;border-radius:12px;text-decoration:none;font-weight:bold;margin-top:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chips button{background:#fff;border:1px solid #7c3aed;color:#7c3aed;padding:8px 11px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px}
+.prod{background:#f8f5ff;border:1px solid #ddd;border-radius:12px;padding:10px;margin:8px 0}
+.prod a{display:inline-block;background:#25D366;color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:6px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="top"><h1>🤖 IA MERCAPY V7</h1><p>La IA de Reinerio Ayala 🇵🇾</p><div class="stats"><span id="statProd">🛍️ Cargando...</span><span>⚡ Online</span><span>🇵🇾 Paraguay</span></div></div>
+<div class="wrap">
+<div class="chips">
+<button onclick="preg('Quien es el dueno')">👤 Dueño</button>
+<button onclick="preg('Como publico')">📦 Publicar</button>
+<button onclick="preg('Como compro')">🛒 Comprar</button>
+<button onclick="preg('Cuanto cuesta')">💰 Precio</button>
+<button onclick="preg('Que productos hay')">🔥 Productos</button>
+<button onclick="preg('Cual es lo mas barato')">💸 Barato</button>
+<button onclick="preg('Ayuda')">❓ Ayuda</button>
+</div>
+<div class="chat" id="chat"><div class="msg ia">🤖 ¡Hola! Soy la IA de <b>Reinerio Ayala</b>, el dueño de MERCA PY 🇵🇾<br><br>MERCA PY es la tienda de todos los paraguayos. Acá podés comprar y vender fácil, rápido y sin vueltas, directo por WhatsApp, sin comisiones escondidas, sin trámites largos y sin tener que saber de tecnología. Es para el vendedor de Asunción, de Luque, de Capiatá, de todo Paraguay.<br><br>Si querés vender, publicás gratis 30 días. Si querés comprar, buscás, ves el precio, apretás el botón verde y hablás directo con el vendedor. Así de simple.<br><br>Escribí: <i>quien es el dueño</i> o <i>ayuda</i> y te cuento todo.</div></div>
+<div class="row"><input id="q" placeholder="Escribí acá..." onkeydown="if(event.key==='Enter') enviar()"><button onclick="enviar()">Enviar</button></div>
+<a class="volver" href="index.html">⬅️ Volver a MERCA PY</a>
+<p style="text-align:center;color:#888;font-size:12px">IA MERCA PY V7 • De Reinerio Ayala • Paraguay 🇵🇾 • Comprá y vendé fácil</p>
 </div>
 <script>
-const MI_LLAVE = "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";
-async function preguntar(){
-let texto = document.getElementById('pregunta').value;
-if(!texto) return;
-let caja = document.getElementById('mensajes');
-caja.innerHTML += "<br><b>Vos:</b> " + texto;
-document.getElementById('pregunta').value = "";
-caja.innerHTML += "<br><i>MERCAPY esta pensando...</i>";
-try{
-let res = await fetch("https://api.groq.com/openai/v1/chat/completions", {method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer " + MI_LLAVE},body: JSON.stringify({model:"llama-3.3-70b-versatile",messages:[{role:"system", content:"Sos MERCAPY, asistente de ventas en Paraguay. Hablas en espanol con guarani, corto, amable."},{role:"user", content: texto}]})});
-let datos = await res.json();
-let respuesta = datos.choices[0].message.content;
-caja.innerHTML += "<br><b>MERCAPY:</b> " + respuesta;
-}catch(e){ caja.innerHTML += "<br><b>MERCAPY:</b> Che, hubo un error. Escribime por WhatsApp."; }
-caja.scrollTop = caja.scrollHeight;
+const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let productos = [];
+async function cargarProd(){ try{ let {data} = await supabaseClient.from('productos').select('*').order('id',{ascending:false}).limit(50); productos=data||[]; document.getElementById('statProd').innerText='🛍️ '+productos.length+' productos'; }catch(e){} }
+cargarProd();
+function preg(t){ document.getElementById('q').value=t; enviar(); }
+function add(texto,clase){ let c=document.getElementById('chat'); let d=document.createElement('div'); d.className='msg '+clase; d.innerHTML=texto; c.appendChild(d); c.scrollTop=c.scrollHeight; }
+function norm(s){ s=s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); s=s.replace(/cuota/g,'cuanto').replace(/kepis/g,'kepi').replace(/gorra/g,'kepi'); return s; }
+function waLink(p){ let w=String(p.whatsapp||'').replace(/\D/g,''); if(w.startsWith('0')) w='595'+w.slice(1); if(!w.startsWith('595')) w='595'+w; return 'https://wa.me/'+w+'?text='+encodeURIComponent('Hola! Vi tu '+p.nombre+' en MERCA PY. ¿Sigue disponible?'); }
+function card(p){ return `<div class="prod">🛍️ <b>${p.nombre}</b><br>💰 <b>Gs ${Number(p.precio).toLocaleString('es-PY')}</b> • 📦 ${p.categoria||'Otros'} • 👤 ${p.vendedor}<br><a target="_blank" href="${waLink(p)}">💬 Hablar con vendedor</a></div>`; }
+function buscar(t){ let palabras=t.split(' ').filter(w=>w.length>2 && !['que','los','las','una','uno','para','cuanto','precio','quiero','busco','tiene','hay','como'].includes(w)); if(!palabras.length) return productos; return productos.filter(p=>{ let hay=norm(p.nombre+' '+p.categoria+' '+p.vendedor); return palabras.some(w=>hay.includes(w)||hay.includes(w.slice(0,4))); }); }
+async function enviar(){
+  let inp=document.getElementById('q'); let texto=inp.value.trim(); if(!texto) return; add(texto,'yo'); inp.value='';
+  await new Promise(r=>setTimeout(r,400));
+  let t=norm(texto); let r="";
+  if(t.includes('dueno')||t.includes('quien es')||t.includes('reinerio')||t.includes('ayala')||t.includes('admin')||t.includes('creador')||t.includes('nombre')){
+    r="👤 <b>El dueño es REINERIO AYALA</b> 🇵🇾<br><br>📝 <b>Nombre completo:</b> Reinerio Ayala<br>📍 <b>País:</b> Paraguay<br>📲 <b>WhatsApp:</b> 0984 522 026<br>🛍️ <b>Su proyecto:</b> MERCA PY - La tienda de todos los paraguayos.<br><br>Reinerio creó MERCA PY con una idea muy clara y muy noble: que cualquier persona en Paraguay pueda vender lo que tiene, sin pagar caro, sin depender de tiendas grandes, sin saber de computadoras y sin esperar semanas. Que el vecino que tiene un kepi, una remera, un celular usado, una moto, una heladera, una bicicleta, un mueble, comida casera, chipa, o cualquier producto, pueda publicarlo en minutos y que otra persona lo compre directo por WhatsApp. Reinerio es un emprendedor paraguayo que cree en el trabajo, en la honestidad, en ayudar a su comunidad y en que la plata quede en el bolsillo de la gente de acá, no en empresas de afuera. Por eso MERCA PY es simple, rápida, barata y hecha para Paraguay. ¡Es un capo! Escribile nomás al 0984 522 026, te responde él mismo.";
+  } else if(t.includes('hola')||t.includes('buenas')||t.includes('mba')||t.includes('que tal')){
+    r="👋 ¡Holaa! ¡Mba'éichapa! ¡Bienvenido a MERCA PY! Soy la IA de <b>Reinerio Ayala</b>. Acá estás en el mejor lugar para comprar y vender en Paraguay. Tenemos de todo: ropa, kepis, celulares, motos, electrodomésticos, muebles, comida, y mucho más, todo directo con el vendedor, sin vueltas. ¿Qué buscás hoy? ¿Querés comprar algo barato? ¿Querés vender y ganar plata? ¿Querés saber precios, o cómo publicar gratis? Escribí <b>ayuda</b> y te muestro todo lo que sé hacer por vos.";
+  } else if(t.includes('ayuda')||t.includes('que sabes')||t.includes('opciones')||t.includes('menu')){
+    r="❓ <b>Te ayudo en TODO lo de MERCA PY:</b><br>👤 <i>quien es el dueño</i> - Te cuento de Reinerio Ayala y su historia<br>📦 <i>como publico</i> - Cómo vender gratis 30 días<br>🛒 <i>como compro</i> - Cómo comprar seguro por WhatsApp<br>💰 <i>cuanto cuesta</i> - Precios y planes<br>🔥 <i>que productos hay</i> - Ver todo lo que hay hoy<br>💸 <i>cual es lo mas barato</i> - Las mejores ofertas<br>📍 <i>donde queda</i> - Dónde estamos, todo Paraguay<br>🎉 <i>ofertas</i> - Promociones y descuentos<br>📲 <i>whatsapp</i> - Número de Reinerio<br>¡Escribí cualquiera de esas palabras y te respondo al toque!";
+  } else if(t.includes('mercapy')||t.includes('merca')||t.includes('que es')||t.includes('para que sirve')||t.includes('tienda')){
+    r="🛍️ <b>¿Qué es MERCA PY?</b><br>MERCA PY es una página de compra y venta hecha en Paraguay, para paraguayos, por Reinerio Ayala. Es como un mercado gigante en tu celular, abierto las 24 horas, los 7 días. Acá no hay intermediarios caros. Vos ves el producto, ves el precio en guaraníes, ves quién lo vende, y hablás directo con esa persona por WhatsApp. Podés vender ropa, calzados, kepis, remeras, pantalones, celulares, computadoras, motos, autos, bicicletas, muebles, heladeras, cocinas, televisores, juguetes, herramientas, comida casera, tortas, chipa, empanadas, y todo lo que se te ocurra. MERCA PY nació para que el pequeño vendedor, el emprendedor, la señora que cocina, el joven que revende, el señor del taller, todos tengan su lugar para ganar plata sin pagar fortunas. Es fácil, es rápido, es paraguayo y es de todos. Publicar es gratis por 30 días para que pruebes sin riesgo. Después, si querés seguir, es solo 20.000 Gs por mes. Comprar siempre es gratis. Esa es la idea: que todos ganen.";
+  } else if(t.includes('publicar')||t.includes('vender')||t.includes('subir')||t.includes('anuncio')){
+    r="📦 <b>Para vender GRATIS 30 días en MERCA PY:</b><br>1️⃣ Entrá a MERCA PY<br>2️⃣ Bajá hasta donde dice Publicá tu producto GRATIS<br>3️⃣ Poné el nombre de tu producto, bien claro, ej: Kepi Nike negro<br>4️⃣ Poné el precio en guaraníes, ej: 50.000<br>5️⃣ Poné tu nombre y tu WhatsApp, para que te escriban<br>6️⃣ Elegí la categoría: Ropa, Celulares, Motos, Hogar, Comida, etc.<br>7️⃣ Subí una foto linda, con buena luz, que se vea bien<br>8️⃣ Apretá PUBLICAR. ¡Listo! En segundos ya está en la página.<br><br><b>Consejos de Reinerio para vender más rápido:</b> Poné fotos reales, poné precio justo, respondé rápido el WhatsApp, poné tu zona, ej: Asunción, y si tenés varios productos, publicá uno por uno. La gente compra más cuando ve foto, precio y WhatsApp claro. ¡No esperes más! Tu primer producto es gratis.";
+  } else if(t.includes('comprar')||t.includes('quiero')||t.includes('busco')||t.includes('cuanto')||t.includes('precio')||t.includes('kepi')||t.includes('celular')||t.includes('moto')||t.includes('ropa')||t.includes('remera')||t.includes('zapato')){
+    let enc=buscar(t);
+    if(enc.length) r="🔥 <b>Encontré "+enc.length+" para vos en MERCA PY:</b><br>Acá tenés los mejores, con precio en guaraníes y botón directo para hablar con el vendedor por WhatsApp. Preguntá si sigue disponible y coordiná la entrega. Comprar en MERCA PY es seguro porque hablás directo con la persona, sin vueltas.<br>"+enc.slice(0,6).map(card).join('');
+    else if(productos.length) r="💰 <b>Precios de hoy en MERCA PY:</b><br>Estos son los productos que hay ahora. Si no encontraste lo que buscabas, escribí el nombre, ej: <i>kepi</i>, <i>celular Samsung</i>, <i>moto</i>, y te busco. Y si no está, escribile a Reinerio al 0984 522 026 y te avisa cuando llegue.<br>"+productos.slice(0,6).map(card).join('');
+    else r="💰 <b>En MERCA PY comprar es GRATIS.</b> Publicar es 0 Gs por 30 días. Después 20.000 Gs por mes para el vendedor. Vos como comprador nunca pagás nada extra. Solo pagás el producto al vendedor, directo por WhatsApp.";
+  } else if(t.includes('producto')||t.includes('que hay')||t.includes('catalogo')||t.includes('tienda')){
+    if(!productos.length) r="📭 Todavía no hay productos publicados hoy. ¡Sé el primero en publicar! Es gratis 30 días. Publicá tu kepi, tu remera, tu celular, tu moto, lo que tengas. La gente de todo Paraguay está buscando. ¡Aprovechá!";
+    else r="🔥 <b>Productos en MERCA PY ("+productos.length+"):</b><br>Todo esto hay hoy, con precio, vendedor y WhatsApp directo. Elegí lo que te gusta y apretá el botón verde para hablar.<br>"+productos.slice(0,10).map(card).join('');
+  } else if(t.includes('pagar')||t.includes('gratis')||t.includes('costo')||t.includes('plan')||t.includes('cuota')){
+    r="💰 <b>PRECIOS MERCA PY - Simple y barato:</b><br>✅ <b>Publicar:</b> GRATIS por 30 días, sin tarjeta, sin compromiso.<br>✅ <b>Comprar:</b> SIEMPRE GRATIS, para siempre.<br>✅ <b>Después de los 30 días:</b> Solo 20.000 Gs por mes para seguir vendiendo. Eso es menos de 700 Gs por día, menos que un chicle. Con una sola venta ya recuperás.<br>💳 <b>Cómo pagás:</b> Escribí por WhatsApp al 0984 522 026, Reinerio Ayala te pasa los datos y te activa al toque. Podés pagar por transferencia o giro. Sin vueltas, sin letra chica. MERCA PY es para que el vendedor gane, no para sacarle plata.";
+  } else if(t.includes('donde')||t.includes('ubicacion')||t.includes('direccion')||t.includes('queda')){
+    r="📍 <b>¿Dónde queda MERCA PY?</b><br>MERCA PY es de <b>Paraguay</b>, pero vende a TODO Paraguay. No es solo una tienda de un lugar, es online, está en tu celular. Podés comprar desde Asunción, Luque, Capiatá, San Lorenzo, Fernando de la Mora, Lambaré, Ñemby, Itá, Ypacaraí, Caacupé, y de cualquier parte del país. Si sos de cerca, podés retirar en persona y conocer al vendedor. Si sos de lejos, coordinás envío por WhatsApp. MERCA PY es de Paraguay para todo Paraguay. ¡Orgullo paraguayo!";
+  } else if(t.includes('oferta')||t.includes('descuento')||t.includes('promocion')||t.includes('barato')||t.includes('ganga')){
+    if(!productos.length) r="🎉 <b>OFERTAS:</b> Todavía no hay productos, pero cuando haya, acá te muestro lo más barato. Publicar es gratis 30 días, aprovechá.";
+    else { let ord=[...productos].sort((a,b)=>a.precio-b.precio); r="🎉 <b>OFERTAS Y LO MÁS BARATO en MERCA PY:</b><br>Estos son los precios más bajos de hoy. ¡Aprovechá antes que se acaben! Hablá directo con el vendedor y cerrá la compra. En MERCA PY siempre hay gangas, porque el vendedor pone su mejor precio para vender rápido.<br>"+ord.slice(0,5).map(card).join(''); }
+  } else if(t.includes('whatsapp')||t.includes('numero')||t.includes('contacto')||t.includes('hablar')||t.includes('telefono')){
+    r="📲 <b>WhatsApp de Reinerio Ayala: 0984 522 026</b><br>Escribile para publicar, para pagar tu plan, para dudas, para ofertas, para todo. Te responde él mismo, no un robot. Si querés hablar con un vendedor de un producto, apretá el botón verde que está en cada producto, ese te lleva directo al WhatsApp de ese vendedor.<br><a href='https://wa.me/595984522026' target='_blank' style='background:#25D366;color:#fff;padding:10px;border-radius:8px;display:inline-block;text-decoration:none;font-weight:bold'>💬 Hablar con Reinerio ahora</a>";
+  } else if(t.includes('gracias')||t.includes('genial')||t.includes('buenisimo')){
+    r="🥰 ¡De nada! De parte de Reinerio Ayala, gracias por usar MERCA PY 🇵🇾 Compartí la página con tus amigos, con tu familia, con tu barrio. Mientras más gente venda y compre acá, más barato y más lindo es para todos. ¡Aguante Paraguay!";
+  } else if(t.includes('seguro')||t.includes('confiar')||t.includes('estafa')||t.includes('robo')){
+    r="🛡️ <b>¿Es seguro comprar en MERCA PY?</b><br>Sí, porque hablás directo con el vendedor, ves su nombre, su WhatsApp, su producto y su precio. Consejos de Reinerio: Nunca pagues antes sin hablar, pedí foto real, video, coordiná en lugar público si es cerca, y si es envío, pedí referencias. Si algo te parece raro, escribile a Reinerio al 0984 522 026 y él te ayuda. MERCA PY es una comunidad de paraguayos honestos que quieren trabajar.";
+  } else {
+    r="🤔 Me dijiste: <b>"+texto+"</b><br><br>En MERCA PY tengo mucha info para vos. Probá:<br>✅ <i>quien es el dueño</i><br>✅ <i>que es mercapy</i><br>✅ <i>como publico</i><br>✅ <i>como compro</i><br>✅ <i>cuanto cuesta</i><br>✅ <i>ofertas</i><br>✅ <i>donde queda</i><br>Escribí <b>ayuda</b> y te muestro todo lo que sé.";
+  }
+  add("🤖 "+r,'ia');
 }
 </script>
+</body>
+</html>
