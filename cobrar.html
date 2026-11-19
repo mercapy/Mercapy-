@@ -3,60 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cobrar - MERCAPY</title>
+<title>MERCAPY - Cobrar</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;padding:15px}
+.caja{background:white;padding:20px;border-radius:15px;max-width:450px;margin:auto}
+h1{text-align:center;color:#00a650}
+label{font-weight:bold;display:block;margin-top:12px}
+input{width:100%;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{width:100%;background:#00a650;color:white;padding:13px;border:none;border-radius:10px;font-size:17px;margin-top:20px;font-weight:bold}
+.resultado{background:#eafff1;border:2px solid #00a650;padding:15px;border-radius:12px;margin-top:20px;display:none}
+.metodo{background:white;padding:12px;border-radius:10px;margin-top:10px;border:1px solid #ddd}
+.wa{background:#25D366;color:white;text-align:center;padding:12px;border-radius:10px;display:block;text-decoration:none;font-weight:bold;margin-top:15px}
+</style>
 </head>
-<body style="background:#f2f2f2;margin:0;padding:15px;font-family:Arial,sans-serif">
+<body>
+<div class="caja">
+<h1>MERCAPY 💰</h1>
+<p style="text-align:center">Caja de Cobro del Vendedor</p>
 
-<div style="max-width:420px;margin:0 auto;background:white;border:2px solid #111;border-radius:14px;padding:16px">
-<h2 style="text-align:center;margin:0">💳 MERCAPY - COBRAR</h2>
-<p style="text-align:center;font-size:13px;color:#555">Cada vendedor cobra con SUS datos</p>
+<label>Nombre Completo</label>
+<input id="nombre" placeholder="Ej: Reinerio Lopez">
 
-<label><b>Nombre del producto:</b></label><br>
-<input id="v-nombre" placeholder="Ej: Celular Samsung" style="width:100%;padding:11px;margin:5px 0 10px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
+<label>Cédula</label>
+<input id="cedula" placeholder="Ej: 4.123.456">
 
-<label><b>Precio en Guaraníes:</b></label><br>
-<input id="v-precio" placeholder="Ej: 500000" style="width:100%;padding:11px;margin:5px 0 12px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
+<label>Tu WhatsApp (con 595 sin 0)</label>
+<input id="whatsapp" placeholder="Ej: 595991247112">
 
-<h3 style="margin:10px 0 5px">💳 ¿CÓMO QUERÉS COBRAR?</h3>
+<h3>🏦 TRANSFERENCIA</h3>
+<label>Alias</label>
+<input id="alias" placeholder="Tu alias">
+<label>Banco</label>
+<input id="banco" placeholder="Ej: Ueno, Rio, etc">
+<label>CBU / N° Cuenta</label>
+<input id="cbu" placeholder="Tu CBU o cuenta">
 
-<b>1. GUARANÍES - TRANSFERENCIA</b><br>
-<input id="v-alias" placeholder="Tu Alias - Ej: 0991123456" style="width:100%;padding:11px;margin:5px 0 5px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
-<input id="v-banco" placeholder="Tu Banco - Ej: Familiar" style="width:100%;padding:11px;margin:0 0 10px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
+<h3>💵 USDT - TRC20</h3>
+<label>Tu billetera USDT (empieza con T)</label>
+<input id="usdt" placeholder="Txxxxxxxxxxxx">
 
-<b>2. GUARANÍES - GIRO TIGO</b><br>
-<input id="v-giro" placeholder="Tu Giro Tigo - Ej: 0991 123 456" style="width:100%;padding:11px;margin:5px 0 10px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
+<button onclick="mostrar()">MOSTRAR MI CAJA DE COBRO</button>
 
-<b>3. USDT TRC20</b><br>
-<input id="v-usdt" placeholder="Tu billetera USDT - Ej: TXXXX..." style="width:100%;padding:11px;margin:5px 0 10px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
-
-<b>Tu WhatsApp</b><br>
-<input id="v-wsp" placeholder="Ej: 595991123456" style="width:100%;padding:11px;margin:5px 0 12px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box"><br>
-
-<button onclick="mostrar()" style="width:100%;background:#FFD700;padding:13px;border:none;border-radius:10px;font-weight:bold;font-size:16px">MOSTRAR MI CAJA DE COBRO ✅</button>
-
-<div id="ver" style="display:none;margin-top:15px;background:#FFF8E1;border:2px solid #FFD700;border-radius:12px;padding:12px">
-<div id="datos"></div>
-</div>
+<div id="resultado" class="resultado"></div>
 </div>
 
 <script>
 function mostrar(){
-  var n = document.getElementById('v-nombre').value;
-  var p = document.getElementById('v-precio').value;
-  var a = document.getElementById('v-alias').value;
-  var b = document.getElementById('v-banco').value;
-  var g = document.getElementById('v-giro').value;
-  var u = document.getElementById('v-usdt').value;
-  var w = document.getElementById('v-wsp').value;
-  if(!n || !p){ alert('Pone nombre y precio'); return; }
-  if(!a && !g && !u){ alert('Pone por lo menos tu Alias, tu Giro o tu USDT'); return; }
-  var h = '<b>'+n+'</b><br><b style="font-size:20px">Gs. '+p+'</b><br><br><b>💳 METODOS DE PAGO:</b><br><br>';
-  if(a) h += '<div style="background:white;border-radius:8px;padding:10px;margin-bottom:8px">🏦 <b>TRANSFERENCIA EN GUARANÍES</b><br>Alias: <b>'+a+'</b><br>Banco: <b>'+b+'</b></div>';
-  if(g) h += '<div style="background:white;border-radius:8px;padding:10px;margin-bottom:8px">📱 <b>GIRO TIGO EN GUARANÍES</b><br>Número: <b>'+g+'</b></div>';
-  if(u) h += '<div style="background:#111;color:white;border-radius:8px;padding:10px;margin-bottom:8px">🪙 <b>USDT TRC20</b><br><span style="color:#FFD700;word-break:break-all">'+u+'</span></div>';
-  if(w) h += '<a href="https://wa.me/'+w+'" style="display:block;background:#25D366;color:white;text-align:center;text-decoration:none;padding:12px;border-radius:10px;font-weight:bold">📲 COMPRAR POR WHATSAPP</a>';
-  document.getElementById('datos').innerHTML = h;
-  document.getElementById('ver').style.display = 'block';
+let nombre=document.getElementById('nombre').value;
+let cedula=document.getElementById('cedula').value;
+let wa=document.getElementById('whatsapp').value;
+let alias=document.getElementById('alias').value;
+let banco=document.getElementById('banco').value;
+let cbu=document.getElementById('cbu').value;
+let usdt=document.getElementById('usdt').value;
+
+let html = "<h2>✅ DATOS PARA PAGAR</h2>";
+html += "<b>Vendedor:</b> " + nombre + "<br>";
+html += "<b>Cédula:</b> " + cedula + "<br><br>";
+
+html += "<div class='metodo'><b>🏦 TRANSFERENCIA</b><br>";
+html += "Alias: " + alias + "<br>";
+html += "Banco: " + banco + "<br>";
+html += "CBU / Cuenta: " + cbu + "</div>";
+
+html += "<div class='metodo'><b>💵 USDT - TRC20 TRON</b><br>";
+html += "Billetera: " + usdt + "<br>";
+html += "Red: TRC20 - Tron<br>";
+html += "⚠️ Mandar solo por TRC20</div>";
+
+html += "<a class='wa' href='https://wa.me/"+wa+"?text=Hola%20"+nombre+"%20quiero%20pagarte%20en%20MERCAPY' target='_blank'>📲 PAGAR POR WHATSAPP</a>";
+
+document.getElementById('resultado').innerHTML = html;
+document.getElementById('resultado').style.display = 'block';
 }
 </script>
 </body>
