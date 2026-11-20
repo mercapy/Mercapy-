@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIAJE PY - Todo Paraguay - 30 Días Gratis</title>
+<title>VIAJE PY - Todo Paraguay</title>
 <style>
 *{box-sizing:border-box}
 body{font-family:Arial;background:#f2f2f2;margin:0;padding:0}
@@ -39,15 +39,13 @@ input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px soli
 </style>
 </head>
 <body>
-
 <div class="top">
 <h1>VIAJE <span>PY</span> 🇵🇾</h1>
 <p><b>Todos los choferes juntos - Todo Paraguay</b></p>
 <p>📍 Asunción - Central - Cordillera - Alto Paraná - Itapúa - Caaguazú - Guairá - Amambay - Todo el país</p>
-<div class="gratisTop">🎁 CHOFERES: 30 DÍAS GRATIS PARA PROBAR<br>Después solo 30.000 Gs por mes - Se bloquea solo al día 31</div>
-<a href="https://wa.me/595981000000?text=Hola%20VIAJE%20PY,%20quiero%20un%20viaje" style="display:block;background:#fff;color:#001A4D;padding:13px;border-radius:12px;text-decoration:none;font-weight:bold;margin-top:12px">📲 PEDIR VIAJE AHORA - EJEMPLO</a>
+<div class="gratisTop">🎁 CHOFERES: 30 DÍAS GRATIS PARA PROBAR<br>Después solo 30.000 Gs por mes</div>
+<a href="https://wa.me/595991247112?text=Hola%20VIAJE%20PY,%20quiero%20un%20viaje" style="display:block;background:#fff;color:#001A4D;padding:13px;border-radius:12px;text-decoration:none;font-weight:bold;margin-top:12px">📲 PEDIR VIAJE AHORA</a>
 </div>
-
 <div class="buscador">
 <input id="buscar" onkeyup="filtrar()" placeholder="🔍 Buscar por ciudad... Ej: Asunción, Ciudad del Este, Encarnación, Areguá">
 <select id="depto" onchange="filtrarDepto()">
@@ -63,186 +61,59 @@ input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px soli
 <option value="otro">Otro - Todo Paraguay</option>
 </select>
 </div>
-
 <div class="card">
 <h3>📍 UBICACIÓN COMPLETA - TODO PARAGUAY</h3>
 <p>Tenemos choferes en los 17 Departamentos + Asunción. Buscá tu ciudad arriba.</p>
 <a class="btn btn2" href="https://www.google.com/maps/search/?api=1&query=Paraguay" target="_blank">📍 VER MAPA DE TODO PARAGUAY</a>
 <iframe class="mapa" src="https://maps.google.com/maps?q=Paraguay&t=&z=7&ie=UTF8&iwloc=&output=embed"></iframe>
 </div>
-
 <div id="lista"></div>
-
-<!-- REGISTRO CHOFER - SOLO EJEMPLO -->
 <div class="card" style="border:2px solid #001A4D">
 <h3>📝 REGISTRARSE COMO CHOFER EN VIAJE PY - 30 DÍAS GRATIS</h3>
 <p>Registrate hoy y tenés 30 días gratis. Al día 31 se bloquea solo hasta que pagues 30.000 Gs.</p>
-<label>Tu Nombre Completo</label><input id="r_nombre" placeholder="Ej: Carlos Ayala - EJEMPLO">
-<label>Tu WhatsApp</label><input id="r_wa" placeholder="Ej: 0981 000 000 - EJEMPLO">
+<label>Tu Nombre Completo</label><input id="r_nombre" placeholder="Ej: Carlos Ayala">
+<label>Tu WhatsApp</label><input id="r_wa" placeholder="Ej: 0991 247 112">
 <label>Tu Ciudad / Departamento</label>
 <select id="r_ciudad"><option>Areguá - Cordillera</option><option>Asunción</option><option>Luque - Central</option><option>Capiatá - Central</option><option>Ciudad del Este - Alto Paraná</option><option>Encarnación - Itapúa</option><option>Caacupé - Cordillera</option><option>Coronel Oviedo - Caaguazú</option><option>Villarrica - Guairá</option><option>Pedro Juan Caballero - Amambay</option><option>Otro - Todo Paraguay</option></select>
-<label>Tu Auto</label><input id="r_auto" placeholder="Ej: Toyota Vitz Blanco 2020 - EJEMPLO">
+<label>Tu Auto</label><input id="r_auto" placeholder="Ej: Toyota Vitz Blanco 2020">
 <label>Tu Banco para Transferencia</label>
-<select id="r_banco"><option>Banco Ueno - EJEMPLO</option><option>Banco Familiar - EJEMPLO</option><option>Banco Itaú - EJEMPLO</option><option>Banco Continental - EJEMPLO</option><option>Otro</option></select>
-<label>Tu Número / Alias para Transferencia - EJEMPLO</label><input id="r_alias" placeholder="Ej: 0981 000 000 - EJEMPLO">
+<select id="r_banco"><option>Banco Ueno</option><option>Banco Familiar</option><option>Banco Itaú</option><option>Banco Continental</option><option>Otro</option></select>
+<label>Tu Número / Alias para Transferencia</label><input id="r_alias" placeholder="Ej: 0991 247 112">
 <label>¿Cómo cobrás al pasajero?</label>
 <select id="r_pago"><option>Transferencia y Efectivo</option><option>Solo Transferencia</option><option>Solo Efectivo</option></select>
-<label>Tu Ubicación Completa</label><textarea id="r_ubi" placeholder="Ej: Calle, Barrio, Referencia, Ciudad - EJEMPLO"></textarea>
+<label>Tu Ubicación Completa</label><textarea id="r_ubi" placeholder="Ej: Calle, Barrio, Referencia, Ciudad"></textarea>
 <button onclick="registrar()" style="width:100%;background:#001A4D;color:white;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px">✅ REGISTRARME - 30 DÍAS GRATIS</button>
-<p style="font-size:12px;color:#666;text-align:center">EJEMPLO: Después de los 30 días gratis, pagás 30.000 Gs por mes por publicidad con Transferencia o Efectivo.</p>
 </div>
-
-<!-- PEDIR VIAJE CLIENTE - SOLO EJEMPLO -->
 <div class="card">
-<h3>📝 PEDIR VIAJE - CLIENTE - EJEMPLO</h3>
-<label>Tu Nombre - EJEMPLO</label><input id="nombre" placeholder="Ej: Juan Pérez - EJEMPLO">
-<label>¿De dónde salís? Ubicación completa</label><input id="desde" placeholder="Ej: Asunción, Barrio Sajonia - EJEMPLO">
-<label>¿A dónde querés ir?</label><input id="hasta" placeholder="Ej: Luque, Aeropuerto - EJEMPLO">
+<h3>📝 PEDIR VIAJE - CLIENTE</h3>
+<label>Tu Nombre</label><input id="nombre" placeholder="Ej: Juan Pérez">
+<label>¿De dónde salís?</label><input id="desde" placeholder="Ej: Asunción, Barrio Sajonia">
+<label>¿A dónde querés ir?</label><input id="hasta" placeholder="Ej: Luque, Aeropuerto">
 <label>¿Cómo querés pagar?</label>
 <select id="pago"><option>💵 EFECTIVO</option><option>💳 TRANSFERENCIA</option></select>
-<button onclick="pedir()" style="width:100%;background:#25D366;color:white;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px">✅ PEDIR VIAJE POR WHATSAPP - EJEMPLO</button>
+<button onclick="pedir()" style="width:100%;background:#25D366;color:white;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px">✅ PEDIR VIAJE POR WHATSAPP</button>
 </div>
-
 <div class="card" style="text-align:center;border:2px solid #d50000">
-<h3>💳 PAGAR MI PUBLICIDAD A VIAJE PY - 30.000 Gs - EJEMPLO</h3>
+<h3>💳 PAGAR MI PUBLICIDAD A VIAJE PY - 30.000 Gs</h3>
 <p>Si ya terminaron tus 30 días gratis, pagá acá para desbloquearte.</p>
-<p><b>Banco EJEMPLO:</b> Banco Ueno - EJEMPLO<br><b>Alias / Cuenta EJEMPLO:</b> 0981 000 000 - EJEMPLO<br><b>Titular EJEMPLO:</b> VIAJE PY - EJEMPLO</p>
-<button class="btn btnPago" onclick="mostrarPagoBloqueo('Chofer EJEMPLO')">🔓 PAGAR 30.000 Gs Y DESBLOQUEARME - EJEMPLO</button>
+<p><b>Banco:</b> Banco Ueno<br><b>Alias / Cuenta:</b> 0991 247 112<br><b>Titular:</b> VIAJE PY</p>
+<button class="btn btnPago" onclick="mostrarPagoBloqueo('Chofer')">🔓 PAGAR 30.000 Gs Y DESBLOQUEARME</button>
 </div>
-
-<p class="legal">VIAJE PY es solo una página de publicidad - EJEMPLO. Cada chofer es responsable de su viaje, su habilitación, su registro y su seguro. El viaje es entre el cliente y el chofer. El pago del viaje es directo al chofer con Transferencia o Efectivo. Página creada por Traia Producciones - MERCAPY.</p>
-
-<!-- MODAL PAGAR VIAJE CON TRANSFERENCIA -->
+<p class="legal">VIAJE PY es solo una página de publicidad. Cada chofer es responsable de su viaje, su habilitación, su registro y su seguro. El viaje es entre el cliente y el chofer. El pago del viaje es directo al chofer con Transferencia o Efectivo. Página creada por Traia Producciones - MERCAPY.</p>
 <div id="modalPagoViaje" class="modal" onclick="cerrarPagoViaje()"><div class="modalBox" onclick="event.stopPropagation()">
-<h2>💳 PAGAR CON TRANSFERENCIA - EJEMPLO</h2>
+<h2>💳 PAGAR CON TRANSFERENCIA</h2>
 <p id="pagoChoferViaje" style="font-weight:bold;font-size:18px"></p>
 <div class="cajaCuenta">
-<p style="margin:0;color:#666">BANCO DEL CHOFER - EJEMPLO</p>
+<p style="margin:0;color:#666">BANCO DEL CHOFER</p>
 <p id="pagoBancoViaje" style="font-weight:bold;font-size:17px;margin:5px 0"></p>
-<p style="margin:0;color:#666">NÚMERO / ALIAS PARA TRANSFERIR - EJEMPLO</p>
+<p style="margin:0;color:#666">NÚMERO / ALIAS PARA TRANSFERIR</p>
 <p id="pagoAliasViaje" style="font-weight:bold;font-size:20px;color:#6A1B9A;margin:5px 0"></p>
 <p style="margin:0;color:#666">MONTO DEL VIAJE</p>
 <p id="pagoMontoViaje" style="font-weight:bold;font-size:18px;margin:5px 0"></p>
 </div>
 <p style="font-size:13px">1. Copiá el número / alias<br>2. Transferí desde tu banco<br>3. Mandale la captura al chofer por WhatsApp</p>
-<button class="copiar" onclick="copiarAliasViaje()">📋 COPIAR NÚMERO / ALIAS - EJEMPLO</button><br><br>
-<a id="btnWaPagoViaje" class="btn" href="#" target="_blank">📲 MANDAR COMPROBANTE POR WHATSAPP - EJEMPLO</a>
+<button class="copiar" onclick="copiarAliasViaje()">📋 COPIAR NÚMERO / ALIAS</button><br><br>
+<a id="btnWaPagoViaje" class="btn" href="#" target="_blank">📲 MANDAR COMPROBANTE POR WHATSAPP</a>
 <button class="btn btn3" onclick="cerrarPagoViaje()">❌ CERRAR</button>
 </div></div>
-
-<!-- MODAL PAGAR PUBLICIDAD BLOQUEADO -->
-<div id="modalPago" class="modal" onclick="cerrarPago()"><div class="modalBox" onclick="event.stopPropagation()">
-<h2>🔒 TU CUENTA ESTÁ BLOQUEADA - EJEMPLO</h2>
-<p id="pagoTexto"></p>
-<div style="background:#fff0f0;border:2px dashed #d50000;padding:12px;border-radius:12px;margin:12px 0">
-<p style="margin:0">PAGAR A VIAJE PY - EJEMPLO</p>
-<p style="font-weight:bold;font-size:18px;margin:5px 0">30.000 Gs por mes</p>
-<p style="margin:0">Banco EJEMPLO: Banco Ueno - EJEMPLO</p>
-<p style="font-weight:bold;color:#d50000">Alias EJEMPLO: 0981 000 000 - EJEMPLO</p>
-<p style="margin:0;font-size:13px">Titular EJEMPLO: VIAJE PY</p>
-</div>
-<p style="font-size:13px">1. Transferí 30.000 Gs - EJEMPLO<br>2. Mandale la captura a VIAJE PY<br>3. Te desbloqueamos en 5 minutos</p>
-<a id="btnWaPago" class="btn" href="#" target="_blank">📲 MANDAR COMPROBANTE Y DESBLOQUEARME - EJEMPLO</a>
-<button class="btn btn3" onclick="cerrarPago()">❌ CERRAR</button>
-</div></div>
-
-<script>
-// ==== CHOFERES DE EJEMPLO - NO SON REALES ====
-// Cambiá solo la fechaRegistro al día que se registró. El sistema cuenta solo y bloquea al día 31.
-
-let choferes = [
-  {nombre:"Carlos Ayala - EJEMPLO", ciudad:"Areguá - Cordillera", depto:"cordillera", auto:"Toyota Vitz Blanco - 2020 - EJEMPLO", ubicacion:"Frente a Iglesia de Areguá - EJEMPLO", precio:"80.000", wa:"595981000000", banco:"Banco Ueno - EJEMPLO", alias:"0981 000 000 - EJEMPLO", fechaRegistro:"2026-11-20", estrellas:"5.0"},
-  {nombre:"Juan Pérez - EJEMPLO", ciudad:"Ciudad del Este - Alto Paraná", depto:"alto parana", auto:"Hyundai i10 Gris - 2019 - EJEMPLO", ubicacion:"Microcentro CDE - EJEMPLO", precio:"30.000", wa:"595981000001", banco:"Banco Familiar - EJEMPLO", alias:"0981 000 001 - EJEMPLO", fechaRegistro:"2026-11-01", estrellas:"4.9"},
-  {nombre:"María Gómez - EJEMPLO", ciudad:"Encarnación - Itapúa", depto:"itapua", auto:"Kia Picanto Rojo - 2021 - EJEMPLO", ubicacion:"Costanera de Encarnación - EJEMPLO", precio:"20.000", wa:"595981000002", banco:"Banco Itaú - EJEMPLO", alias:"0981 000 002 - EJEMPLO", fechaRegistro:"2026-10-15", estrellas:"5.0"},
-  {nombre:"Diego López - EJEMPLO", ciudad:"Asunción", depto:"asuncion", auto:"Chevrolet Onix Negro - 2022 - EJEMPLO", ubicacion:"Av. Mariscal López - EJEMPLO", precio:"35.000", wa:"595981000003", banco:"Banco Continental - EJEMPLO", alias:"0981 000 003 - EJEMPLO", fechaRegistro:"2026-11-20", estrellas:"4.8"}
-];
-
-let aliasActualViaje="";
-
-function diasPasados(fecha){
-  let inicio=new Date(fecha+"T00:00:00");
-  let hoy=new Date(); hoy.setHours(0,0,0,0);
-  let diff=hoy-inicio;
-  return Math.floor(diff/(1000*60*60*24));
-}
-
-function mostrarChoferes(){
-  let html="";
-  choferes.forEach(c=>{
-    let dias=diasPasados(c.fechaRegistro);
-    let quedan=30-dias;
-    let bloqueado=dias>=30;
-    let estado="";
-    let botones="";
-    if(bloqueado){
-      estado=`<span class="bloq">🔒 BLOQUEADO - Se acabaron tus 30 días gratis</span>`;
-      botones=`<button class="btn btnPago" onclick="mostrarPagoBloqueo('${c.nombre}')">🔓 PAGAR 30.000 Gs PARA DESBLOQUEARME - EJEMPLO</button><p style="text-align:center;color:#d50000;font-weight:bold">Este chofer no puede recibir viajes hasta pagar</p>`;
-    } else if(quedan<=5){
-      estado=`<span class="aviso">⚠️ TE QUEDAN ${quedan} DÍAS GRATIS - Pagá pronto</span>`;
-      botones=`<a class="btn" href="https://wa.me/${c.wa}?text=Hola ${c.nombre}, quiero un viaje VIAJE PY - EJEMPLO">📲 PEDIR VIAJE A ${c.nombre}</a><button class="btn btnTransfer" onclick="mostrarPagoViaje('${c.nombre}','${c.banco}','${c.alias}','${c.precio}','${c.wa}')">💳 PAGAR CON TRANSFERENCIA - EJEMPLO</button><button class="btn btn4" onclick="alert('💵 PAGAR EN EFECTIVO - EJEMPLO\\nCuando llegues, le pagás en efectivo al chofer.')">💵 PAGAR EN EFECTIVO - EJEMPLO</button>`;
-    } else {
-      estado=`<span class="gratis">🎁 GRATIS - Te quedan ${quedan} días gratis</span>`;
-      botones=`<a class="btn" href="https://wa.me/${c.wa}?text=Hola ${c.nombre}, quiero un viaje VIAJE PY - EJEMPLO">📲 PEDIR VIAJE A ${c.nombre}</a><button class="btn btnTransfer" onclick="mostrarPagoViaje('${c.nombre}','${c.banco}','${c.alias}','${c.precio}','${c.wa}')">💳 PAGAR CON TRANSFERENCIA - EJEMPLO</button><button class="btn btn4" onclick="alert('💵 PAGAR EN EFECTIVO - EJEMPLO\\nCuando llegues, le pagás en efectivo al chofer.')">💵 PAGAR EN EFECTIVO - EJEMPLO</button>`;
-    }
-    html+=`<div class="chofer ${bloqueado?'bloqueado':''}"><h3>🚕 ${c.nombre} ⭐ ${c.estrellas}</h3><p>${c.auto} | 📍 ${c.ciudad}</p><p>📍 Ubicación completa: ${c.ubicacion}</p>${estado}<p>💰 Viaje EJEMPLO: ${c.precio} Gs</p><div class="pago"><span>💳 TRANSFERENCIA</span><span>💵 EFECTIVO</span></div>${botones}<a class="btn btn2" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.ciudad)}+Paraguay" target="_blank">📍 VER SU UBICACIÓN</a><p style="font-size:11px;color:#888">Registrado el: ${c.fechaRegistro} | Día ${dias+1} de 30 gratis - EJEMPLO</p></div>`;
-  });
-  document.getElementById('lista').innerHTML=html;
-}
-mostrarChoferes();
-
-function mostrarPagoViaje(nombre,banco,alias,monto,wa){
-  document.getElementById('pagoChoferViaje').innerText="Chofer EJEMPLO: "+nombre;
-  document.getElementById('pagoBancoViaje').innerText=banco;
-  document.getElementById('pagoAliasViaje').innerText=alias;
-  document.getElementById('pagoMontoViaje').innerText=monto+" Gs - EJEMPLO";
-  aliasActualViaje=alias;
-  document.getElementById('btnWaPagoViaje').href="https://wa.me/"+wa+"?text=Hola "+encodeURIComponent(nombre)+", ya te transferí EJEMPLO "+encodeURIComponent(monto)+" Gs";
-  document.getElementById('modalPagoViaje').style.display="flex";
-}
-function cerrarPagoViaje(){document.getElementById('modalPagoViaje').style.display="none";}
-function copiarAliasViaje(){navigator.clipboard.writeText(aliasActualViaje);alert("¡Copiado EJEMPLO! "+aliasActualViaje);}
-
-function mostrarPagoBloqueo(nombre){
-  document.getElementById('pagoTexto').innerText="Hola "+nombre+", tus 30 días gratis terminaron - EJEMPLO. Pagá 30.000 Gs para seguir en VIAJE PY.";
-  document.getElementById('btnWaPago').href="https://wa.me/595981000000?text=Hola VIAJE PY EJEMPLO, soy "+encodeURIComponent(nombre)+", ya pagué mis 30.000 Gs, desbloqueenme";
-  document.getElementById('modalPago').style.display="flex";
-}
-function cerrarPago(){document.getElementById('modalPago').style.display="none";}
-
-function filtrar(){
-  let t=document.getElementById('buscar').value.toLowerCase();
-  let ch=document.querySelectorAll('.chofer');
-  ch.forEach(c=>{if(c.innerText.toLowerCase().includes(t)){c.style.display='block'}else{c.style.display='none'}});
-}
-function filtrarDepto(){
-  let d=document.getElementById('depto').value.toLowerCase();
-  if(!d){mostrarChoferes();return;}
-  let ch=document.querySelectorAll('.chofer');
-  ch.forEach(c=>{if(c.innerText.toLowerCase().includes(d)){c.style.display='block'}else{c.style.display='none'}});
-}
-function registrar(){
-  let n=document.getElementById('r_nombre').value;
-  let w=document.getElementById('r_wa').value;
-  let c=document.getElementById('r_ciudad').value;
-  let a=document.getElementById('r_auto').value;
-  let b=document.getElementById('r_banco').value;
-  let al=document.getElementById('r_alias').value;
-  let p=document.getElementById('r_pago').value;
-  let u=document.getElementById('r_ubi').value;
-  if(!n||!w){alert('Completá nombre y WhatsApp - EJEMPLO');return;}
-  let hoy=new Date().toISOString().split('T')[0];
-  let msg="Hola VIAJE PY EJEMPLO! Quiero REGISTRARME - 30 DÍAS GRATIS%0A%0A👤 Nombre: "+n+"%0A📲 WhatsApp: "+w+"%0A📍 Ciudad: "+c+"%0A🚕 Auto: "+a+"%0A🏦 Banco: "+b+"%0A💳 Alias: "+al+"%0A💰 Cobro con: "+p+"%0A📍 Ubicación: "+u+"%0A📅 Fecha de inicio gratis: "+hoy;
-  window.open("https://wa.me/595981000000?text="+msg);
-}
-function pedir(){
-  let n=document.getElementById('nombre').value;
-  let d=document.getElementById('desde').value;
-  let h=document.getElementById('hasta').value;
-  let p=document.getElementById('pago').value;
-  if(!n||!d||!h){alert('Completá nombre, desde y hasta - EJEMPLO');return;}
-  let msg="Hola VIAJE PY EJEMPLO! Soy "+n+"%0AQuiero un viaje EJEMPLO%0A%0A📍 DESDE: "+d+"%0A📍 HASTA: "+h+"%0A💰 PAGO CON: "+p;
-  window.open("https://wa.me/595981000000?text="+msg);
-}
-</script>
-</body>
-  </html>
+<div id="modalPago" class="modal"
