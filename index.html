@@ -225,5 +225,98 @@ async function publicar(){
 pintarCats(); actualizarPlan(); cargar();
 </script>
   <a href="cobrar.html">COBRAR</a>
+  <!-- IA PRIVADA MERCA PY - GRATIS - SOLO TUYA -->
+<div id="ia-merca" style="max-width:420px; margin:20px auto; font-family:Arial; border:2px solid #111; border-radius:18px; overflow:hidden; background:white;">
+  
+  <div style="background:#111; color:white; padding:15px; text-align:center;">
+    <b>🤖 MERCA PY - Asistente Privado</b><br>
+    <span style="font-size:12px; color:#25D366;">● En línea - Solo sabe de MERCA PY</span>
+  </div>
+
+  <div id="chat-box" style="height:280px; overflow-y:auto; padding:12px; background:#f5f5f5; font-size:14px;">
+    <div style="background:white; padding:10px; border-radius:12px; margin-bottom:8px;">
+      <b>MERCA PY:</b> Hola Rey! 👋 Soy la IA privada de MERCA PY. Solo sé de nuestros productos y precios. ¿Qué querés ver? Escribí: <b>remera, champión, kepis, pantalón o precios</b>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:5px; padding:10px; background:white;">
+    <input id="input-merca" placeholder="Escribí acá..." style="flex:1; padding:12px; border:1px solid #ddd; border-radius:20px; outline:none;">
+    <button onclick="enviarMerca()" style="background:#25D366; color:white; border:none; padding:12px 18px; border-radius:20px; font-weight:bold;">Enviar</button>
+  </div>
+
+  <div style="display:flex; gap:5px; padding:0 10px 12px; flex-wrap:wrap; justify-content:center;">
+    <button onclick="rapido('precios')" style="padding:8px 12px; border-radius:20px; border:1px solid #ddd; background:#eee;">💰 Precios</button>
+    <button onclick="rapido('remera')" style="padding:8px 12px; border-radius:20px; border:1px solid #ddd; background:#eee;">👕 Remera</button>
+    <button onclick="rapido('champión')" style="padding:8px 12px; border-radius:20px; border:1px solid #ddd; background:#eee;">🧥 Champión</button>
+    <button onclick="rapido('kepis')" style="padding:8px 12px; border-radius:20px; border:1px solid #ddd; background:#eee;">🧢 Kepis</button>
+    <button onclick="rapido('pantalón')" style="padding:8px 12px; border-radius:20px; border:1px solid #ddd; background:#eee;">👖 Pantalón</button>
+  </div>
+</div>
+
+<script>
+// --- PRECIOS PRIVADOS MERCA PY - CAMBIALOS ACÁ NOMÁS ---
+const PRECIOS = {
+  remera: "75.000 Gs",
+  champion: "145.000 Gs",
+  kepis: "45.000 Gs",
+  pantalon: "115.000 Gs",
+  whatsapp: "+595 000 000 000" // <-- PONÉ TU NÚMERO ACÁ
+};
+
+function agregar(texto, quien){
+  let box = document.getElementById('chat-box');
+  let color = quien === 'Vos' ? '#dcf8c6' : 'white';
+  box.innerHTML += `<div style="background:${color}; padding:10px; border-radius:12px; margin-bottom:8px;"><b>${quien}:</b> ${texto}</div>`;
+  box.scrollTop = box.scrollHeight;
+}
+
+function rapido(texto){
+  document.getElementById('input-merca').value = texto;
+  enviarMerca();
+}
+
+function enviarMerca(){
+  let input = document.getElementById('input-merca');
+  let p = input.value.toLowerCase().trim();
+  if(!p) return;
+  agregar(p, 'Vos');
+  input.value = "";
+
+  let resp = "";
+
+  if(p.includes('precio') || p.includes('cuanto') || p.includes('costo') || p.includes('todos')){
+    resp = `Estos son TODOS nuestros precios Rey 👇<br><br>👕 REMERA: <b>${PRECIOS.remera}</b><br>🧥 CHAMPIÓN: <b>${PRECIOS.champion}</b><br>🧢 KEPIS: <b>${PRECIOS.kepis}</b><br>👖 PANTALÓN: <b>${PRECIOS.pantalon}</b><br><br>¿Cuál querés? Escribinos al WhatsApp ${PRECIOS.whatsapp}`;
+  }
+  else if(p.includes('remera')){
+    resp = `Sí tenemos REMERA 👕<br>Precio: <b>${PRECIOS.remera}</b><br>Tenemos todos los talles. ¿Qué talle y color querés?`;
+  }
+  else if(p.includes('champ') || p.includes('campera') || p.includes('buzo')){
+    resp = `Sí tenemos CHAMPIÓN 🧥<br>Precio: <b>${PRECIOS.champion}</b><br>Bien calentito y lindo. ¿Qué talle querés?`;
+  }
+  else if(p.includes('kepis') || p.includes('kepi') || p.includes('gorra') || p.includes('sombrero')){
+    resp = `Sí tenemos KEPIS 🧢<br>Precio: <b>${PRECIOS.kepis}</b><br>Varios colores. ¿Qué color querés?`;
+  }
+  else if(p.includes('pantal')){
+    resp = `Sí tenemos PANTALÓN 👖<br>Precio: <b>${PRECIOS.pantalon}</b><br>Todos los talles. ¿Qué talle querés?`;
+  }
+  else if(p.includes('hola') || p.includes('buenas') || p.includes('que tal')){
+    resp = `Hola Rey! 👋 Soy la IA privada de MERCA PY. Preguntame por precios, remera, champión, kepis o pantalón.`;
+  }
+  else if(p.includes('whatsapp') || p.includes('numero') || p.includes('pedido') || p.includes('comprar') || p.includes('quiero')){
+    resp = `Para comprar escribinos al WhatsApp ${PRECIOS.whatsapp} y te atendemos al toque Rey 🔥`;
+  }
+  else {
+    // ESTO ES LO PRIVADO: NO INVENTA, NO RESPONDE OTRA COSA
+    resp = `Yo solo sé de MERCA PY Rey 🙏<br>Preguntame por: <b>precios, remera, champión, kepis o pantalón</b>.<br>Para comprar escribinos al WhatsApp ${PRECIOS.whatsapp}`;
+  }
+
+  setTimeout(()=> agregar(resp, 'MERCA PY'), 400);
+}
+
+document.getElementById('input-merca').addEventListener('keypress', function(e){
+  if(e.key === 'Enter') enviarMerca();
+});
+</script>
+<!-- FIN IA PRIVADA MERCA PY -->
 </body>
 </html>
