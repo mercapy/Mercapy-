@@ -13,13 +13,23 @@ body{font-family:Arial;background:#f2f2f2;margin:0;padding:0}
 .top h1 span{color:#FFD500}
 .top p{margin:8px 0}
 .gratisTop{background:#FFD500;color:#000;padding:12px;border-radius:12px;font-weight:bold;margin-top:12px}
+.enLineaBar{background:#00c853;color:white;padding:12px;border-radius:12px;font-weight:bold;margin-top:12px;font-size:15px}
+.enLineaBar .punto{display:inline-block;width:12px;height:12px;background:#fff;border-radius:50%;animation:parpadeo 1s infinite}
+@keyframes parpadeo{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}
 .buscador{padding:15px}
 .buscador input,.buscador select{width:100%;padding:13px;border-radius:12px;border:1px solid #ccc;font-size:16px;margin-bottom:10px}
-.chofer{background:white;margin:12px 15px;padding:15px;border-radius:15px;border-left:6px solid #00c853}
+.filtrosLinea{display:flex;gap:8px;padding:0 15px}
+.filtrosLinea button{flex:1;padding:12px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;font-size:14px}
+.btnTodos{background:#001A4D;color:white}
+.btnOnline{background:#00c853;color:white}
+.btnOffline{background:#ccc;color:#333}
+.chofer{background:white;margin:12px 15px;padding:15px;border-radius:15px;border-left:6px solid #00c853;position:relative}
 .chofer.bloqueado{border-left:6px solid #d50000;background:#ffebee;opacity:.85}
+.chofer.offline{border-left:6px solid #999;opacity:.7}
 .chofer h3{margin:0}
 .perfil{display:flex;gap:12px;align-items:center}
 .perfil img{width:75px;height:75px;border-radius:50%;object-fit:cover;border:3px solid #00c853}
+.perfil img.off{border-color:#999}
 .fotoAuto{width:100%;height:180px;object-fit:cover;border-radius:12px;margin-top:10px}
 .btn{display:block;background:#25D366;color:white;text-align:center;padding:13px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:10px;border:none;width:100%;font-size:15px;cursor:pointer}
 .btn2{background:#4285F4}
@@ -41,13 +51,18 @@ label{font-weight:bold;font-size:14px}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:999;justify-content:center;align-items:center;padding:15px}
 .modalBox{background:white;width:100%;max-width:420px;border-radius:18px;padding:20px;text-align:center;max-height:90vh;overflow:auto}
 .cajaCuenta{background:#f7f7ff;border:2px dashed #6A1B9A;padding:12px;border-radius:12px;margin:12px 0}
-.copiar{background:#6A1B9A;color:white;border:none;padding:10px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
 .docImg{width:100%;border-radius:10px;margin-top:8px}
 .badgeDias{font-size:12px;background:#e3f2fd;padding:4px 8px;border-radius:10px}
 .tipoVehiculo{font-size:13px;font-weight:bold;background:#FFF3CD;padding:5px 10px;border-radius:20px;display:inline-block;margin-top:6px}
 .avisoObli{background:#ffebee;border:2px solid #d50000;padding:12px;border-radius:12px;font-weight:bold;font-size:13px;text-align:center}
 .cajaUbi{background:#FFF3E0;border:2px solid #FF9800;padding:12px;border-radius:12px;margin:8px 0}
 .creado{font-size:13px;color:#001A4D;font-weight:bold;text-align:center;padding:15px;background:#FFD500;margin:15px;border-radius:12px}
+.estadoLinea{position:absolute;top:12px;right:12px;font-size:12px;font-weight:bold;padding:5px 10px;border-radius:20px}
+.online{background:#00c853;color:white}
+.offlineBg{background:#999;color:white}
+.puntito{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.verde{background:#00ff00;animation:parpadeo 1s infinite}
+.gris{background:#ccc}
 </style>
 </head>
 <body>
@@ -56,6 +71,7 @@ label{font-weight:bold;font-size:14px}
 <p><b>Todos los choferes juntos - Todo Paraguay</b></p>
 <p>📍 Asunción - Central - Cordillera - Alto Paraná - Itapúa - Caaguazú - Guairá - Amambay - Todo el país</p>
 <div class="gratisTop">🎁 CHOFERES: 60 DÍAS GRATIS PARA PROBAR<br>Después solo 30.000 Gs por mes</div>
+<div class="enLineaBar"><span class="punto"></span> <span id="contadorOnline">0</span> CHOFERES EN LÍNEA AHORA - <span id="contadorTotal">0</span> EN TOTAL <span id="estadoConexion" style="font-size:11px"></span></div>
 <a href="https://wa.me/595991247112?text=Hola%20VIAJE%20PY,%20quiero%20un%20viaje" style="display:block;background:#fff;color:#001A4D;padding:13px;border-radius:12px;text-decoration:none;font-weight:bold;margin-top:12px">📲 PEDIR VIAJE AHORA</a>
 </div>
 <div class="buscador">
@@ -73,13 +89,18 @@ label{font-weight:bold;font-size:14px}
 <option value="otro">Otro - Todo Paraguay</option>
 </select>
 </div>
+<div class="filtrosLinea">
+<button class="btnTodos" onclick="verTodos()">👥 TODOS</button>
+<button class="btnOnline" onclick="verSoloOnline()">🟢 SOLO EN LÍNEA</button>
+<button class="btnOffline" onclick="verSoloOffline()">⚫ DESCONECTADOS</button>
+</div>
 <div class="card">
 <h3>📍 UBICACIÓN COMPLETA - TODO PARAGUAY</h3>
-<p>Tenemos choferes en los 17 Departamentos + Asunción. Buscá tu ciudad arriba.</p>
+<p>Tenemos choferes en los 17 Departamentos + Asunción.</p>
 <a class="btn btn2" href="https://www.google.com/maps/search/?api=1&query=Paraguay" target="_blank">📍 VER MAPA DE TODO PARAGUAY</a>
 <iframe class="mapa" src="https://maps.google.com/maps?q=Paraguay&t=&z=7&ie=UTF8&iwloc=&output=embed"></iframe>
 </div>
-<div id="lista"></div>
+<div id="lista"><div class="card" style="text-align:center">⏳ Cargando choferes desde Supabase...</div></div>
 <div class="card" style="border:2px solid #001A4D">
 <h3>📝 REGISTRARSE COMO CHOFER - 60 DÍAS GRATIS</h3>
 <p>Registrate hoy y tenés <b>60 días gratis</b>. Al día 61 se bloquea solo hasta que pagues 30.000 Gs.</p>
@@ -103,19 +124,26 @@ label{font-weight:bold;font-size:14px}
 <label>🪪 FOTO DE TU REGISTRO DE CONDUCIR <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_registro" accept="image/*" onchange="marcar(this)">
 <label>🟢 FOTO CÉDULA VERDE DE TU COCHE O MOTO <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_cedula_verde" accept="image/*" onchange="marcar(this)">
 <label>📋 FOTO HABILITACIÓN DEL RODADO VIGENTE <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_habilitacion" accept="image/*" onchange="marcar(this)">
-
 <div class="cajaUbi">
 <label>📍 TU UBICACIÓN ACTUAL - CHOFER</label>
-<button type="button" class="btn btnGps" onclick="tomarUbicacionChofer()">📍 COMPARTIR MI UBICACIÓN CON GPS</button>
+<button type="button" id="btnUbiChofer" class="btn btnGps">📍 COMPARTIR MI UBICACIÓN CON GPS</button>
 <p id="txtUbiChofer" style="font-size:13px;color:#333">Tocá el botón y aceptá PERMITIR ubicación.</p>
-<p style="font-size:12px">¿No anda el GPS? Pegá acá tu link de Google Maps:</p>
-<input id="manualUbiChofer" placeholder="Pegá tu link de Maps acá... Ej: https://maps.app.goo.gl/...">
+<button type="button" id="btnMapsChofer" class="btn btn2">🗺️ ABRIR GOOGLE MAPS Y COPIAR MI UBICACIÓN</button>
+<input id="manualUbiChofer" placeholder="Pegá tu link de Maps acá...">
 <button type="button" class="btn btn2" onclick="guardarManualChofer()">✅ USAR ESTE LINK COMO MI UBICACIÓN</button>
 </div>
-
 <label>Tu Ubicación Escrita <span class="oblig">*</span></label><textarea id="r_ubi" placeholder="Ej: Calle, Barrio, Referencia, Ciudad"></textarea>
 <button onclick="registrar()" id="btnRegistrar" style="width:100%;background:#001A4D;color:white;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px">✅ REGISTRARME - 60 DÍAS GRATIS</button>
 <p id="msgReg" style="font-size:13px;text-align:center"></p>
+<div style="background:#e8f5e9;border:2px solid #00c853;padding:12px;border-radius:12px;margin-top:15px;text-align:center">
+<h3 style="margin:0">🟢 ¿YA ESTÁS REGISTRADO?</h3>
+<p style="font-size:13px">Poné tu WhatsApp y tocá PONERME EN LÍNEA para que el pasajero te vea primero</p>
+<input id="miWaOnline" placeholder="Tu WhatsApp Ej: 0991 247 112">
+<button type="button" class="btn" style="background:#00c853" onclick="ponermeEnLinea()">🟢 PONERME EN LÍNEA AHORA</button>
+<button type="button" class="btn btn3" onclick="ponermeOffline()">⚫ PONERME DESCONECTADO</button>
+<button type="button" class="btn btnGps" onclick="actualizarMiUbicacion()">📍 ACTUALIZAR MI UBICACIÓN EN VIVO</button>
+<p id="txtOnline" style="font-size:13px"></p>
+</div>
 </div>
 <div class="card">
 <h3>📝 PEDIR VIAJE - CLIENTE</h3>
@@ -126,9 +154,9 @@ label{font-weight:bold;font-size:14px}
 <select id="pago"><option>💵 EFECTIVO</option><option>💳 TRANSFERENCIA</option></select>
 <div class="cajaUbi">
 <label>📍 TU UBICACIÓN EXACTA - PASAJERO</label>
-<button class="btn btnGps" onclick="tomarUbicacionPasajero()">📍 MANDAR MI UBICACIÓN EXACTA CON GPS</button>
+<button type="button" id="btnUbiPasajero" class="btn btnGps">📍 MANDAR MI UBICACIÓN EXACTA CON GPS</button>
 <p id="txtUbiPasajero" style="font-size:13px;color:#333">Tocá el botón y aceptá PERMITIR ubicación.</p>
-<p style="font-size:12px">¿No anda el GPS? Pegá acá tu link de Maps:</p>
+<button type="button" id="btnMapsPasajero" class="btn btn2">🗺️ ABRIR GOOGLE MAPS Y COPIAR MI UBICACIÓN</button>
 <input id="manualUbiPasajero" placeholder="Pegá tu link de Maps acá...">
 <button type="button" class="btn btn2" onclick="guardarManualPasajero()">✅ USAR ESTE LINK</button>
 </div>
@@ -140,10 +168,8 @@ label{font-weight:bold;font-size:14px}
 <p><b>Banco:</b> Banco Ueno<br><b>Alias / Cuenta:</b> 0991 247 112<br><b>Titular:</b> VIAJE PY</p>
 <button class="btn btnPago" onclick="mostrarPagoBloqueo()">🔓 PAGAR 30.000 Gs Y DESBLOQUEARME</button>
 </div>
-
 <div class="creado">✨ Página creada con VIAJE PY 🇵🇾<br>Todos los choferes juntos - Todo Paraguay</div>
 <p class="legal">VIAJE PY es solo una página de publicidad. Cada chofer es responsable de su viaje, su habilitación, su registro y su seguro. El viaje es entre el cliente y el chofer. El pago del viaje es directo al chofer con Transferencia o Efectivo.<br><br>© 2026 VIAJE PY - Página creada con VIAJE PY</p>
-
 <div id="modalPago" class="modal" onclick="cerrarPago()"><div class="modalBox" onclick="event.stopPropagation()">
 <h2>💳 PAGAR 30.000 Gs - DESBLOQUEO</h2>
 <p>Transferí a:</p><div class="cajaCuenta"><p><b>Banco Ueno</b><br><b>Alias:</b> 0991 247 112<br><b>Titular:</b> VIAJE PY</p></div>
@@ -159,119 +185,99 @@ label{font-weight:bold;font-size:14px}
 const SUPABASE_URL = "https://fbnblubqwrajgdoruyzk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FO_GQl2aMBnOX8NH3d5rBg_OB5r_htf";
 const ADMIN_WA = "595991247112";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let ubiChoferLat = "", ubiChoferLng = "", ubiChoferLink = "";
 let ubiPasajeroLink = "";
-let choferes = JSON.parse(localStorage.getItem("viajepy_choferes")||"[]");
+let filtroLinea = "todos";
+let choferes = [];
+let miId = localStorage.getItem("viajepy_mi_id") || null;
+
 function diasRestantes(fecha){ const inicio=new Date(fecha); const hoy=new Date(); const diff=Math.floor((hoy-inicio)/(1000*60*60*24)); return 60-diff; }
 function estaBloqueado(c){ return diasRestantes(c.fecha) <= 0 && !c.pagado; }
+function estaOnline(c){
+  if(!c.enLinea) return false;
+  const diffMin = (Date.now() - (c.ultimaVez||0)) / 60000;
+  return diffMin < 10;
+}
 function marcar(el){ if(el.files.length>0){ el.classList.remove("falta"); el.classList.add("ok"); } }
 async function subirFoto(file, bucket){
   if(!file) return "";
-  const nombre = Date.now()+"_"+file.name.replace(/\s/g,"_");
-  const {error} = await supabase.storage.from(bucket).upload(nombre, file);
+  const nombre = Date.now()+"_"+Math.random().toString(36).slice(2)+"_"+file.name.replace(/\s/g,"_");
+  const {error} = await supabaseClient.storage.from(bucket).upload(nombre, file);
   if(error){ alert("Error subiendo foto: "+error.message); return ""; }
-  const {data} = supabase.storage.from(bucket).getPublicUrl(nombre);
+  const {data} = supabaseClient.storage.from(bucket).getPublicUrl(nombre);
   return data.publicUrl;
 }
 
-// --- UBICACION ARREGLADA ---
-function tomarUbicacionChofer(){
-  const txt = document.getElementById("txtUbiChofer");
-  if(!("geolocation" in navigator)){
-    txt.innerHTML = "❌ Tu celular no tiene GPS. Pegá tu link de Maps abajo 👇";
+// --- CARGAR CHOFERES DESDE SUPABASE - SE VEN EN TODOS LOS CELULARES ---
+async function cargarChoferes(){
+  const {data, error} = await supabaseClient.from("choferes").select("*").order("ultimaVez", {ascending:false});
+  if(error){
+    document.getElementById("estadoConexion").innerText = "⚠️ Error Supabase: "+error.message;
+    document.getElementById("lista").innerHTML = "<div class='card' style='text-align:center;color:#d50000'>⚠️ No se pudo conectar a Supabase.<br>¿Creaste la tabla con el SQL que te pasé?<br>Error: "+error.message+"</div>";
     return;
   }
-  txt.innerText = "⏳ Buscando tu ubicación... Aceptá PERMITIR arriba";
-  navigator.geolocation.getCurrentPosition(function(pos){
-    ubiChoferLat = pos.coords.latitude; ubiChoferLng = pos.coords.longitude;
-    ubiChoferLink = "https://www.google.com/maps?q="+ubiChoferLat+","+ubiChoferLng;
-    txt.innerHTML = "✅ UBICACIÓN GUARDADA:<br><a href='"+ubiChoferLink+"' target='_blank'>📍 Ver mi ubicación en mapa</a><br>Lat: "+ubiChoferLat+", Lng: "+ubiChoferLng;
-    alert("✅ ¡Ubicación guardada! Ya te va a ver el pasajero.");
-  }, function(err){
-    if(err.code===1) txt.innerHTML = "❌ Bloqueaste el permiso. Andá a: Ajustes del celular > Permisos > Ubicación > Permitir. O pegá tu link de Maps abajo 👇";
-    else if(err.code===2) txt.innerHTML = "❌ No se pudo encontrar tu ubicación. Prendé el GPS y el WiFi. O pegá tu link de Maps abajo 👇";
-    else if(err.code===3) txt.innerHTML = "⏳ Tardó mucho. Tocá de nuevo el botón o pegá tu link de Maps abajo 👇";
-    else txt.innerHTML = "❌ Error de GPS. Pegá tu link de Maps abajo 👇";
-  }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
-}
-function guardarManualChofer(){
-  const v = document.getElementById("manualUbiChofer").value.trim();
-  if(!v || v.length < 10){ alert("Pegá un link válido de Google Maps"); return; }
-  ubiChoferLink = v;
-  document.getElementById("txtUbiChofer").innerHTML = "✅ UBICACIÓN MANUAL GUARDADA:<br><a href='"+v+"' target='_blank'>📍 Ver mi ubicación</a>";
-  alert("✅ Ubicación manual guardada");
-}
-function tomarUbicacionPasajero(){
-  const txt = document.getElementById("txtUbiPasajero");
-  if(!("geolocation" in navigator)){
-    txt.innerHTML = "❌ Tu celular no tiene GPS. Pegá tu link de Maps abajo 👇";
-    return;
-  }
-  txt.innerText = "⏳ Buscando tu ubicación... Aceptá PERMITIR arriba";
-  navigator.geolocation.getCurrentPosition(function(pos){
-    ubiPasajeroLink = "https://www.google.com/maps?q="+pos.coords.latitude+","+pos.coords.longitude;
-    txt.innerHTML = "✅ UBICACIÓN LISTA:<br><a href='"+ubiPasajeroLink+"' target='_blank'>📍 Ver mi ubicación en mapa</a>";
-    alert("✅ ¡Ubicación lista para mandar al chofer!");
-  }, function(err){
-    if(err.code===1) txt.innerHTML = "❌ Bloqueaste el permiso. Andá a Ajustes > Permisos > Ubicación > Permitir. O pegá tu link abajo 👇";
-    else txt.innerHTML = "❌ No se pudo agarrar GPS. Prendé GPS y WiFi o pegá tu link abajo 👇";
-  }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
-}
-function guardarManualPasajero(){
-  const v = document.getElementById("manualUbiPasajero").value.trim();
-  if(!v || v.length < 10){ alert("Pegá un link válido de Google Maps"); return; }
-  ubiPasajeroLink = v;
-  document.getElementById("txtUbiPasajero").innerHTML = "✅ UBICACIÓN MANUAL LISTA:<br><a href='"+v+"' target='_blank'>📍 Ver mi ubicación</a>";
-  alert("✅ Ubicación manual lista");
-}
-
-async function registrar(){
-  const nombre = document.getElementById("r_nombre").value.trim();
-  const wa = document.getElementById("r_wa").value.trim();
-  const auto = document.getElementById("r_auto").value.trim();
-  const alias = document.getElementById("r_alias").value.trim();
-  const ubi = document.getElementById("r_ubi").value.trim();
-  if(!nombre){ alert("⛔ Falta TU NOMBRE"); return; }
-  if(!wa){ alert("⛔ Falta TU WHATSAPP"); return; }
-  if(!auto){ alert("⛔ Falta TU AUTO / MOTO"); return; }
-  if(!alias){ alert("⛔ Falta TU NÚMERO / ALIAS PARA TRANSFERENCIA"); return; }
-  if(!ubi){ alert("⛔ Falta TU UBICACIÓN ESCRITA"); return; }
-  const docs = [
-    ["f_perfil","📸 TU FOTO DE PERFIL"],
-    ["f_auto","🚗🏍️ FOTO DE TU COCHE O MOTO"],
-    ["f_cedula_f","🪪 FOTO CÉDULA FRENTE"],
-    ["f_cedula_d","🪪 FOTO CÉDULA DORSO"],
-    ["f_registro","🪪 FOTO DE TU REGISTRO DE CONDUCIR"],
-    ["f_cedula_verde","🟢 FOTO CÉDULA VERDE DE TU COCHE O MOTO"],
-    ["f_habilitacion","📋 FOTO HABILITACIÓN DEL RODADO VIGENTE"]
-  ];
-  for(let d of docs){
-    const input = document.getElementById(d[0]);
-    if(!input.files || input.files.length===0){
-      input.classList.add("falta");
-      alert("⛔ FALTA DOCUMENTO OBLIGATORIO:\n\n"+d[1]);
-      input.scrollIntoView({behavior:"smooth",block:"center"});
-      return;
-    }
-  }
-  document.getElementById("btnRegistrar").innerText = "⏳ SUBIENDO FOTOS... ESPERÁ";
-  document.getElementById("msgReg").innerText = "Subiendo fotos a Supabase, no cierres...";
-  const fotoPerfil = await subirFoto(document.getElementById("f_perfil").files[0], "perfiles");
-  const fotoAuto = await subirFoto(document.getElementById("f_auto").files[0], "documentos");
-  const cedulaF = await subirFoto(document.getElementById("f_cedula_f").files[0], "documentos");
-  const cedulaD = await subirFoto(document.getElementById("f_cedula_d").files[0], "documentos");
-  const registro = await subirFoto(document.getElementById("f_registro").files[0], "documentos");
-  const cedulaVerde = await subirFoto(document.getElementById("f_cedula_verde").files[0], "documentos");
-  const habilitacion = await subirFoto(document.getElementById("f_habilitacion").files[0], "documentos");
-  if(!fotoPerfil || !fotoAuto || !cedulaF || !cedulaD || !registro || !cedulaVerde || !habilitacion){
-    alert("⛔ Hubo error subiendo una foto. Volvé a intentar.");
-    document.getElementById("btnRegistrar").innerText = "✅ REGISTRARME - 60 DÍAS GRATIS";
-    return;
-  }
-  const tipo = document.getElementById("r_tipo").value;
-  const nuevo = { nombre, wa, ciudad: document.getElementById("r_ciudad").value, tipo, auto, banco: document.getElementById("r_banco").value, alias, pago: document.getElementById("r_pago").value, ubi, fotoPerfil, fotoAuto, cedulaF, cedulaD, registro, cedulaVerde, habilitacion, ubiLink: ubiChoferLink, lat: ubiChoferLat, lng: ubiChoferLng, fecha: new Date().toISOString(), pagado: false };
-  choferes.unshift(nuevo);
-  localStorage.setItem("viajepy_choferes", JSON.stringify(choferes));
+  choferes = data || [];
+  document.getElementById("estadoConexion").innerText = "✅ Conectado a Supabase";
   render();
-  const msg = "🚨 NUEVO CHOFER EN VIAJE PY - DOCUMENTOS COMPLETOS ✅%0A%0A👤 Nombre: "+encodeURIComponent(nombre)+"%0A📱 WhatsApp: "+encodeURIComponent(wa)+"%0A🚗🏍️ Tipo: "+encodeURIComponent(tipo)+"%0A🚗 Vehículo: "+encodeURIComponent(auto)+"%0A📍 Ciudad: "+encodeURIComponent(nuevo.
+}
+// Actualiza cada 10 segundos - EN VIVO
+setInterval(cargarChoferes, 10000);
+// Si el chofer cierra la página, queda offline
+window.addEventListener("beforeunload", async ()=>{
+  if(miId){
+    await supabaseClient.from("choferes").update({enLinea:false, ultimaVez: Date.now()}).eq("id", miId);
+  }
+});
+
+async function ponermeEnLinea(){
+  const wa = document.getElementById("miWaOnline").value.replace(/\D/g,"").slice(-9);
+  if(!wa){ alert("Poné tu WhatsApp"); return; }
+  // Buscar por WhatsApp
+  const {data} = await supabaseClient.from("choferes").select("*").ilike("wa", "%"+wa+"%");
+  if(!data || data.length===0){ alert("No encontramos ese WhatsApp. Registrate primero."); return; }
+  const c = data[0];
+  miId = c.id; localStorage.setItem("viajepy_mi_id", miId);
+  await supabaseClient.from("choferes").update({enLinea:true, ultimaVez: Date.now()}).eq("id", c.id);
+  document.getElementById("txtOnline").innerText = "✅ ¡Estás EN LÍNEA! Los pasajeros te ven primero.";
+  alert("✅ ¡Estás EN LÍNEA!");
+  cargarChoferes();
+}
+async function ponermeOffline(){
+  const wa = document.getElementById("miWaOnline").value.replace(/\D/g,"").slice(-9);
+  const {data} = await supabaseClient.from("choferes").select("*").ilike("wa", "%"+wa+"%");
+  if(data && data[0]){
+    await supabaseClient.from("choferes").update({enLinea:false, ultimaVez: Date.now()}).eq("id", data[0].id);
+    document.getElementById("txtOnline").innerText = "⚫ Estás DESCONECTADO.";
+    cargarChoferes();
+  }
+}
+async function actualizarMiUbicacion(){
+  if(!miId){
+    const wa = document.getElementById("miWaOnline").value.replace(/\D/g,"").slice(-9);
+    if(!wa){ alert("Poné tu WhatsApp primero"); return; }
+    const {data} = await supabaseClient.from("choferes").select("*").ilike("wa", "%"+wa+"%");
+    if(data && data[0]){ miId = data[0].id; localStorage.setItem("viajepy_mi_id", miId); }
+    else { alert("No te encontramos. Registrate primero."); return; }
+  }
+  document.getElementById("txtOnline").innerText = "⏳ Actualizando ubicación...";
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    const link = "https://www.google.com/maps?q="+pos.coords.latitude+","+pos.coords.longitude;
+    await supabaseClient.from("choferes").update({ubiLink: link, lat: String(pos.coords.latitude), lng: String(pos.coords.longitude), ultimaVez: Date.now(), enLinea:true}).eq("id", miId);
+    document.getElementById("txtOnline").innerText = "✅ Ubicación actualizada en vivo!";
+    alert("✅ Tu ubicación en vivo ya se actualizó para todos!");
+    cargarChoferes();
+  }, ()=>{ alert("Activá el GPS y permití ubicación"); });
+}
+function verTodos(){ filtroLinea="todos"; render(); }
+function verSoloOnline(){ filtroLinea="online"; render(); }
+function verSoloOffline(){ filtroLinea="offline"; render(); }
+
+// GPS
+window.tomarUbicacionChofer = function(){
+  const txt = document.getElementById("txtUbiChofer");
+  txt.innerText = "⏳ Buscando tu ubicación...";
+  if(!("geolocation" in navigator)){ buscarPorInternetChofer(); return; }
+  navigator.geolocation.getCurrentPosition(function(pos){
+    ubiChoferLat = String(pos.coords.latitude); ubiChoferLng = String(pos.coords.longitude);
+    ubiChoferLink = "https://www.google.com/maps?q="+ubiChof
