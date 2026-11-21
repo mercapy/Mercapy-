@@ -24,26 +24,30 @@ body{font-family:Arial;background:#f2f2f2;margin:0;padding:0}
 .btn{display:block;background:#25D366;color:white;text-align:center;padding:13px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:10px;border:none;width:100%;font-size:15px;cursor:pointer}
 .btn2{background:#4285F4}
 .btn3{background:#001A4D}
-.btn4{background:#FFD500;color:#000}
-.btnTransfer{background:#6A1B9A}
 .btnPago{background:#d50000}
 .btnGps{background:#FF9800}
 .card{margin:15px;background:white;padding:15px;border-radius:15px}
 .mapa{width:100%;height:200px;border:0;border-radius:12px;margin-top:10px}
 .gratis{background:#00c853;color:white;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px;display:inline-block}
-.aviso{background:#ff9800;color:white;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px;display:inline-block}
 .bloq{background:#d50000;color:white;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px;display:inline-block}
 .pago{display:flex;gap:8px;margin-top:10px}
 .pago span{flex:1;text-align:center;padding:8px;border-radius:8px;background:#f0f0f0;font-weight:bold;font-size:13px}
-.legal{font-size:11px;color:#888;text-align:center;padding:10px}
+.legal{font-size:12px;color:#666;text-align:center;padding:15px;font-weight:bold}
 input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin:8px 0}
 label{font-weight:bold;font-size:14px}
+.oblig{color:#d50000}
+.falta{border:2px solid #d50000 !important;background:#ffebee}
+.ok{border:2px solid #00c853 !important}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:999;justify-content:center;align-items:center;padding:15px}
 .modalBox{background:white;width:100%;max-width:420px;border-radius:18px;padding:20px;text-align:center;max-height:90vh;overflow:auto}
 .cajaCuenta{background:#f7f7ff;border:2px dashed #6A1B9A;padding:12px;border-radius:12px;margin:12px 0}
 .copiar{background:#6A1B9A;color:white;border:none;padding:10px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
 .docImg{width:100%;border-radius:10px;margin-top:8px}
 .badgeDias{font-size:12px;background:#e3f2fd;padding:4px 8px;border-radius:10px}
+.tipoVehiculo{font-size:13px;font-weight:bold;background:#FFF3CD;padding:5px 10px;border-radius:20px;display:inline-block;margin-top:6px}
+.avisoObli{background:#ffebee;border:2px solid #d50000;padding:12px;border-radius:12px;font-weight:bold;font-size:13px;text-align:center}
+.cajaUbi{background:#FFF3E0;border:2px solid #FF9800;padding:12px;border-radius:12px;margin:8px 0}
+.creado{font-size:13px;color:#001A4D;font-weight:bold;text-align:center;padding:15px;background:#FFD500;margin:15px;border-radius:12px}
 </style>
 </head>
 <body>
@@ -79,25 +83,37 @@ label{font-weight:bold;font-size:14px}
 <div class="card" style="border:2px solid #001A4D">
 <h3>📝 REGISTRARSE COMO CHOFER - 60 DÍAS GRATIS</h3>
 <p>Registrate hoy y tenés <b>60 días gratis</b>. Al día 61 se bloquea solo hasta que pagues 30.000 Gs.</p>
-<label>Tu Nombre Completo</label><input id="r_nombre" placeholder="Ej: Carlos Ayala">
-<label>Tu WhatsApp</label><input id="r_wa" placeholder="Ej: 0991 247 112">
-<label>Tu Ciudad / Departamento</label>
+<div class="avisoObli">⛔ TODOS LOS DOCUMENTOS SON OBLIGATORIOS<br>Sin documentos NO te podés registrar</div>
+<label>Tu Nombre Completo <span class="oblig">*</span></label><input id="r_nombre" placeholder="Ej: Carlos Ayala">
+<label>Tu WhatsApp <span class="oblig">*</span></label><input id="r_wa" placeholder="Ej: 0991 247 112">
+<label>Tu Ciudad / Departamento <span class="oblig">*</span></label>
 <select id="r_ciudad"><option>Areguá - Cordillera</option><option>Asunción</option><option>Luque - Central</option><option>Capiatá - Central</option><option>Ciudad del Este - Alto Paraná</option><option>Encarnación - Itapúa</option><option>Caacupé - Cordillera</option><option>Coronel Oviedo - Caaguazú</option><option>Villarrica - Guairá</option><option>Pedro Juan Caballero - Amambay</option><option>Otro - Todo Paraguay</option></select>
-<label>Tu Auto</label><input id="r_auto" placeholder="Ej: Toyota Vitz Blanco 2020">
-<label>Tu Banco para Transferencia</label>
+<label>🚗🏍️ ¿QUÉ MANEJÁS? <span class="oblig">*</span></label>
+<select id="r_tipo"><option value="Auto">🚗 AUTO</option><option value="Moto">🏍️ MOTO</option><option value="Auto y Moto">🚗🏍️ AUTO Y MOTO</option></select>
+<label>Tu Auto / Moto <span class="oblig">*</span></label><input id="r_auto" placeholder="Ej: Toyota Vitz Blanco 2020 o Honda Wave Roja 2022">
+<label>Tu Banco para Transferencia <span class="oblig">*</span></label>
 <select id="r_banco"><option>Banco Ueno</option><option>Banco Familiar</option><option>Banco Itaú</option><option>Banco Continental</option><option>Otro</option></select>
-<label>Tu Número / Alias para Transferencia</label><input id="r_alias" placeholder="Ej: 0991 247 112">
-<label>¿Cómo cobrás al pasajero?</label>
+<label>Tu Número / Alias para Transferencia <span class="oblig">*</span></label><input id="r_alias" placeholder="Ej: 0991 247 112">
+<label>¿Cómo cobrás al pasajero? <span class="oblig">*</span></label>
 <select id="r_pago"><option>Transferencia y Efectivo</option><option>Solo Transferencia</option><option>Solo Efectivo</option></select>
-<label>📸 TU FOTO DE PERFIL</label><input type="file" id="f_perfil" accept="image/*">
-<label>🚗 FOTO DE TU COCHE - EL PASAJERO LA VA A VER</label><input type="file" id="f_auto" accept="image/*">
-<label>🪪 FOTO CÉDULA FRENTE</label><input type="file" id="f_cedula_f" accept="image/*">
-<label>🪪 FOTO CÉDULA DORSO</label><input type="file" id="f_cedula_d" accept="image/*">
-<label>🪪 FOTO DE TU REGISTRO DE CONDUCIR</label><input type="file" id="f_registro" accept="image/*">
-<label>📍 TU UBICACIÓN ACTUAL - PARA QUE EL PASAJERO TE VEA</label>
-<button type="button" class="btn btnGps" onclick="tomarUbicacionChofer()">📍 COMPARTIR MI UBICACIÓN COMO CHOFER</button>
-<p id="txtUbiChofer" style="font-size:13px;color:#666">Todavía no compartiste tu ubicación. Tocá el botón y aceptá el permiso.</p>
-<label>Tu Ubicación Escrita</label><textarea id="r_ubi" placeholder="Ej: Calle, Barrio, Referencia, Ciudad"></textarea>
+<label>📸 TU FOTO DE PERFIL <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_perfil" accept="image/*" onchange="marcar(this)">
+<label>🚗🏍️ FOTO DE TU COCHE O MOTO <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_auto" accept="image/*" onchange="marcar(this)">
+<label>🪪 FOTO CÉDULA FRENTE <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_cedula_f" accept="image/*" onchange="marcar(this)">
+<label>🪪 FOTO CÉDULA DORSO <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_cedula_d" accept="image/*" onchange="marcar(this)">
+<label>🪪 FOTO DE TU REGISTRO DE CONDUCIR <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_registro" accept="image/*" onchange="marcar(this)">
+<label>🟢 FOTO CÉDULA VERDE DE TU COCHE O MOTO <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_cedula_verde" accept="image/*" onchange="marcar(this)">
+<label>📋 FOTO HABILITACIÓN DEL RODADO VIGENTE <span class="oblig">* OBLIGATORIO</span></label><input type="file" id="f_habilitacion" accept="image/*" onchange="marcar(this)">
+
+<div class="cajaUbi">
+<label>📍 TU UBICACIÓN ACTUAL - CHOFER</label>
+<button type="button" class="btn btnGps" onclick="tomarUbicacionChofer()">📍 COMPARTIR MI UBICACIÓN CON GPS</button>
+<p id="txtUbiChofer" style="font-size:13px;color:#333">Tocá el botón y aceptá PERMITIR ubicación.</p>
+<p style="font-size:12px">¿No anda el GPS? Pegá acá tu link de Google Maps:</p>
+<input id="manualUbiChofer" placeholder="Pegá tu link de Maps acá... Ej: https://maps.app.goo.gl/...">
+<button type="button" class="btn btn2" onclick="guardarManualChofer()">✅ USAR ESTE LINK COMO MI UBICACIÓN</button>
+</div>
+
+<label>Tu Ubicación Escrita <span class="oblig">*</span></label><textarea id="r_ubi" placeholder="Ej: Calle, Barrio, Referencia, Ciudad"></textarea>
 <button onclick="registrar()" id="btnRegistrar" style="width:100%;background:#001A4D;color:white;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px">✅ REGISTRARME - 60 DÍAS GRATIS</button>
 <p id="msgReg" style="font-size:13px;text-align:center"></p>
 </div>
@@ -108,8 +124,14 @@ label{font-weight:bold;font-size:14px}
 <label>¿A dónde querés ir?</label><input id="hasta" placeholder="Ej: Luque, Aeropuerto">
 <label>¿Cómo querés pagar?</label>
 <select id="pago"><option>💵 EFECTIVO</option><option>💳 TRANSFERENCIA</option></select>
+<div class="cajaUbi">
+<label>📍 TU UBICACIÓN EXACTA - PASAJERO</label>
 <button class="btn btnGps" onclick="tomarUbicacionPasajero()">📍 MANDAR MI UBICACIÓN EXACTA CON GPS</button>
-<p id="txtUbiPasajero" style="font-size:13px;color:#666">Si tocás el botón, mandamos tu ubicación exacta al chofer.</p>
+<p id="txtUbiPasajero" style="font-size:13px;color:#333">Tocá el botón y aceptá PERMITIR ubicación.</p>
+<p style="font-size:12px">¿No anda el GPS? Pegá acá tu link de Maps:</p>
+<input id="manualUbiPasajero" placeholder="Pegá tu link de Maps acá...">
+<button type="button" class="btn btn2" onclick="guardarManualPasajero()">✅ USAR ESTE LINK</button>
+</div>
 <button onclick="pedir()" style="width:100%;background:#25D366;color:white;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:16px">✅ PEDIR VIAJE POR WHATSAPP</button>
 </div>
 <div class="card" style="text-align:center;border:2px solid #d50000">
@@ -118,20 +140,10 @@ label{font-weight:bold;font-size:14px}
 <p><b>Banco:</b> Banco Ueno<br><b>Alias / Cuenta:</b> 0991 247 112<br><b>Titular:</b> VIAJE PY</p>
 <button class="btn btnPago" onclick="mostrarPagoBloqueo()">🔓 PAGAR 30.000 Gs Y DESBLOQUEARME</button>
 </div>
-<p class="legal">VIAJE PY es solo una página de publicidad. Cada chofer es responsable de su viaje, su habilitación, su registro y su seguro. El viaje es entre el cliente y el chofer. El pago del viaje es directo al chofer con Transferencia o Efectivo. Página creada por Traia Producciones - MERCAPY.</p>
-<div id="modalPagoViaje" class="modal" onclick="cerrarPagoViaje()"><div class="modalBox" onclick="event.stopPropagation()">
-<h2>💳 PAGAR CON TRANSFERENCIA</h2>
-<p id="pagoChoferViaje" style="font-weight:bold;font-size:18px"></p>
-<div class="cajaCuenta">
-<p style="margin:0;color:#666">BANCO DEL CHOFER</p><p id="pagoBancoViaje" style="font-weight:bold;font-size:17px;margin:5px 0"></p>
-<p style="margin:0;color:#666">NÚMERO / ALIAS</p><p id="pagoAliasViaje" style="font-weight:bold;font-size:20px;color:#6A1B9A;margin:5px 0"></p>
-<p style="margin:0;color:#666">MONTO DEL VIAJE</p><p id="pagoMontoViaje" style="font-weight:bold;font-size:18px;margin:5px 0"></p>
-</div>
-<p style="font-size:13px">1. Copiá el número / alias<br>2. Transferí desde tu banco<br>3. Mandale la captura al chofer por WhatsApp</p>
-<button class="copiar" onclick="copiarAliasViaje()">📋 COPIAR NÚMERO / ALIAS</button><br><br>
-<a id="btnWaPagoViaje" class="btn" href="#" target="_blank">📲 MANDAR COMPROBANTE POR WHATSAPP</a>
-<button class="btn btn3" onclick="cerrarPagoViaje()">❌ CERRAR</button>
-</div></div>
+
+<div class="creado">✨ Página creada con VIAJE PY 🇵🇾<br>Todos los choferes juntos - Todo Paraguay</div>
+<p class="legal">VIAJE PY es solo una página de publicidad. Cada chofer es responsable de su viaje, su habilitación, su registro y su seguro. El viaje es entre el cliente y el chofer. El pago del viaje es directo al chofer con Transferencia o Efectivo.<br><br>© 2026 VIAJE PY - Página creada con VIAJE PY</p>
+
 <div id="modalPago" class="modal" onclick="cerrarPago()"><div class="modalBox" onclick="event.stopPropagation()">
 <h2>💳 PAGAR 30.000 Gs - DESBLOQUEO</h2>
 <p>Transferí a:</p><div class="cajaCuenta"><p><b>Banco Ueno</b><br><b>Alias:</b> 0991 247 112<br><b>Titular:</b> VIAJE PY</p></div>
@@ -151,13 +163,9 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let ubiChoferLat = "", ubiChoferLng = "", ubiChoferLink = "";
 let ubiPasajeroLink = "";
 let choferes = JSON.parse(localStorage.getItem("viajepy_choferes")||"[]");
-function diasRestantes(fecha){
-  const inicio = new Date(fecha);
-  const hoy = new Date();
-  const diff = Math.floor((hoy - inicio)/(1000*60*60*24));
-  return 60 - diff;
-}
+function diasRestantes(fecha){ const inicio=new Date(fecha); const hoy=new Date(); const diff=Math.floor((hoy-inicio)/(1000*60*60*24)); return 60-diff; }
 function estaBloqueado(c){ return diasRestantes(c.fecha) <= 0 && !c.pagado; }
+function marcar(el){ if(el.files.length>0){ el.classList.remove("falta"); el.classList.add("ok"); } }
 async function subirFoto(file, bucket){
   if(!file) return "";
   const nombre = Date.now()+"_"+file.name.replace(/\s/g,"_");
@@ -166,27 +174,87 @@ async function subirFoto(file, bucket){
   const {data} = supabase.storage.from(bucket).getPublicUrl(nombre);
   return data.publicUrl;
 }
+
+// --- UBICACION ARREGLADA ---
 function tomarUbicacionChofer(){
-  if(!navigator.geolocation){ alert("Tu celular no tiene GPS"); return; }
-  document.getElementById("txtUbiChofer").innerText = "Buscando tu ubicación...";
-  navigator.geolocation.getCurrentPosition(pos=>{
+  const txt = document.getElementById("txtUbiChofer");
+  if(!("geolocation" in navigator)){
+    txt.innerHTML = "❌ Tu celular no tiene GPS. Pegá tu link de Maps abajo 👇";
+    return;
+  }
+  txt.innerText = "⏳ Buscando tu ubicación... Aceptá PERMITIR arriba";
+  navigator.geolocation.getCurrentPosition(function(pos){
     ubiChoferLat = pos.coords.latitude; ubiChoferLng = pos.coords.longitude;
     ubiChoferLink = "https://www.google.com/maps?q="+ubiChoferLat+","+ubiChoferLng;
-    document.getElementById("txtUbiChofer").innerHTML = "✅ Ubicación guardada: <a href='"+ubiChoferLink+"' target='_blank'>Ver en mapa</a>";
-  }, ()=>{ alert("Tenés que permitir el GPS para que el pasajero te vea"); });
+    txt.innerHTML = "✅ UBICACIÓN GUARDADA:<br><a href='"+ubiChoferLink+"' target='_blank'>📍 Ver mi ubicación en mapa</a><br>Lat: "+ubiChoferLat+", Lng: "+ubiChoferLng;
+    alert("✅ ¡Ubicación guardada! Ya te va a ver el pasajero.");
+  }, function(err){
+    if(err.code===1) txt.innerHTML = "❌ Bloqueaste el permiso. Andá a: Ajustes del celular > Permisos > Ubicación > Permitir. O pegá tu link de Maps abajo 👇";
+    else if(err.code===2) txt.innerHTML = "❌ No se pudo encontrar tu ubicación. Prendé el GPS y el WiFi. O pegá tu link de Maps abajo 👇";
+    else if(err.code===3) txt.innerHTML = "⏳ Tardó mucho. Tocá de nuevo el botón o pegá tu link de Maps abajo 👇";
+    else txt.innerHTML = "❌ Error de GPS. Pegá tu link de Maps abajo 👇";
+  }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
+}
+function guardarManualChofer(){
+  const v = document.getElementById("manualUbiChofer").value.trim();
+  if(!v || v.length < 10){ alert("Pegá un link válido de Google Maps"); return; }
+  ubiChoferLink = v;
+  document.getElementById("txtUbiChofer").innerHTML = "✅ UBICACIÓN MANUAL GUARDADA:<br><a href='"+v+"' target='_blank'>📍 Ver mi ubicación</a>";
+  alert("✅ Ubicación manual guardada");
 }
 function tomarUbicacionPasajero(){
-  if(!navigator.geolocation){ alert("Tu celular no tiene GPS"); return; }
-  document.getElementById("txtUbiPasajero").innerText = "Buscando tu ubicación exacta...";
-  navigator.geolocation.getCurrentPosition(pos=>{
+  const txt = document.getElementById("txtUbiPasajero");
+  if(!("geolocation" in navigator)){
+    txt.innerHTML = "❌ Tu celular no tiene GPS. Pegá tu link de Maps abajo 👇";
+    return;
+  }
+  txt.innerText = "⏳ Buscando tu ubicación... Aceptá PERMITIR arriba";
+  navigator.geolocation.getCurrentPosition(function(pos){
     ubiPasajeroLink = "https://www.google.com/maps?q="+pos.coords.latitude+","+pos.coords.longitude;
-    document.getElementById("txtUbiPasajero").innerHTML = "✅ Ubicación lista: <a href='"+ubiPasajeroLink+"' target='_blank'>Ver en mapa</a>";
-  }, ()=>{ alert("Tenés que permitir el GPS"); });
+    txt.innerHTML = "✅ UBICACIÓN LISTA:<br><a href='"+ubiPasajeroLink+"' target='_blank'>📍 Ver mi ubicación en mapa</a>";
+    alert("✅ ¡Ubicación lista para mandar al chofer!");
+  }, function(err){
+    if(err.code===1) txt.innerHTML = "❌ Bloqueaste el permiso. Andá a Ajustes > Permisos > Ubicación > Permitir. O pegá tu link abajo 👇";
+    else txt.innerHTML = "❌ No se pudo agarrar GPS. Prendé GPS y WiFi o pegá tu link abajo 👇";
+  }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
 }
+function guardarManualPasajero(){
+  const v = document.getElementById("manualUbiPasajero").value.trim();
+  if(!v || v.length < 10){ alert("Pegá un link válido de Google Maps"); return; }
+  ubiPasajeroLink = v;
+  document.getElementById("txtUbiPasajero").innerHTML = "✅ UBICACIÓN MANUAL LISTA:<br><a href='"+v+"' target='_blank'>📍 Ver mi ubicación</a>";
+  alert("✅ Ubicación manual lista");
+}
+
 async function registrar(){
   const nombre = document.getElementById("r_nombre").value.trim();
   const wa = document.getElementById("r_wa").value.trim();
-  if(!nombre || !wa){ alert("Poné tu nombre y tu WhatsApp"); return; }
+  const auto = document.getElementById("r_auto").value.trim();
+  const alias = document.getElementById("r_alias").value.trim();
+  const ubi = document.getElementById("r_ubi").value.trim();
+  if(!nombre){ alert("⛔ Falta TU NOMBRE"); return; }
+  if(!wa){ alert("⛔ Falta TU WHATSAPP"); return; }
+  if(!auto){ alert("⛔ Falta TU AUTO / MOTO"); return; }
+  if(!alias){ alert("⛔ Falta TU NÚMERO / ALIAS PARA TRANSFERENCIA"); return; }
+  if(!ubi){ alert("⛔ Falta TU UBICACIÓN ESCRITA"); return; }
+  const docs = [
+    ["f_perfil","📸 TU FOTO DE PERFIL"],
+    ["f_auto","🚗🏍️ FOTO DE TU COCHE O MOTO"],
+    ["f_cedula_f","🪪 FOTO CÉDULA FRENTE"],
+    ["f_cedula_d","🪪 FOTO CÉDULA DORSO"],
+    ["f_registro","🪪 FOTO DE TU REGISTRO DE CONDUCIR"],
+    ["f_cedula_verde","🟢 FOTO CÉDULA VERDE DE TU COCHE O MOTO"],
+    ["f_habilitacion","📋 FOTO HABILITACIÓN DEL RODADO VIGENTE"]
+  ];
+  for(let d of docs){
+    const input = document.getElementById(d[0]);
+    if(!input.files || input.files.length===0){
+      input.classList.add("falta");
+      alert("⛔ FALTA DOCUMENTO OBLIGATORIO:\n\n"+d[1]);
+      input.scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+  }
   document.getElementById("btnRegistrar").innerText = "⏳ SUBIENDO FOTOS... ESPERÁ";
   document.getElementById("msgReg").innerText = "Subiendo fotos a Supabase, no cierres...";
   const fotoPerfil = await subirFoto(document.getElementById("f_perfil").files[0], "perfiles");
@@ -194,86 +262,16 @@ async function registrar(){
   const cedulaF = await subirFoto(document.getElementById("f_cedula_f").files[0], "documentos");
   const cedulaD = await subirFoto(document.getElementById("f_cedula_d").files[0], "documentos");
   const registro = await subirFoto(document.getElementById("f_registro").files[0], "documentos");
-  const nuevo = {
-    nombre, wa, ciudad: document.getElementById("r_ciudad").value,
-    auto: document.getElementById("r_auto").value, banco: document.getElementById("r_banco").value,
-    alias: document.getElementById("r_alias").value, pago: document.getElementById("r_pago").value,
-    ubi: document.getElementById("r_ubi").value,
-    fotoPerfil, fotoAuto, cedulaF, cedulaD, registro,
-    ubiLink: ubiChoferLink, lat: ubiChoferLat, lng: ubiChoferLng,
-    fecha: new Date().toISOString(), pagado: false
-  };
+  const cedulaVerde = await subirFoto(document.getElementById("f_cedula_verde").files[0], "documentos");
+  const habilitacion = await subirFoto(document.getElementById("f_habilitacion").files[0], "documentos");
+  if(!fotoPerfil || !fotoAuto || !cedulaF || !cedulaD || !registro || !cedulaVerde || !habilitacion){
+    alert("⛔ Hubo error subiendo una foto. Volvé a intentar.");
+    document.getElementById("btnRegistrar").innerText = "✅ REGISTRARME - 60 DÍAS GRATIS";
+    return;
+  }
+  const tipo = document.getElementById("r_tipo").value;
+  const nuevo = { nombre, wa, ciudad: document.getElementById("r_ciudad").value, tipo, auto, banco: document.getElementById("r_banco").value, alias, pago: document.getElementById("r_pago").value, ubi, fotoPerfil, fotoAuto, cedulaF, cedulaD, registro, cedulaVerde, habilitacion, ubiLink: ubiChoferLink, lat: ubiChoferLat, lng: ubiChoferLng, fecha: new Date().toISOString(), pagado: false };
   choferes.unshift(nuevo);
   localStorage.setItem("viajepy_choferes", JSON.stringify(choferes));
   render();
-  const msg = "🚨 NUEVO CHOFER EN VIAJE PY%0A%0A👤 Nombre: "+encodeURIComponent(nombre)+"%0A📱 WhatsApp: "+encodeURIComponent(wa)+"%0A🚗 Auto: "+encodeURIComponent(nuevo.auto)+"%0A📍 Ciudad: "+encodeURIComponent(nuevo.ciudad)+"%0A%0A📸 Foto perfil: "+encodeURIComponent(fotoPerfil||"sin foto")+"%0A🚗 Foto auto: "+encodeURIComponent(fotoAuto||"sin foto")+"%0A📍 Ubicación chofer: "+encodeURIComponent(ubiChoferLink||"sin ubicación");
-  window.open("https://wa.me/"+ADMIN_WA+"?text="+msg, "_blank");
-  document.getElementById("btnRegistrar").innerText = "✅ REGISTRARME - 60 DÍAS GRATIS";
-  document.getElementById("msgReg").innerText = "✅ ¡Registrado! Tenés 60 días gratis. Ya aparecés en la lista.";
-  alert("¡Listo "+nombre+"! Ya estás en VIAJE PY con 60 días gratis.");
-}
-function render(){
-  const lista = document.getElementById("lista");
-  if(choferes.length===0){ lista.innerHTML = "<div class='card' style='text-align:center'>Todavía no hay choferes registrados. ¡Sé el primero!</div>"; return; }
-  lista.innerHTML = choferes.map((c,i)=>{
-    const bloqueado = estaBloqueado(c);
-    const dias = diasRestantes(c.fecha);
-    const waLimpio = c.wa.replace(/\D/g,"");
-    const waLink = "https://wa.me/595"+waLimpio.slice(-9)+"?text="+encodeURIComponent("Hola "+c.nombre+", quiero un viaje con VIAJE PY");
-    const foto = c.fotoPerfil || "https://via.placeholder.com/150?text=Sin+Foto";
-    const autoImg = c.fotoAuto ? "<img class='fotoAuto' src='"+c.fotoAuto+"'><p style='font-size:13px;text-align:center'>🚗 "+(c.auto||"")+"</p>" : "<p style='font-size:13px'>🚗 "+(c.auto||"")+"</p>";
-    const ubiBtn = c.ubiLink ? "<a class='btn btn2' href='"+c.ubiLink+"' target='_blank'>📍 VER UBICACIÓN EN VIVO DEL CHOFER</a>" : "<p style='font-size:13px;color:#888'>📍 Chofer sin ubicación GPS todavía</p>";
-    return "<div class='chofer "+(bloqueado?"bloqueado":"")+"' data-ciudad='"+(c.ciudad||"").toLowerCase()+"' data-nombre='"+(c.nombre||"").toLowerCase()+"'>"
-    +"<div class='perfil'><img src='"+foto+"'><div><h3>"+c.nombre+"</h3><p style='margin:4px 0'>📍 "+c.ciudad+"</p><span class='badgeDias'>"+(bloqueado?"🔒 BLOQUEADO - Pagá 30.000 Gs":"✅ "+dias+" días gratis restantes")+"</span></div></div>"
-    + (bloqueado ? "<span class='bloq'>🔒 BLOQUEADO - 60 DÍAS TERMINADOS</span>" : "<span class='gratis'>🎁 GRATIS "+dias+" DÍAS</span>")
-    + autoImg
-    + "<p>📍 Ubicación: "+(c.ubi||"")+"</p>"
-    + ubiBtn
-    + "<div class='pago'><span>"+c.pago+"</span><span>"+c.banco+"</span></div>"
-    + "<a class='btn' href='"+waLink+"' target='_blank'>📲 PEDIR VIAJE A "+c.nombre.toUpperCase()+"</a>"
-    + "<button class='btn btn2' onclick='verDocs("+i+")'>📄 VER DOCUMENTOS Y FOTO DEL COCHE</button>"
-    + (bloqueado ? "<button class='btn btnPago' onclick='mostrarPagoBloqueo()'>🔓 PAGAR 30.000 Gs Y DESBLOQUEARME</button>" : "")
-    + "</div>";
-  }).join("");
-}
-function verDocs(i){
-  const c = choferes[i];
-  document.getElementById("tituloDocs").innerText = "📄 Documentos de "+c.nombre;
-  document.getElementById("contenidoDocs").innerHTML =
-    "<p><b>Auto:</b> "+c.auto+"</p>" + (c.fotoAuto?"<img class='docImg' src='"+c.fotoAuto+"'><p>🚗 Foto del coche</p>":"<p>Sin foto del coche</p>")
-    + (c.cedulaF?"<img class='docImg' src='"+c.cedulaF+"'><p>Cédula Frente</p>":"<p>Sin cédula frente</p>")
-    + (c.cedulaD?"<img class='docImg' src='"+c.cedulaD+"'><p>Cédula Dorso</p>":"<p>Sin cédula dorso</p>")
-    + (c.registro?"<img class='docImg' src='"+c.registro+"'><p>Registro de Conducir</p>":"<p>Sin registro</p>");
-  document.getElementById("modalDocs").style.display = "flex";
-}
-function cerrarDocs(){ document.getElementById("modalDocs").style.display="none"; }
-function filtrar(){
-  const t = document.getElementById("buscar").value.toLowerCase();
-  document.querySelectorAll(".chofer").forEach(el=>{
-    el.style.display = (el.dataset.nombre.includes(t) || el.dataset.ciudad.includes(t)) ? "block" : "none";
-  });
-}
-function filtrarDepto(){
-  const t = document.getElementById("depto").value.toLowerCase();
-  document.querySelectorAll(".chofer").forEach(el=>{
-    el.style.display = (!t || el.dataset.ciudad.includes(t)) ? "block" : "none";
-  });
-}
-function pedir(){
-  const nombre = document.getElementById("nombre").value;
-  const desde = document.getElementById("desde").value;
-  const hasta = document.getElementById("hasta").value;
-  const pago = document.getElementById("pago").value;
-  let msg = "Hola VIAJE PY, soy "+nombre+", quiero viaje de "+desde+" hasta "+hasta+", pago con "+pago;
-  if(ubiPasajeroLink) msg += ". Mi ubicación exacta GPS: "+ubiPasajeroLink;
-  window.open("https://wa.me/"+ADMIN_WA+"?text="+encodeURIComponent(msg), "_blank");
-}
-let aliasActual="", bancoActual="", choferActual="";
-function mostrarPagoBloqueo(){ document.getElementById("modalPago").style.display="flex"; }
-function cerrarPago(){ document.getElementById("modalPago").style.display="none"; }
-function cerrarPagoViaje(){ document.getElementById("modalPagoViaje").style.display="none"; }
-function copiarAliasViaje(){ navigator.clipboard.writeText(aliasActual); alert("Copiado: "+aliasActual); }
-render();
-</script>
-</body>
-</h
+  const msg = "🚨 NUEVO CHOFER EN VIAJE PY - DOCUMENTOS COMPLETOS ✅%0A%0A👤 Nombre: "+encodeURIComponent(nombre)+"%0A📱 WhatsApp: "+encodeURIComponent(wa)+"%0A🚗🏍️ Tipo: "+encodeURIComponent(tipo)+"%0A🚗 Vehículo: "+encodeURIComponent(auto)+"%0A📍 Ciudad: "+encodeURIComponent(nuevo.
